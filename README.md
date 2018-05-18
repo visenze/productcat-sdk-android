@@ -1,9 +1,219 @@
-Egami Android Demo
-==================
+# Productcat Android SDK
+
+---
+
+##Table of Contents
+ 1. [Initialization](#1.-initialization)
+ 2. [Solution APIs](#2.-solution-apis)
+	  - 2.1 [Image Search](#2.1-image-search)
+	    - 2.1.1 [Selection Box](#2.1.1-selection-box)
+	    - 2.1.2 [Resizing Settings](#2.1.2-resizing-settings)
+	  - 2.2 [Text Search ](#2.2-text-search)
+ 3. [Search Results](#3.-search-results)
+ 4. [Event Tracking](#4.-event-tracking)
+      - 4.1 [Setup Tracking](#4.1-setup-tracking)
+      - 4.2 [Send Action for Tracking](#4.2--send-action-for-tracking)
+      
+---
+
+
+## 1. Initialization
+`ProductCat` must be initialized with an app key before it can be used, default endpoint (https://productcat.visenze.com)
+
+```java
+ProductCat productCat = new ProductCat.Builder(appKey)
+                        .setApiEndPoint(new URL(endpoint))
+                        .build(context);
+```                
+
+## 2. Solution APIs
+
+### 2.1 Image Search
+
+GET /summary/products
+
+**Image Search** solution is to search for visually similar products in the global products database giving an image.
+
+* Using an image from a local file path:
+```java
+Image image = new Image("/local/path/to/image.jpg");
+ImageSearchParams searchParams = new ImageSearchParams(image);
+
+productCat.imageSearch(searchParams);
+```
+* Using an image by providing the Uri of the image in photo gallery:
+
+```java
+Image image = new Image(context, uri);
+ImageSearchParams searchParams = new ImageSearchParams(image);
+
+productCat.imageSearch(searchParams);
+```
+
+* Construct the `image` from the byte array returned by the camera preview callback:
+
+```java
+@Override
+public void onPictureTaken(byte[] bytes, Camera camera) {
+    Image image = new Image(bytes);
+    ImageSearchParams searchParams = new ImageSearchParams(image);
+    
+    productCat.imageSearch(searchParams);
+}
+```
+
+* Alternatively, you can pass an image url directly to `uploadSearchParams` to start the search :
+
+```java
+String url = "http://mydomain.com/sample_image.jpg";
+ImageSearchParams searchParams = new ImageSearchParams(url);
+
+productCat.imageSearch(searchParams);
+```
+
+* If you are performing refinement on an uploaded image, you can pass the im_id returned in the search result to start the search instead of uploading the image again:
 
 ```
-|-- README.md
-|-- app    => old demo
-|-- egami  => new demo
-|-- productcat    => sdk (api client)
+String imId;
+
+@Override
+public void onSearchResult(ResultList resultList) {
+    imId = resultList.getImId();
+	for (ImageResult imageResult : resultList.getImageList()) {
+		//Do something with the result
+		...
+	}
+}
+
+ImageSearchParams searchParams = new ImageSearchParams(url);
+uploadSearchParams.setImId(imId);
+productCat.imageSearch(searchParams);
 ```
+
+
+#### 2.1.1 Selection Box
+If the object you wish to search for takes up only a small portion of your image, or other irrelevant objects exists in the same image, chances are the search result could become inaccurate. Use the Box parameter to refine the search area of the image to improve accuracy. The box coordinated is set with respect to the original size of the uploading image:
+
+```java
+Image image = new Image(this, uri);
+// create the box to refine the area on the searching image
+// Box(x1, y1, x2, y2) where (0,0) is the top-left corner
+// of the image, (x1, y1) is the top-left corner of the box,
+// and (x2, y2) is the bottom-right corner of the box.
+image.setBox(0, 0, 400, 400);
+```
+
+If you are using im_url or im_id for upload search. You should pass the box in this way:
+
+```java
+ImageSearchParams searchParams = new ImageSearchParams();
+searchParams.setImId(imId);
+searchParams.setBox(new Box(0, 0, 400, 400));
+
+productCat.imageSearch(searchParams);
+```
+
+#### 2.1.2 Resizing Settings
+When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ViSearch server, and the increased time for processing larger image files in ViSearch. 
+
+To reduce upload search latency, by default the uploadSearch method makes a copy of your image file and resizes the copy to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:
+
+* Image from local path or photo gallery
+
+```java
+//default resize setting, set the image size to 512 x 512
+Image image = new Image(imagePath, ResizeSettings.STANDARD);
+```
+
+If your image contains fine details such as textile patterns and textures, you can use an image with larger size for search to get better search result:
+
+```java
+//for images with fine details, use HIGH resize settings 1024 x 1024
+Image image = new Image(imagePath, ResizeSettings.HIGH);
+```
+
+Or, provide the customized resize settings. To make efficient use the of the memory and network bandwidth of mobile device, the maximum size is set at 1024 x 1024. Any image exceeds the limit will be resized to the limit:
+
+```java
+//resize the image to 800 by 800 area using jpeg 80 quality
+Image image = new Image(imagePath, new ResizeSettings(800, 800, 80));
+```
+
+* Image from camera callback
+
+ViSearch Android SDK provides an interface to handle byte array returned from [`Camera.PictureCallback`](http://developer.android.com/reference/android/hardware/Camera.PictureCallback.html). Use `ResizeSettings.CAMERA_STANDARD` and `ResizeSettings.CAMERA_HIGH` to configure the resize settings. The image taken from the camera might not be in the desired orientaiton, a rotation parameter can be set to rotate the image to the correct orientation:
+
+```java
+@Override
+public void onPictureTaken(byte[] bytes, Camera camera) {
+    Image image = new Image(bytes, ResizeSettings.CAMERA_HIGH, 90);
+    ImageSearchParams searchParams = new ImageSearchParams(image);
+    
+    productCat.imageSearch(searchParams);
+}
+```
+
+### 2.2 Text Search
+
+GET /summary/products
+
+**Text Search** solution is to search similar products by given query text.
+
+```java
+TextSearchParams textParams = new TextSearchParams(queryText) ;
+productCat.textSearch(textParams);
+```
+
+## 3. Search Results
+The search results are returned as a list of image names with required additional information. Use `getImageList()` to get the list of images. The basic information returned about the image are image name. Use`viSearch.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `viSearch.onSearchError(String error)` callback method. 
+
+```java
+@Override
+public void onSearchResult(ResultList resultList) {
+	for (ImageResult imageResult : resultList.getImageList()) {
+		//Do something with each result image
+		...
+	}
+}
+
+@Override
+public void onSearchError(String error) {
+    resultView.displayError(error);
+}
+
+
+@Override
+public void onSearchCanceled() {
+
+}
+```
+
+## 4. Event Tracking
+
+Productcat Android SDK provides methods to understand how your customer interact with the search results. 
+
+In addition, to improve subsequent search quality, it is recommended to send user actions when they interact with the results. 
+
+### 4.1 Setup Tracking
+
+It is important that a unique device ID is provided for user action tracking. ViSearch Android SDK uses [Google Adervertising ID](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) as the default unique id. Add this tag to your `<application>` in the `AndroidManifest.xml` to use Google Play Service:
+
+```xml
+<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version">
+```
+
+In the case where Google Adervertising ID is not available, a server-generated UID will be returned. This UID is automatically stored with your app that integates with ViSearch Android SDK and will be refreshed only when the user uninstall your app.  
+
+### 4.2  Send Action for Tracking
+
+User action can be sent in this way:
+
+```java
+productCat.track(new TrackParams().setAction(action).setPid(pid).setReqid(reqid));
+```
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|`action`|String| The the action type of this event. We are currently able to support "click". More actions will be supported in the future.|
+|`pid`|String| The pid of the product which the user has clicked on. pid is return from search result.|
+|`reqid`|String| The request id of the search request. This reqid can be obtained from all the search result:```resultList.getTransId();```|

@@ -1,1 +1,1 @@
-include ':app', ':egami', ':productcat'
+include ':productcat'
