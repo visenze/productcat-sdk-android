@@ -3,21 +3,43 @@
 ---
 
 ##Table of Contents
- 1. [Initialization](#1.-initialization)
- 2. [Solution APIs](#2.-solution-apis)
-	  - 2.1 [Image Search](#2.1-image-search)
-	    - 2.1.1 [Selection Box](#2.1.1-selection-box)
-	    - 2.1.2 [Resizing Settings](#2.1.2-resizing-settings)
-	  - 2.2 [Text Search ](#2.2-text-search)
- 3. [Search Results](#3.-search-results)
- 4. [Event Tracking](#4.-event-tracking)
-      - 4.1 [Setup Tracking](#4.1-setup-tracking)
-      - 4.2 [Send Action for Tracking](#4.2--send-action-for-tracking)
+ 1. [Setup](#1.-setup)
+ 2. [Initialization](#2.-initialization)
+ 3. [Solution APIs](#3.-solution-apis)
+	  - 3.1 [Image Search](#3.1-image-search)
+	    - 3.1.1 [Selection Box](#3.1.1-selection-box)
+	    - 3.1.2 [Resizing Settings](#3.1.2-resizing-settings)
+	  - 3.2 [Text Search ](#3.2-text-search)
+ 4. [Search Results](#4.-search-results)
+ 5. [Event Tracking](#5.-event-tracking)
+      - 5.1 [Setup Tracking](#5.1-setup-tracking)
+      - 5.2 [Send Action for Tracking](#5.2--send-action-for-tracking)
       
 ---
 
+## 1. Setup
+## 1.1 Install the SDK
+You can include the dependency in your project using gradle:
 
-## 1. Initialization
+```
+compile project(':productcat')
+```
+
+In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
+
+```
+android {
+	...
+	
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+    ...
+}
+```
+
+## 2. Initialization
 `ProductCat` must be initialized with an app key before it can be used, default endpoint (https://productcat.visenze.com)
 
 ```java
@@ -26,11 +48,11 @@ ProductCat productCat = new ProductCat.Builder(appKey)
                         .build(context);
 ```                
 
-## 2. Solution APIs
+## 3. Solution APIs
 
-### 2.1 Image Search
+### 3.1 Image Search
 
-GET /summary/products
+POST /summary/products
 
 **Image Search** solution is to search for visually similar products in the global products database giving an image.
 
@@ -91,7 +113,7 @@ productCat.imageSearch(searchParams);
 ```
 
 
-#### 2.1.1 Selection Box
+#### 3.1.1 Selection Box
 If the object you wish to search for takes up only a small portion of your image, or other irrelevant objects exists in the same image, chances are the search result could become inaccurate. Use the Box parameter to refine the search area of the image to improve accuracy. The box coordinated is set with respect to the original size of the uploading image:
 
 ```java
@@ -113,7 +135,7 @@ searchParams.setBox(new Box(0, 0, 400, 400));
 productCat.imageSearch(searchParams);
 ```
 
-#### 2.1.2 Resizing Settings
+#### 3.1.2 Resizing Settings
 When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ViSearch server, and the increased time for processing larger image files in ViSearch. 
 
 To reduce upload search latency, by default the uploadSearch method makes a copy of your image file and resizes the copy to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:
@@ -153,9 +175,9 @@ public void onPictureTaken(byte[] bytes, Camera camera) {
 }
 ```
 
-### 2.2 Text Search
+### 3.2 Text Search
 
-GET /summary/products
+POST /summary/products
 
 **Text Search** solution is to search similar products by given query text.
 
@@ -164,7 +186,7 @@ TextSearchParams textParams = new TextSearchParams(queryText) ;
 productCat.textSearch(textParams);
 ```
 
-## 3. Search Results
+## 4. Search Results
 The search results are returned as a list of image names with required additional information. Use `getImageList()` to get the list of images. The basic information returned about the image are image name. Use`viSearch.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `viSearch.onSearchError(String error)` callback method. 
 
 ```java
@@ -188,13 +210,29 @@ public void onSearchCanceled() {
 }
 ```
 
-## 4. Event Tracking
+You can provide pagination parameters to control the paging of the image search results. by configuring the basic search parameters `BaseSearchParams`. As the result is returned in a format of a list of images page by page, use `setLimit` to set the number of results per page, `setPage` to indicate the page number:
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| page | Integer | Optional parameter to specify the page of results. The first page of result is 1. Defaults to 1. |
+| limit | Integer | Optional parameter to specify the result per page limit. Defaults to 10. |
+
+```java
+BaseSearchParams baseSearchParams = new BaseSearchParams();
+baseSearchParams.setLimit(20);
+baseSearchParams.setPage(1);
+ImageSearchParams searchParams = new ImageSearchParams(image);
+searchParams.setBaseSearchParams(baseSearchParams);
+productCat.textSearch(searchParams);
+```
+
+## 5. Event Tracking
 
 Productcat Android SDK provides methods to understand how your customer interact with the search results. 
 
 In addition, to improve subsequent search quality, it is recommended to send user actions when they interact with the results. 
 
-### 4.1 Setup Tracking
+### 5.1 Setup Tracking
 
 It is important that a unique device ID is provided for user action tracking. ViSearch Android SDK uses [Google Adervertising ID](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) as the default unique id. Add this tag to your `<application>` in the `AndroidManifest.xml` to use Google Play Service:
 
@@ -204,7 +242,7 @@ It is important that a unique device ID is provided for user action tracking. Vi
 
 In the case where Google Adervertising ID is not available, a server-generated UID will be returned. This UID is automatically stored with your app that integates with ViSearch Android SDK and will be refreshed only when the user uninstall your app.  
 
-### 4.2  Send Action for Tracking
+### 5.2  Send Action for Tracking
 
 User action can be sent in this way:
 
@@ -214,6 +252,13 @@ productCat.track(new TrackParams().setAction(action).setPid(pid).setReqid(reqid)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-|`action`|String| The the action type of this event. We are currently able to support "click". More actions will be supported in the future.|
+|`action`|String| The action type of this event, please follow the action name from table below.|
 |`pid`|String| The pid of the product which the user has clicked on. pid is return from search result.|
 |`reqid`|String| The request id of the search request. This reqid can be obtained from all the search result:```resultList.getTransId();```|
+
+Actions to track:  
+| Action name | Description |
+| ---- | ---- | ----------- |
+|`productcat_search`| Trigger every productCat.imageSearch() is being called.|
+|`productcat_click`| Measure by user clicking on search result.|
+|`productcat_buy`| Measure by user go to product detail page.|
