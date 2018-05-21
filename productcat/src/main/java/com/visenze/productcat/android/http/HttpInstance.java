@@ -162,7 +162,8 @@ public class HttpInstance {
         // add key
         uri.appendQueryParameter("app_key", appKey);
 
-        JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(Request.Method.GET, url + uri.toString(), null,
+        JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
+                Request.Method.GET, url + uri.toString(), null,
                 responseListener,
                 new Response.ErrorListener() {
                     @Override
@@ -194,7 +195,8 @@ public class HttpInstance {
             final ProductCat.ResultListener resultListener) {
 
         ResponseListener responseListener = new ResponseListener(resultListener,
-                new TrackOperationsImpl(mContext.getApplicationContext(), appKey), "uploadsearch");
+                new TrackOperationsImpl(mContext.getApplicationContext(), appKey),
+                "productcat_visual_search");
 
         if (null == params)
             params = new HashMap<String, List<String> >();
