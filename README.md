@@ -258,7 +258,7 @@ productCat.track(new TrackParams().setAction(action).setPid(pid).setReqid(reqid)
 
 Actions to track:  
 | Action name | Description |
-| ---- | ---- | ----------- |
+| ---- | ----------- |
 |`productcat_search`| Trigger every productCat.imageSearch() is being called.|
 |`productcat_click`| Measure by user clicking on search result.|
 |`productcat_buy`| Measure by user go to product detail page.|
