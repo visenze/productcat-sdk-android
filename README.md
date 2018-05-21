@@ -257,6 +257,7 @@ productCat.track(new TrackParams().setAction(action).setPid(pid).setReqid(reqid)
 |`reqid`|String| The request id of the search request. This reqid can be obtained from all the search result:```resultList.getTransId();```|
 
 Actions to track:  
+
 | Action name | Description |
 | ---- | ----------- |
 |`productcat_search`| Trigger every productCat.imageSearch() is being called.|
