@@ -136,7 +136,7 @@ productCat.imageSearch(searchParams);
 ```
 
 #### 3.1.2 Resizing Settings
-When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ViSearch server, and the increased time for processing larger image files in ViSearch. 
+When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ProductCat server, and the increased time for processing larger image files in ProductCat. 
 
 To reduce upload search latency, by default the uploadSearch method makes a copy of your image file and resizes the copy to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:
 
@@ -163,7 +163,7 @@ Image image = new Image(imagePath, new ResizeSettings(800, 800, 80));
 
 * Image from camera callback
 
-ViSearch Android SDK provides an interface to handle byte array returned from [`Camera.PictureCallback`](http://developer.android.com/reference/android/hardware/Camera.PictureCallback.html). Use `ResizeSettings.CAMERA_STANDARD` and `ResizeSettings.CAMERA_HIGH` to configure the resize settings. The image taken from the camera might not be in the desired orientaiton, a rotation parameter can be set to rotate the image to the correct orientation:
+ProductCat Android SDK provides an interface to handle byte array returned from [`Camera.PictureCallback`](http://developer.android.com/reference/android/hardware/Camera.PictureCallback.html). Use `ResizeSettings.CAMERA_STANDARD` and `ResizeSettings.CAMERA_HIGH` to configure the resize settings. The image taken from the camera might not be in the desired orientaiton, a rotation parameter can be set to rotate the image to the correct orientation:
 
 ```java
 @Override
@@ -187,7 +187,7 @@ productCat.textSearch(textParams);
 ```
 
 ## 4. Search Results
-The search results are returned as a list of image names with required additional information. Use `getImageList()` to get the list of images. The basic information returned about the image are image name. Use`viSearch.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `viSearch.onSearchError(String error)` callback method. 
+The search results are returned as a list of image names with required additional information. Use `getImageList()` to get the list of images. The basic information returned about the image are image name. Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method. 
 
 ```java
 @Override
@@ -234,13 +234,13 @@ In addition, to improve subsequent search quality, it is recommended to send use
 
 ### 5.1 Setup Tracking
 
-It is important that a unique device ID is provided for user action tracking. ViSearch Android SDK uses [Google Adervertising ID](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) as the default unique id. Add this tag to your `<application>` in the `AndroidManifest.xml` to use Google Play Service:
+It is important that a unique device ID is provided for user action tracking. ProductCat Android SDK uses [Google Adervertising ID](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) as the default unique id. Add this tag to your `<application>` in the `AndroidManifest.xml` to use Google Play Service:
 
 ```xml
 <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version">
 ```
 
-In the case where Google Adervertising ID is not available, a server-generated UID will be returned. This UID is automatically stored with your app that integates with ViSearch Android SDK and will be refreshed only when the user uninstall your app.  
+In the case where Google Adervertising ID is not available, a server-generated UID will be returned. This UID is automatically stored with your app that integates with ProductCat Android SDK and will be refreshed only when the user uninstall your app.  
 
 ### 5.2  Send Action for Tracking
 
@@ -260,6 +260,6 @@ Actions to track:
 
 | Action name | Description |
 | ---- | ----------- |
-|`productcat_search`| Trigger every productCat.imageSearch() is being called.|
+|`productcat_search`| Trigger every time productCat.imageSearch() is being called.|
 |`productcat_click`| Measure by user clicking on search result.|
 |`productcat_buy`| Measure by user go to product detail page.|
