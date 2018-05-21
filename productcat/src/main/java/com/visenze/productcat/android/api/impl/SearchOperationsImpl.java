@@ -53,9 +53,11 @@ public class SearchOperationsImpl implements SearchOperations {
             throw new ProductCatException("Missing parameter, image empty");
 
         } else if (imageBytes != null) {
-            httpInstance.addMultipartRequestToQueue(apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), imageBytes, resultListener);
+            httpInstance.addMultipartRequestToQueue(
+                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), imageBytes, resultListener);
         } else {
-            httpInstance.addMultipartRequestToQueue(apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), null, resultListener);
+            httpInstance.addMultipartRequestToQueue(
+                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), null, resultListener);
         }
     }
 
@@ -64,8 +66,8 @@ public class SearchOperationsImpl implements SearchOperations {
         if (params.getQ() == null || params.getQ().length() == 0) {
             throw new ProductCatException("Missing parameter, query keyword empty");
         }
-        httpInstance.addGetRequestToQueue(apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), "textsearch", mListener) ;
-
+        httpInstance.addGetRequestToQueue(apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(),
+                "productcat_text_search", mListener) ;
     }
 
     /**
