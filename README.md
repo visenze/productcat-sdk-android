@@ -186,6 +186,23 @@ TextSearchParams textParams = new TextSearchParams(queryText) ;
 productCat.textSearch(textParams);
 ```
 
+
+### 3.3 Custom Parameters
+
+If you have additional customized parameters, please use custom to set these parameters. 
+
+```java
+Image image = new Image("/local/path/to/image.jpg");
+ImageSearchParams searchParams = new ImageSearchParams(image);
+
+Map<String, String> custom = new HashMap<>();
+custom.put("param", "value");
+custom.put("another", "value");
+searchParams.getBaseSearchParams().setCustom(custom);  
+
+productCat.imageSearch(searchParams);
+```
+
 ## 4. Search Results
 The search results are returned as a list of image names with required additional information. Use `getImageList()` to get the list of images. The basic information returned about the image are image name. Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method. 
 
