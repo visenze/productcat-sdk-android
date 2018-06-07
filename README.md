@@ -197,7 +197,7 @@ ImageSearchParams searchParams = new ImageSearchParams(image);
 
 Map<String, String> custom = new HashMap<>();
 custom.put("param", "value");
-custom.put("another", "value");
+custom.put("another_param", "value");
 searchParams.getBaseSearchParams().setCustom(custom);  
 
 productCat.imageSearch(searchParams);
