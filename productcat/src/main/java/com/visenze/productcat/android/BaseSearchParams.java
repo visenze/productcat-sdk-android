@@ -39,6 +39,7 @@ public class BaseSearchParams {
 
     private Boolean vdebug;
 
+    private Map<String, String> custom;
 
     /**
      * The default sets limit at 10 and page at 1, other basic parameters are set as null
@@ -185,6 +186,14 @@ public class BaseSearchParams {
         this.vdebug = vDebug;
     }
 
+    public Map<String, String> getCustom() {
+        return custom;
+    }
+
+    public void setCustom(Map<String, String> custom) {
+        this.custom = custom;
+    }
+
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
@@ -244,6 +253,14 @@ public class BaseSearchParams {
             putStringInMap(map , "vdebug" , String.valueOf(vdebug));
         }
 
+        if (custom != null && custom.size() > 0) {
+            for (Map.Entry<String, String> entry : getCustom().entrySet()) {
+                String value = entry.getValue();
+                if (value != null) {
+                    putStringInMap(map, entry.getKey(), value);
+                }
+            }
+        }
 
         return map;
     }
@@ -254,6 +271,4 @@ public class BaseSearchParams {
 
         map.put(key, stringList);
     }
-
-
 }
