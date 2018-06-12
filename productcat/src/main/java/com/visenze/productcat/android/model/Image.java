@@ -296,7 +296,7 @@ public class Image {
         /**
          * max size for low, medium and high
          */
-        private static final int            STANDARD_SIZE = 512;
+        private static final int            STANDARD_SIZE = 800;
         private static final int            LARGE_SIZE = 1024;
 
         private static final int            COMPRESS_QUALITY = 100; //compression quality

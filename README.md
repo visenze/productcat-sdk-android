@@ -138,12 +138,12 @@ productCat.imageSearch(searchParams);
 #### 3.1.2 Resizing Settings
 When performing visual search, you may notice the increased search latency with increased image file size. This is due to the increased time in network to transfer your images to the ProductCat server, and the increased time for processing larger image files in ProductCat.  
 
-To reduce visual search latency, by default the products summary method makes a copy of your image file, and resizes to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:  
+To reduce visual search latency, by default the products summary method makes a copy of your image file, and resizes to 1024x1024 pixels if both of the original dimensions exceed 1024 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:  
 
 * Image from local path or photo gallery
 
 ```java
-//default resize setting, set the image size to 512 x 512
+//default resize setting, set the image size to 800 x 800
 Image image = new Image(imagePath, ResizeSettings.STANDARD);
 ```
 
@@ -157,8 +157,8 @@ Image image = new Image(imagePath, ResizeSettings.HIGH);
 Or, provide the customized resize settings. To make efficient use the of the memory and network bandwidth of mobile device, the maximum size is set at 1024 x 1024. Any image exceeds the limit will be resized to the limit:
 
 ```java
-//resize the image to 800 by 800 area using jpeg 80 quality
-Image image = new Image(imagePath, new ResizeSettings(800, 800, 80));
+//resize the image to 512 by 512 area using jpeg 80 quality
+Image image = new Image(imagePath, new ResizeSettings(512, 512, 80));
 ```
 
 * Image from camera callback
