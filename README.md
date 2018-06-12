@@ -136,9 +136,9 @@ productCat.imageSearch(searchParams);
 ```
 
 #### 3.1.2 Resizing Settings
-When performing upload search, you may notice the increased search latency with increased image file size. This is due to the increased time spent in network transferring your images to the ProductCat server, and the increased time for processing larger image files in ProductCat. 
+When performing visual search, you may notice the increased search latency with increased image file size. This is due to the increased time in network to transfer your images to the ProductCat server, and the increased time for processing larger image files in ProductCat.  
 
-To reduce upload search latency, by default the uploadSearch method makes a copy of your image file and resizes the copy to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:
+To reduce visual search latency, by default the products summary method makes a copy of your image file, and resizes to 512x512 pixels if both of the original dimensions exceed 512 pixels. This is the optimized size to lower search latency while not sacrificing search accuracy for general use cases:  
 
 * Image from local path or photo gallery
 
