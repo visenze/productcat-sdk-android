@@ -22,7 +22,7 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile project(':productcat')
+compile 'com.visenze.productcat:productcat:1.0.1'
 ```
 
 In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
