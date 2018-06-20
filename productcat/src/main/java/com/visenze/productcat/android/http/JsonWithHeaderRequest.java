@@ -6,14 +6,12 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 /**
  * Created by visenze on 29/2/16.
@@ -37,23 +35,6 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
         try {
             String utf8String =
                     new String(response.data, HTTP.UTF_8);
-
-            Map headers = response.headers;
-            if (headers.containsKey("Set-Cookie")) {
-                String value = (String)headers.get("Set-Cookie");
-                String[] cv = value.split(";");
-                String[] uid = new String[0];
-                for (String v : cv) {
-                    if (v.startsWith("uid")) {
-                        uid = v.split("=");
-                        break;
-                    }
-                }
-                if (uid.length > 0) {
-                    ProductCatUIDManager.updateUidFromCookie(uid[1]);
-                }
-            }
-
             JSONObject result = new JSONObject(utf8String);
 
             return Response.success(result,

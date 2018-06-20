@@ -2,7 +2,6 @@ package com.visenze.productcat.android.http;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Base64;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -12,7 +11,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -119,11 +117,6 @@ public class HttpInstance {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
-                String uid = ProductCatUIDManager.getUid();
-                if (uid != null) {
-                    header.put("Cookie", "uid=" + uid);
-                }
-
                 return header;
             }
         };

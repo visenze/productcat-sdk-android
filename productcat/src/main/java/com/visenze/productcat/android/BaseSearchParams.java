@@ -37,8 +37,6 @@ public class BaseSearchParams {
 
     private Boolean showPid;
 
-    private Boolean vdebug;
-
     private Map<String, String> custom;
 
     /**
@@ -178,14 +176,6 @@ public class BaseSearchParams {
         this.showPid = showPid;
     }
 
-    public Boolean getVdebug() {
-        return vdebug;
-    }
-
-    public void setVdebug(Boolean vDebug) {
-        this.vdebug = vDebug;
-    }
-
     public Map<String, String> getCustom() {
         return custom;
     }
@@ -247,10 +237,6 @@ public class BaseSearchParams {
 
         if (showPid != null ) {
             putStringInMap(map , "show_pid" , String.valueOf(showPid));
-        }
-
-        if (vdebug != null ) {
-            putStringInMap(map , "vdebug" , String.valueOf(vdebug));
         }
 
         if (custom != null && custom.size() > 0) {
