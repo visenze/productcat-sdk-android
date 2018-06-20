@@ -7,7 +7,6 @@ import com.visenze.productcat.BuildConfig;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
 import com.visenze.productcat.android.model.ResultList;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.URL;
 
@@ -89,7 +88,6 @@ public class ProductCat {
     }
 
     private void initTracking(final Context context) {
-        ProductCatUIDManager.generateUniqueDeviceId(context);
     }
 
     /**
