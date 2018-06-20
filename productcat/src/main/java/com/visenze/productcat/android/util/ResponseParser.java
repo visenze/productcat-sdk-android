@@ -53,18 +53,6 @@ public class ResponseParser {
                 resultList.setImId(resultObj.getString("im_id"));
             }
 
-            if (resultObj.has("ocr")) {
-                resultList.setOcr(resultObj.getString("ocr"));
-            }
-
-            if (resultObj.has("ocr_debug")) {
-                resultList.setOcrDebug(resultObj.getString("ocr_debug"));
-            }
-
-            if (resultObj.has("visearch_debug")) {
-                resultList.setVisearchDebug(resultObj.getString("visearch_debug"));
-            }
-
             return resultList;
         } catch (JSONException e) {
             throw new ProductCatException("Error parsing response " + e.getMessage(), e);
