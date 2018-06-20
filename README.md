@@ -18,26 +18,10 @@
 ---
 
 ## 1. Setup
+
 ## 1.1 Install the SDK
-You can include the dependency in your project using gradle:
 
-```
-compile 'com.visenze.productcat:productcat:1.0.1'
-```
-
-In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
-
-```
-android {
-	...
-	
-    packagingOptions {
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-    }
-    ...
-}
-```
+Please use the source as an Android library as tracking is removed.
 
 ## 2. Initialization
 `ProductCat` must be initialized with an app key before it can be used, default endpoint (https://productcat.visenze.com)
@@ -251,13 +235,7 @@ In addition, to improve subsequent search quality, it is recommended to send use
 
 ### 5.1 Setup Tracking
 
-It is important that a unique device ID is provided for user action tracking. ProductCat Android SDK uses [Google Adervertising ID](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) as the default unique id. Add this tag to your `<application>` in the `AndroidManifest.xml` to use Google Play Service:
-
-```xml
-<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version">
-```
-
-In the case where Google Adervertising ID is not available, a server-generated UID will be returned. This UID is automatically stored with your app that integates with ProductCat Android SDK and will be refreshed only when the user uninstall your app.  
+No action needed.
 
 ### 5.2  Send Action for Tracking
 
@@ -270,7 +248,7 @@ productCat.track(new TrackParams().setAction(action).setPid(pid).setReqid(reqid)
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 |`action`|String| The action type of this event, please follow the action name from table below.|
-|`pid`|String| The pid of the product which the user has clicked on. pid is return from search result.|
+|`pid`|String| The pid of the product which the user has clicked on. pid is returned from search result.|
 |`reqid`|String| The request id of the search request. This reqid can be obtained from all the search result:```resultList.getTransId();```|
 
 Actions to track:  
