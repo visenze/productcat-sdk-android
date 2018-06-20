@@ -1,13 +1,9 @@
 package com.visenze.productcat.android.model;
 
 import com.visenze.productcat.android.ProductCat;
-import com.visenze.productcat.android.model.ProductSummary;
-import com.visenze.productcat.android.model.ProductType;
-import com.visenze.productcat.android.model.TagGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The ResultList class represents a successful search result
