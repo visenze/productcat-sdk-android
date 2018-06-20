@@ -19,11 +19,11 @@ public class BaseSearchParams {
 
     private List<Integer> brandIds;
 
+    private String country;
+
     private String price;
 
     private String priceUnit;
-
-    private String shipCountry;
 
     private List<String> facets;
 
@@ -34,10 +34,6 @@ public class BaseSearchParams {
     private String thumbnailSize;
 
     private Boolean showProductUrl;
-
-    private Boolean showPid;
-
-    private Boolean vdebug;
 
     private Map<String, String> custom;
 
@@ -94,10 +90,6 @@ public class BaseSearchParams {
         this.showProductUrl = showProductUrl;
     }
 
-    public void setShipCountry(String shipCountry) {
-        this.shipCountry = shipCountry;
-    }
-
     public void setFacets(List<String> facets) {
         this.facets = facets;
     }
@@ -146,10 +138,6 @@ public class BaseSearchParams {
         return priceUnit;
     }
 
-    public String getShipCountry() {
-        return shipCountry;
-    }
-
     public List<String> getFacets() {
         return facets;
     }
@@ -170,20 +158,12 @@ public class BaseSearchParams {
         return showProductUrl;
     }
 
-    public Boolean getShowPid() {
-        return showPid;
+    public String getCountry() {
+        return country;
     }
 
-    public void setShowPid(Boolean showPid) {
-        this.showPid = showPid;
-    }
-
-    public Boolean getVdebug() {
-        return vdebug;
-    }
-
-    public void setVdebug(Boolean vDebug) {
-        this.vdebug = vDebug;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Map<String, String> getCustom() {
@@ -221,10 +201,6 @@ public class BaseSearchParams {
             putStringInMap(map , "price_unit", priceUnit.trim());
         }
 
-        if (shipCountry != null){
-            putStringInMap(map , "ship_country", shipCountry.trim());
-        }
-
         if (facets != null && facets.size() > 0 ) {
             putStringInMap(map, "facets", TextUtils.join(",", facets));
         }
@@ -238,19 +214,15 @@ public class BaseSearchParams {
         }
 
         if (thumbnailSize!= null) {
-            putStringInMap(map , "thumbnailSize" , thumbnailSize.trim());
+            putStringInMap(map , "thumbnail_size" , thumbnailSize.trim());
         }
 
         if (showProductUrl != null ) {
             putStringInMap(map , "show_product_url" , String.valueOf(showProductUrl));
         }
 
-        if (showPid != null ) {
-            putStringInMap(map , "show_pid" , String.valueOf(showPid));
-        }
-
-        if (vdebug != null ) {
-            putStringInMap(map , "vdebug" , String.valueOf(vdebug));
+        if (country != null){
+            putStringInMap(map , "country", country.trim());
         }
 
         if (custom != null && custom.size() > 0) {

@@ -28,10 +28,6 @@ public class ResultList {
 
     private String imId;
 
-    private String ocr;
-    private String ocrDebug;
-    private String visearchDebug;
-
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
     }
@@ -104,27 +100,4 @@ public class ResultList {
         this.tagGroups = tagGroups;
     }
 
-    public String getOcr() {
-        return ocr;
-    }
-
-    public void setOcr(String ocr) {
-        this.ocr = ocr;
-    }
-
-    public String getOcrDebug() {
-        return ocrDebug;
-    }
-
-    public void setOcrDebug(String ocrDebug) {
-        this.ocrDebug = ocrDebug;
-    }
-
-    public String getVisearchDebug() {
-        return visearchDebug;
-    }
-
-    public void setVisearchDebug(String visearchDebug) {
-        this.visearchDebug = visearchDebug;
-    }
 }
