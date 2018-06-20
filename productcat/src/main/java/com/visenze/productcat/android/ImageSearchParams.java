@@ -36,15 +36,9 @@ public class ImageSearchParams extends UploadSearchParams {
 
     private Float searchMinScore = null;
 
-    private Boolean recognizeTags;
-
-    private String keyword;
-
-    private Float recognizeMinScore;
-
     private Boolean preFilter;
 
-    private List<String> filterTagIds;
+    private Boolean detectionOnly;
 
     public Float getSearchMinScore() {
         return searchMinScore;
@@ -52,30 +46,6 @@ public class ImageSearchParams extends UploadSearchParams {
 
     public void setSearchMinScore(Float searchMinScore) {
         this.searchMinScore = searchMinScore;
-    }
-
-    public Boolean getRecognizeTags() {
-        return recognizeTags;
-    }
-
-    public void setRecognizeTags(Boolean recognizeTags) {
-        this.recognizeTags = recognizeTags;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public Float getRecognizeMinScore() {
-        return recognizeMinScore;
-    }
-
-    public void setRecognizeMinScore(Float recognizeMinScore) {
-        this.recognizeMinScore = recognizeMinScore;
     }
 
     public Boolean getPreFilter() {
@@ -86,12 +56,12 @@ public class ImageSearchParams extends UploadSearchParams {
         this.preFilter = preFilter;
     }
 
-    public List<String> getFilterTagIds() {
-        return filterTagIds;
+    public Boolean getDetectionOnly() {
+        return detectionOnly;
     }
 
-    public void setFilterTagIds(List<String> filterTagIds) {
-        this.filterTagIds = filterTagIds;
+    public void setDetectionOnly(Boolean detectionOnly) {
+        this.detectionOnly = detectionOnly;
     }
 
     @Override
@@ -102,24 +72,12 @@ public class ImageSearchParams extends UploadSearchParams {
             this.putStringInMap(map, "search_min_score", String.valueOf(searchMinScore));
         }
 
-        if (recognizeMinScore!=null) {
-            this.putStringInMap(map, "recognize_min_score", String.valueOf(recognizeMinScore));
-        }
-
-        if (keyword != null){
-            this.putStringInMap(map, "keyword", keyword);
-        }
-
-        if (recognizeTags != null){
-            this.putStringInMap(map, "recognize_tags", String.valueOf(recognizeTags));
-        }
-
         if (preFilter != null ) {
             this.putStringInMap(map, "pre_filter", String.valueOf(preFilter));
         }
 
-        if (filterTagIds!=null && filterTagIds.size() > 0 ) {
-            map.put("filter_tag_id" , filterTagIds);
+        if (detectionOnly!=null) {
+            this.putStringInMap(map, "detection_only", String.valueOf(detectionOnly));
         }
 
         return map;
