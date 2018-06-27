@@ -2,7 +2,7 @@
 
 ---
 
-##Table of Contents
+## Table of Contents
  1. [Setup](#1-setup)
  2. [Initialization](#2-initialization)
  3. [Solution APIs](#3-solution-apis)
@@ -22,7 +22,7 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile 'com.visenze.productcat:productcat:1.0.2'
+compile 'com.visenze.productcat:productcat:1.0.3'
 ```
 
 In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
