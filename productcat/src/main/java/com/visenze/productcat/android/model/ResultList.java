@@ -1,9 +1,13 @@
 package com.visenze.productcat.android.model;
 
 import com.visenze.productcat.android.ProductCat;
+import com.visenze.productcat.android.model.ProductSummary;
+import com.visenze.productcat.android.model.ProductType;
+import com.visenze.productcat.android.model.TagGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The ResultList class represents a successful search result
@@ -23,6 +27,8 @@ public class ResultList {
     private List<TagGroup> tagGroups = new ArrayList<TagGroup>();
 
     private String imId;
+
+    private List<Facet> facets;
 
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
@@ -96,4 +102,11 @@ public class ResultList {
         this.tagGroups = tagGroups;
     }
 
+    public List<Facet> getFacets() {
+        return facets;
+    }
+
+    public void setFacets(List<Facet> facets) {
+        this.facets = facets;
+    }
 }
