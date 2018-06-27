@@ -28,6 +28,8 @@ public class ResultList {
 
     private String imId;
 
+    private List<Facet> facets;
+
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
     }
@@ -100,4 +102,11 @@ public class ResultList {
         this.tagGroups = tagGroups;
     }
 
+    public List<Facet> getFacets() {
+        return facets;
+    }
+
+    public void setFacets(List<Facet> facets) {
+        this.facets = facets;
+    }
 }

@@ -1,5 +1,8 @@
 package com.visenze.productcat.android.util;
 
+import com.visenze.productcat.android.model.Facet;
+import com.visenze.productcat.android.model.FacetItem;
+import com.visenze.productcat.android.model.FacetRange;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.ProductCatException;
 import com.visenze.productcat.android.model.Box;
@@ -20,6 +23,13 @@ import java.util.*;
  */
 public class ResponseParser {
 
+    public static final String REQID = "reqid";
+    public static final String RECOGNIZE_RESULT = "recognize_result";
+    public static final String RESULT = "result";
+    public static final String PRODUCT_TYPES = "product_types";
+    public static final String IM_ID = "im_id";
+    public static final String FACETS = "facets";
+
     public static ResultList parseResult(String jsonResponse) {
 
         try {
@@ -28,35 +38,109 @@ public class ResponseParser {
             JSONObject resultObj = new JSONObject(jsonResponse);
             resultList.setErrorMessage(parseResponseError(resultObj));
 
-            if (resultObj.has("reqid")) {
-                resultList.setReqid(resultObj.getString("reqid"));
+            if (resultObj.has(REQID)) {
+                resultList.setReqid(resultObj.getString(REQID));
             }
 
-            if (resultObj.has("recognize_result")) {
-                JSONArray tagGroupArray = resultObj.getJSONArray("recognize_result") ;
+            if (resultObj.has(RECOGNIZE_RESULT)) {
+                JSONArray tagGroupArray = resultObj.getJSONArray(RECOGNIZE_RESULT) ;
 
                 resultList.setTagGroups(parseTagGroups(tagGroupArray));
 
             }
 
-            if (resultObj.has("result")) {
-                JSONArray resultArray = resultObj.getJSONArray("result");
+            if (resultObj.has(RESULT)) {
+                JSONArray resultArray = resultObj.getJSONArray(RESULT);
                 resultList.setProductSummaryList(parseProductSummaryList(resultArray));
             }
 
-            if (resultObj.has("product_types")) {
-                JSONArray productTypeArray = resultObj.getJSONArray("product_types");
+            if (resultObj.has(PRODUCT_TYPES)) {
+                JSONArray productTypeArray = resultObj.getJSONArray(PRODUCT_TYPES);
                 resultList.setProductTypes(parseProductTypeList(productTypeArray));
             }
 
-            if (resultObj.has("im_id")) {
-                resultList.setImId(resultObj.getString("im_id"));
+            if (resultObj.has(IM_ID)) {
+                resultList.setImId(resultObj.getString(IM_ID));
+            }
+
+            if (resultObj.has(FACETS)){
+                JSONArray facetArray = resultObj.optJSONArray(FACETS);
+                resultList.setFacets(parseFacets(facetArray));
             }
 
             return resultList;
         } catch (JSONException e) {
             throw new ProductCatException("Error parsing response " + e.getMessage(), e);
         }
+    }
+
+    private static List<Facet> parseFacets(JSONArray arr) {
+        if( arr == null) {
+            return null;
+        }
+
+        List<Facet> facets = new ArrayList<>();
+
+        for(int i = 0, length = arr.length() ; i < length ; i++){
+            JSONObject o = arr.optJSONObject(i);
+
+            Facet facet = new Facet();
+
+            facet.setKey(o.optString("key"));
+
+            // parse facet items
+            JSONArray items = o.optJSONArray("items");
+            if (items != null) {
+                List<FacetItem> facetItems = getFacetItems(items);
+                facet.setItems(facetItems);
+            }
+
+            // parse range
+            JSONObject rangeObj = o.optJSONObject("range");
+
+            // set min and max
+            if (rangeObj!=null) {
+
+                FacetRange range = new FacetRange();
+
+                Object min = rangeObj.opt("min");
+
+                if (min!=null && min instanceof Number) {
+                    range.setMin((Number) min);
+                }
+
+                Object max = rangeObj.opt("max");
+                if (max!=null && max instanceof Number) {
+                    range.setMax((Number) max);
+                }
+
+                facet.setRange(range);
+            }
+
+            facets.add(facet);
+
+        }
+        return facets;
+    }
+
+    private static List<FacetItem> getFacetItems(JSONArray items) {
+        int itemLength = items.length();
+        List<FacetItem> facetItems = new ArrayList<>();
+
+        for (int itemIndex = 0 ; itemIndex < itemLength ; itemIndex++) {
+            JSONObject itemObj = items.optJSONObject(itemIndex);
+            if (itemObj == null) {
+                continue;
+            }
+
+            FacetItem facetItem = new FacetItem();
+            facetItem.setId(itemObj.optLong("id"));
+            facetItem.setCount(itemObj.optInt("count"));
+            facetItem.setName(itemObj.optString("name"));
+            facetItem.setValue(itemObj.optString("value"));
+            facetItems.add(facetItem);
+        }
+        return facetItems;
     }
 
     private static List<TagGroup> parseTagGroups(JSONArray arr){
