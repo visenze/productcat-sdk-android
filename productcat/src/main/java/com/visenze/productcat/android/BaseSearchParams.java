@@ -35,6 +35,8 @@ public class BaseSearchParams {
 
     private Boolean showProductUrl;
 
+    private String uid;
+
     private Map<String, String> custom;
 
     /**
@@ -174,6 +176,14 @@ public class BaseSearchParams {
         this.custom = custom;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
@@ -223,6 +233,10 @@ public class BaseSearchParams {
 
         if (country != null){
             putStringInMap(map , "country", country.trim());
+        }
+
+        if (uid != null) {
+            putStringInMap(map , "uid", uid.trim());
         }
 
         if (custom != null && custom.size() > 0) {
