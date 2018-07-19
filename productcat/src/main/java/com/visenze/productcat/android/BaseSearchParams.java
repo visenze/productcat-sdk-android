@@ -37,6 +37,8 @@ public class BaseSearchParams {
 
     private String uid;
 
+    private String source;
+
     private Map<String, String> custom;
 
     /**
@@ -184,6 +186,14 @@ public class BaseSearchParams {
         this.limit = limit;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     public Map<String, String> getCustom() {
         return custom;
     }
@@ -245,6 +255,10 @@ public class BaseSearchParams {
 
         if (uid != null ) {
             putStringInMap(map, "uid", uid);
+        }
+
+        if (source != null ) {
+            putStringInMap(map, "source", source);
         }
 
         if (custom != null && custom.size() > 0) {
