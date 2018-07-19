@@ -109,4 +109,8 @@ public class ResultList {
     public void setFacets(List<Facet> facets) {
         this.facets = facets;
     }
+
+    public boolean hasNoResults() {
+        return productSummaryList == null || productSummaryList.size() == 0;
+    }
 }
