@@ -21,6 +21,9 @@ public class ProductSummary {
     private int availability;
     private String productUrl;
 
+    private String priceString;
+    private String sellerName;
+
     public ProductSummary() {
 
     }
@@ -127,5 +130,21 @@ public class ProductSummary {
 
     public void setProductUrl(String productUrl) {
         this.productUrl = productUrl;
+    }
+
+    public String getPriceString() {
+        return priceString;
+    }
+
+    public void setPriceString(String price) {
+        this.priceString = price;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
 }

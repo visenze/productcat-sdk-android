@@ -223,6 +223,9 @@ public class ResponseParser {
                 productSummary.setAvailability(summary.optInt("availability", 1));
                 productSummary.setProductUrl(summary.optString("product_url"));
 
+                productSummary.setPriceString(summary.optString("price"));
+                productSummary.setSellerName(summary.optString("seller_name"));
+
                 if (summary.has("stores")) {
                     JSONArray storesJson = summary.getJSONArray("stores");
                     for (int si = 0, length = storesJson.length() ; si < length ; si++) {

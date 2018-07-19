@@ -37,6 +37,8 @@ public class BaseSearchParams {
 
     private String uid;
 
+    private String source;
+
     private Map<String, String> custom;
 
     /**
@@ -184,6 +186,14 @@ public class BaseSearchParams {
         this.uid = uid;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
@@ -237,6 +247,10 @@ public class BaseSearchParams {
 
         if (uid != null) {
             putStringInMap(map , "uid", uid.trim());
+        }
+
+        if (source != null) {
+            putStringInMap(map , "source", source.trim());
         }
 
         if (custom != null && custom.size() > 0) {
