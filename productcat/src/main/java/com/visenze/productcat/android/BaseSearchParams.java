@@ -39,6 +39,12 @@ public class BaseSearchParams {
 
     private String source;
 
+    private String sortBy;
+
+    private String clientReqId;
+
+    private Double maxResultsPerStore;
+
     private Map<String, String> custom;
 
     /**
@@ -170,14 +176,6 @@ public class BaseSearchParams {
         this.country = country;
     }
 
-    public Map<String, String> getCustom() {
-        return custom;
-    }
-
-    public void setCustom(Map<String, String> custom) {
-        this.custom = custom;
-    }
-
     public String getUid() {
         return uid;
     }
@@ -186,12 +184,52 @@ public class BaseSearchParams {
         this.uid = uid;
     }
 
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
     public String getSource() {
         return source;
     }
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public String getClientReqId() {
+        return clientReqId;
+    }
+
+    public void setClientReqId(String clientReqId) {
+        this.clientReqId = clientReqId;
+    }
+
+    public Double getMaxResultsPerStore() {
+        return maxResultsPerStore;
+    }
+
+    public void setMaxResultsPerStore(Double maxResultsPerStore) {
+        this.maxResultsPerStore = maxResultsPerStore;
+    }
+
+    public Map<String, String> getCustom() {
+        return custom;
+    }
+
+    public void setCustom(Map<String, String> custom) {
+        this.custom = custom;
     }
 
     public Map<String, List<String> > toMap() {
@@ -245,12 +283,24 @@ public class BaseSearchParams {
             putStringInMap(map , "country", country.trim());
         }
 
-        if (uid != null) {
-            putStringInMap(map , "uid", uid.trim());
+        if (uid != null ) {
+            putStringInMap(map, "uid", uid);
         }
 
-        if (source != null) {
-            putStringInMap(map , "source", source.trim());
+        if (source != null ) {
+            putStringInMap(map, "source", source);
+        }
+
+        if (sortBy!=null) {
+            putStringInMap(map, "sort_by", sortBy);
+        }
+
+        if (clientReqId!=null) {
+            putStringInMap(map, "client_reqid", clientReqId);
+        }
+
+        if (maxResultsPerStore!=null) {
+            putStringInMap(map, "max_results_per_store", String.valueOf(maxResultsPerStore) );
         }
 
         if (custom != null && custom.size() > 0) {
