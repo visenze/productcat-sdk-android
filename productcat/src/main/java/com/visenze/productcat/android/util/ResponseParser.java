@@ -44,7 +44,7 @@ public class ResponseParser {
             }
 
             if (resultObj.has(CLIENT_REQID)) {
-                resultList.setClientReqId(resultObj.getString(REQID));
+                resultList.setClientReqId(resultObj.getString(CLIENT_REQID));
             }
 
             if (resultObj.has(RECOGNIZE_RESULT)) {
