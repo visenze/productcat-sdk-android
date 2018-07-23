@@ -30,6 +30,8 @@ public class ResultList {
 
     private List<Facet> facets;
 
+    private String clientReqId;
+
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
     }
@@ -112,5 +114,13 @@ public class ResultList {
 
     public boolean hasNoResults() {
         return productSummaryList == null || productSummaryList.size() == 0;
+    }
+
+    public String getClientReqId() {
+        return clientReqId;
+    }
+
+    public void setClientReqId(String clientReqId) {
+        this.clientReqId = clientReqId;
     }
 }
