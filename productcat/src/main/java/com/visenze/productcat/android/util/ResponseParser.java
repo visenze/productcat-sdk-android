@@ -29,6 +29,7 @@ public class ResponseParser {
     public static final String PRODUCT_TYPES = "product_types";
     public static final String IM_ID = "im_id";
     public static final String FACETS = "facets";
+    public static final String CLIENT_REQID = "client_reqid";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -40,6 +41,10 @@ public class ResponseParser {
 
             if (resultObj.has(REQID)) {
                 resultList.setReqid(resultObj.getString(REQID));
+            }
+
+            if (resultObj.has(CLIENT_REQID)) {
+                resultList.setClientReqId(resultObj.getString(REQID));
             }
 
             if (resultObj.has(RECOGNIZE_RESULT)) {
