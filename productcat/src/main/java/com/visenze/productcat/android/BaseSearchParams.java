@@ -43,7 +43,7 @@ public class BaseSearchParams {
 
     private String clientReqId;
 
-    private Double maxResultsPerStore;
+    private Integer maxResultsPerStore;
 
     private Map<String, String> custom;
 
@@ -216,11 +216,11 @@ public class BaseSearchParams {
         this.clientReqId = clientReqId;
     }
 
-    public Double getMaxResultsPerStore() {
+    public Integer getMaxResultsPerStore() {
         return maxResultsPerStore;
     }
 
-    public void setMaxResultsPerStore(Double maxResultsPerStore) {
+    public void setMaxResultsPerStore(Integer maxResultsPerStore) {
         this.maxResultsPerStore = maxResultsPerStore;
     }
 
