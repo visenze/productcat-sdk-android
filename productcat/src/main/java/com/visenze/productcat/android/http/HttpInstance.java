@@ -50,6 +50,7 @@ public class HttpInstance {
      */
     private RequestQueue            mRequestQueue;
 
+    /** Whether or not responses to this request should be cached. */
     private boolean shouldCache = false;
 
     /**

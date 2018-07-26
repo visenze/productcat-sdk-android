@@ -28,9 +28,6 @@ public class ProductCat {
 
     private String uid;
 
-    /** Whether or not responses to this request should be cached. */
-    private boolean shouldCache = false;
-
     /**
      * Initialise the ViSearcher with a valid access/secret key pair
      *
@@ -49,7 +46,6 @@ public class ProductCat {
                 context,
                 appKey, userAgent, shouldCache);
         trackOperations = new TrackOperationsImpl(context, appKey);
-        this.shouldCache = shouldCache;
     }
 
     /**
@@ -59,14 +55,6 @@ public class ProductCat {
      */
     public void setListener(ResultListener listener) {
         mListener = listener;
-    }
-
-    public boolean isShouldCache() {
-        return shouldCache;
-    }
-
-    public void setShouldCache(boolean shouldCache) {
-        this.shouldCache = shouldCache;
     }
 
     /**
@@ -136,7 +124,7 @@ public class ProductCat {
             return this;
         }
 
-        public Builder setShoudlCache(boolean shoudlCache) {
+        public Builder setShouldCache(boolean shouldCache) {
             this.shouldCache = shouldCache;
             return this;
         }
