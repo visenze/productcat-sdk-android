@@ -25,6 +25,8 @@ public class HttpInstance {
      */
     public static final int TIME_OUT_FOR_UPLOAD = 60000;
     public static final int TIME_OUT_FOR_ID = 20000;
+    public static final String APP_KEY = "app_key";
+    public static final String PRODUCTCAT_VISUAL_SEARCH = "productcat_visual_search";
 
     /**
      * http instance
@@ -47,6 +49,8 @@ public class HttpInstance {
      * request queue
      */
     private RequestQueue            mRequestQueue;
+
+    private boolean shouldCache = false;
 
     /**
      * private constructor
@@ -81,6 +85,10 @@ public class HttpInstance {
 
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+    }
+
+    public void setShouldCache(boolean shouldCache) {
+        this.shouldCache = shouldCache;
     }
 
     /**
@@ -122,6 +130,7 @@ public class HttpInstance {
         };
 
         jsonObjectRequest.setTag(mContext);
+        jsonObjectRequest.setShouldCache(shouldCache);
         getRequestQueue().add(jsonObjectRequest);
 
     }
@@ -153,7 +162,7 @@ public class HttpInstance {
         }
 
         // add key
-        uri.appendQueryParameter("app_key", appKey);
+        uri.appendQueryParameter(APP_KEY, appKey);
 
         JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
                 Request.Method.GET, url + uri.toString(), null,
@@ -170,6 +179,7 @@ public class HttpInstance {
         };
 
         jsonObjectRequest.setTag(mContext);
+        jsonObjectRequest.setShouldCache(shouldCache);
         getRequestQueue().add(jsonObjectRequest);
     }
 
@@ -189,13 +199,13 @@ public class HttpInstance {
 
         ResponseListener responseListener = new ResponseListener(resultListener,
                 new TrackOperationsImpl(mContext.getApplicationContext(), appKey),
-                "productcat_visual_search");
+                PRODUCTCAT_VISUAL_SEARCH);
 
         if (null == params)
             params = new HashMap<String, List<String> >();
 
         Uri.Builder uri = new Uri.Builder();
-        uri.appendQueryParameter("app_key", appKey);
+        uri.appendQueryParameter(APP_KEY, appKey);
 
         MultiPartRequest multipartRequest = new MultiPartRequest(Request.Method.POST, url + uri.toString(),
                 params, bytes,
@@ -211,6 +221,7 @@ public class HttpInstance {
                 });
 
         multipartRequest.setTag(mContext);
+        multipartRequest.setShouldCache(shouldCache);
         getRequestQueue().add(multipartRequest);
     }
 

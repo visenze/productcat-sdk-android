@@ -39,6 +39,11 @@ public class SearchOperationsImpl implements SearchOperations {
         httpInstance.setUserAgent(userAgent);
     }
 
+    public SearchOperationsImpl(String apiUrl, Context context, String appKey, String userAgent, boolean shouldCache) {
+        this(apiUrl, context, appKey, userAgent);
+        httpInstance.setShouldCache(shouldCache);
+    }
+
     @Override
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener) {
         byte[] imageBytes = null;
@@ -48,7 +53,6 @@ public class SearchOperationsImpl implements SearchOperations {
         String imageUrl = params.getImageUrl();
         String imId = params.getImId();
 
-        String response;
         if (imageBytes == null && (imageUrl == null || imageUrl.isEmpty()) && (imId == null || imId.isEmpty())) {
             throw new ProductCatException("Missing parameter, image empty");
 
