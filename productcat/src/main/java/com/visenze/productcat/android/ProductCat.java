@@ -37,13 +37,14 @@ public class ProductCat {
     private ProductCat(Context context,
                        String appKey,
                        String searchApiEndPoint,
-                       String userAgent) {
+                       String userAgent,
+                       boolean shouldCache
+                       ) {
 
-        initTracking(context.getApplicationContext());
         searchOperations = new SearchOperationsImpl(
                 searchApiEndPoint,
                 context,
-                appKey, userAgent);
+                appKey, userAgent, shouldCache);
         trackOperations = new TrackOperationsImpl(context, appKey);
     }
 
@@ -55,7 +56,6 @@ public class ProductCat {
     public void setListener(ResultListener listener) {
         mListener = listener;
     }
-
 
     /**
      * Cancel the search
@@ -87,8 +87,6 @@ public class ProductCat {
         }
     }
 
-    private void initTracking(final Context context) {
-    }
 
     /**
      * Builder class for {@link ProductCat}
@@ -97,6 +95,8 @@ public class ProductCat {
         private String mAppKey;
         private String searchApiEndPoint;
         private String userAgent;
+
+        private boolean shouldCache = false;
 
         public Builder(String appKey) {
             mAppKey = appKey;
@@ -124,12 +124,18 @@ public class ProductCat {
             return this;
         }
 
+        public Builder setShouldCache(boolean shouldCache) {
+            this.shouldCache = shouldCache;
+            return this;
+        }
+
         public ProductCat build(Context context) {
 
             return new ProductCat(context,
                     mAppKey,
                     searchApiEndPoint,
-                    userAgent);
+                    userAgent,
+                    shouldCache);
         }
     }
 
