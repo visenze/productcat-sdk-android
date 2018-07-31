@@ -8,6 +8,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
@@ -27,6 +28,8 @@ public class HttpInstance {
      */
     public static final int TIME_OUT_FOR_UPLOAD = 60000;
     public static final int TIME_OUT_FOR_ID = 20000;
+    public static final String APP_KEY = "app_key";
+    public static final String PRODUCTCAT_VISUAL_SEARCH = "productcat_visual_search";
 
     /**
      * http instance
@@ -49,6 +52,9 @@ public class HttpInstance {
      * request queue
      */
     private RequestQueue            mRequestQueue;
+
+    /** Whether or not responses to this request should be cached. */
+    private boolean shouldCache = false;
 
     /**
      * private constructor
@@ -84,6 +90,11 @@ public class HttpInstance {
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
+
+    public void setShouldCache(boolean shouldCache) {
+        this.shouldCache = shouldCache;
+    }
+
 
     /**
      * request queue getter
@@ -128,6 +139,7 @@ public class HttpInstance {
             }
         };
 
+        jsonObjectRequest.setShouldCache(shouldCache);
         jsonObjectRequest.setTag(mContext);
         getRequestQueue().add(jsonObjectRequest);
 
@@ -145,7 +157,8 @@ public class HttpInstance {
             final String url,
             Map<String, List<String>> params,
             String type,
-            final ProductCat.ResultListener resultListener) {
+            final ProductCat.ResultListener resultListener,
+            RetryPolicy retryPolicy) {
 
         ResponseListener responseListener = new ResponseListener(resultListener,
                 new TrackOperationsImpl(mContext.getApplicationContext(), appKey), type);
@@ -160,7 +173,7 @@ public class HttpInstance {
         }
 
         // add key
-        uri.appendQueryParameter("app_key", appKey);
+        uri.appendQueryParameter(APP_KEY, appKey);
 
         JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
                 Request.Method.GET, url + uri.toString(), null,
@@ -176,7 +189,13 @@ public class HttpInstance {
 
         };
 
+        if (retryPolicy!=null) {
+            jsonObjectRequest.setRetryPolicy(retryPolicy);
+        }
+
         jsonObjectRequest.setTag(mContext);
+        jsonObjectRequest.setShouldCache(shouldCache);
+
         getRequestQueue().add(jsonObjectRequest);
     }
 
@@ -192,17 +211,18 @@ public class HttpInstance {
             final String url,
             Map<String, List<String> > params,
             byte[] bytes,
-            final ProductCat.ResultListener resultListener) {
+            final ProductCat.ResultListener resultListener,
+            RetryPolicy retryPolicy) {
 
         ResponseListener responseListener = new ResponseListener(resultListener,
                 new TrackOperationsImpl(mContext.getApplicationContext(), appKey),
-                "productcat_visual_search");
+                PRODUCTCAT_VISUAL_SEARCH);
 
         if (null == params)
             params = new HashMap<String, List<String> >();
 
         Uri.Builder uri = new Uri.Builder();
-        uri.appendQueryParameter("app_key", appKey);
+        uri.appendQueryParameter(APP_KEY, appKey);
 
         MultiPartRequest multipartRequest = new MultiPartRequest(Request.Method.POST, url + uri.toString(),
                 params, bytes,
@@ -217,7 +237,12 @@ public class HttpInstance {
                     }
                 });
 
+        if (retryPolicy!=null) {
+            multipartRequest.setRetryPolicy(retryPolicy);
+        }
+
         multipartRequest.setTag(mContext);
+        multipartRequest.setShouldCache(shouldCache);
         getRequestQueue().add(multipartRequest);
     }
 
