@@ -2,6 +2,8 @@ package com.visenze.productcat.android.api.impl;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RetryPolicy;
 import com.visenze.productcat.android.ImageSearchParams;
 import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.ProductCatException;
@@ -13,6 +15,7 @@ import com.visenze.productcat.android.http.HttpInstance;
  * Implementation of search operations interface.
  */
 public class SearchOperationsImpl implements SearchOperations {
+    public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
     /**
      * URL
      */
@@ -24,6 +27,10 @@ public class SearchOperationsImpl implements SearchOperations {
      * volley http instance
      */
     private HttpInstance httpInstance;
+
+    // retry policy
+    private RetryPolicy retryPolicy;
+
 
     /**
      * SearchOperationsImpl: search operation implementation
@@ -37,6 +44,14 @@ public class SearchOperationsImpl implements SearchOperations {
         httpInstance = HttpInstance.getInstance(context.getApplicationContext());
         httpInstance.setKeys(appKey);
         httpInstance.setUserAgent(userAgent);
+
+        retryPolicy = new DefaultRetryPolicy();
+
+    }
+
+    public SearchOperationsImpl(String apiUrl, Context context, String appKey, String userAgent, boolean shouldCache) {
+        this(apiUrl, context, appKey, userAgent);
+        httpInstance.setShouldCache(shouldCache);
     }
 
     @Override
@@ -48,16 +63,15 @@ public class SearchOperationsImpl implements SearchOperations {
         String imageUrl = params.getImageUrl();
         String imId = params.getImId();
 
-        String response;
         if (imageBytes == null && (imageUrl == null || imageUrl.isEmpty()) && (imId == null || imId.isEmpty())) {
             throw new ProductCatException("Missing parameter, image empty");
 
         } else if (imageBytes != null) {
             httpInstance.addMultipartRequestToQueue(
-                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), imageBytes, resultListener);
+                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), imageBytes, resultListener, retryPolicy);
         } else {
             httpInstance.addMultipartRequestToQueue(
-                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), null, resultListener);
+                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), null, resultListener, retryPolicy);
         }
     }
 
@@ -67,7 +81,12 @@ public class SearchOperationsImpl implements SearchOperations {
             throw new ProductCatException("Missing parameter, query keyword empty");
         }
         httpInstance.addGetRequestToQueue(apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(),
-                "productcat_text_search", mListener) ;
+                PRODUCTCAT_TEXT_SEARCH, mListener, retryPolicy) ;
+    }
+
+    @Override
+    public void setRetryPolicy(int timeout, int retryCount) {
+        retryPolicy = new DefaultRetryPolicy(timeout, retryCount, 1);
     }
 
     /**
