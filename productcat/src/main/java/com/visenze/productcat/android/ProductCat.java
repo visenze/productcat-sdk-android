@@ -1,6 +1,7 @@
 package com.visenze.productcat.android;
 
 import android.content.Context;
+import android.content.SyncAdapterType;
 import android.util.Log;
 
 import com.visenze.productcat.BuildConfig;
@@ -112,6 +113,10 @@ public class ProductCat {
     }
 
     public void setTimeout(int timeout) {
+        if (timeout < 1) {
+            System.out.println("timeout must be greater than 0");
+            return;
+        }
         this.timeout = timeout;
         searchOperations.setRetryPolicy(timeout, retryCount);
     }
@@ -121,6 +126,10 @@ public class ProductCat {
     }
 
     public void setRetryCount(int retryCount) {
+        if (retryCount < 1) {
+            System.out.println("retryCount must be at least 1");
+            return;
+        }
         this.retryCount = retryCount;
         searchOperations.setRetryPolicy(timeout, retryCount);
     }
@@ -135,8 +144,8 @@ public class ProductCat {
 
         private boolean shouldCache = false;
 
-        private int timeout;
-        private int retryCount;
+        private Integer timeout;
+        private Integer retryCount;
 
         public Builder(String appKey) {
             mAppKey = appKey;
@@ -186,8 +195,15 @@ public class ProductCat {
                     searchApiEndPoint,
                     userAgent,
                     shouldCache);
-            productCat.setRetryCount(retryCount);
-            productCat.setTimeout(timeout);
+
+            if(retryCount!=null) {
+                productCat.setRetryCount(retryCount);
+            }
+
+            if (timeout!=null) {
+                productCat.setTimeout(timeout);
+            }
+
             return productCat;
         }
     }
