@@ -181,11 +181,14 @@ public class ProductCat {
 
         public ProductCat build(Context context) {
 
-            return new ProductCat(context,
+            ProductCat productCat = new ProductCat(context,
                     mAppKey,
                     searchApiEndPoint,
                     userAgent,
                     shouldCache);
+            productCat.setRetryCount(retryCount);
+            productCat.setTimeout(timeout);
+            return productCat;
         }
     }
 
