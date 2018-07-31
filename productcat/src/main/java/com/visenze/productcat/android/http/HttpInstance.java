@@ -7,6 +7,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
@@ -148,7 +149,9 @@ public class HttpInstance {
             final String url,
             Map<String, List<String>> params,
             String type,
-            final ProductCat.ResultListener resultListener) {
+            final ProductCat.ResultListener resultListener,
+            RetryPolicy retryPolicy
+            ) {
 
         ResponseListener responseListener = new ResponseListener(resultListener,
                 new TrackOperationsImpl(mContext.getApplicationContext(), appKey), type);
@@ -179,6 +182,10 @@ public class HttpInstance {
 
         };
 
+        if (retryPolicy!=null) {
+            jsonObjectRequest.setRetryPolicy(retryPolicy);
+        }
+
         jsonObjectRequest.setTag(mContext);
         jsonObjectRequest.setShouldCache(shouldCache);
         getRequestQueue().add(jsonObjectRequest);
@@ -196,7 +203,9 @@ public class HttpInstance {
             final String url,
             Map<String, List<String> > params,
             byte[] bytes,
-            final ProductCat.ResultListener resultListener) {
+            final ProductCat.ResultListener resultListener,
+            RetryPolicy retryPolicy
+            ) {
 
         ResponseListener responseListener = new ResponseListener(resultListener,
                 new TrackOperationsImpl(mContext.getApplicationContext(), appKey),
@@ -220,6 +229,10 @@ public class HttpInstance {
                             resultListener.onSearchError("Network Error");
                     }
                 });
+
+        if (retryPolicy!=null) {
+            multipartRequest.setRetryPolicy(retryPolicy);
+        }
 
         multipartRequest.setTag(mContext);
         multipartRequest.setShouldCache(shouldCache);

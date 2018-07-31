@@ -58,6 +58,8 @@ public class ProductCat {
         trackOperations = new TrackOperationsImpl(context, appKey);
         timeout = DEFAULT_TIMEOUT_MS;
         retryCount = DEFAULT_RETRY_COUNT;
+
+        searchOperations.setRetryPolicy(timeout, retryCount);
     }
 
     /**
@@ -107,6 +109,7 @@ public class ProductCat {
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+        searchOperations.setRetryPolicy(timeout, retryCount);
     }
 
     public int getRetryCount() {
@@ -115,6 +118,7 @@ public class ProductCat {
 
     public void setRetryCount(int retryCount) {
         this.retryCount = retryCount;
+        searchOperations.setRetryPolicy(timeout, retryCount);
     }
 
     /**

@@ -12,4 +12,6 @@ public interface SearchOperations {
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener);
 
     public void textSearch(TextSearchParams params, ProductCat.ResultListener mListener);
+
+    public void setRetryPolicy(int timeout, int retryCount);
 }
