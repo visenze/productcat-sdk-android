@@ -17,6 +17,10 @@ import java.net.URL;
  */
 public class ProductCat {
 
+    public static final int DEFAULT_TIMEOUT_MS = 60000;
+    public static final int DEFAULT_RETRY_COUNT = 1;
+
+
     private static final String USER_AGENT = "productcat-android-sdk";
     private static final String API_END_POINT = "https://productcat.visenze.com";
 
@@ -27,6 +31,12 @@ public class ProductCat {
     private ResultListener mListener;
 
     private String uid;
+
+    // timeout in ms
+    private int timeout;
+
+    // customize number of retries
+    private int retryCount;
 
     /**
      * Initialise the ViSearcher with a valid access/secret key pair
@@ -46,6 +56,8 @@ public class ProductCat {
                 context,
                 appKey, userAgent, shouldCache);
         trackOperations = new TrackOperationsImpl(context, appKey);
+        timeout = DEFAULT_TIMEOUT_MS;
+        retryCount = DEFAULT_RETRY_COUNT;
     }
 
     /**
@@ -79,6 +91,7 @@ public class ProductCat {
             Log.e("ProductCat SDK", e.getMessage());
         }
     }
+
     public void track(final TrackParams trackParams) {
         try {
             trackOperations.track(trackParams);
@@ -87,6 +100,22 @@ public class ProductCat {
         }
     }
 
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public int getRetryCount() {
+        return retryCount;
+    }
+
+    public void setRetryCount(int retryCount) {
+        this.retryCount = retryCount;
+    }
 
     /**
      * Builder class for {@link ProductCat}
@@ -97,6 +126,9 @@ public class ProductCat {
         private String userAgent;
 
         private boolean shouldCache = false;
+
+        private int timeout;
+        private int retryCount;
 
         public Builder(String appKey) {
             mAppKey = appKey;
@@ -126,6 +158,16 @@ public class ProductCat {
 
         public Builder setShouldCache(boolean shouldCache) {
             this.shouldCache = shouldCache;
+            return this;
+        }
+
+        public Builder setTimeout(int timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        public Builder setRetryCount(int retryCount) {
+            this.retryCount = retryCount;
             return this;
         }
 
