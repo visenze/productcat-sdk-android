@@ -45,6 +45,10 @@ public class BaseSearchParams {
 
     private Integer maxResultsPerStore;
 
+    // custom parameters
+    private String cp1;
+    private String cp2;
+
     private Map<String, String> custom;
 
     /**
@@ -224,6 +228,22 @@ public class BaseSearchParams {
         this.maxResultsPerStore = maxResultsPerStore;
     }
 
+    public String getCp1() {
+        return cp1;
+    }
+
+    public void setCp1(String cp1) {
+        this.cp1 = cp1;
+    }
+
+    public String getCp2() {
+        return cp2;
+    }
+
+    public void setCp2(String cp2) {
+        this.cp2 = cp2;
+    }
+
     public Map<String, String> getCustom() {
         return custom;
     }
@@ -301,6 +321,14 @@ public class BaseSearchParams {
 
         if (maxResultsPerStore!=null) {
             putStringInMap(map, "max_results_per_store", String.valueOf(maxResultsPerStore) );
+        }
+
+        if (cp1 != null){
+            putStringInMap(map , "cp1", cp1.trim());
+        }
+
+        if (cp2 != null){
+            putStringInMap(map , "cp2", cp2.trim());
         }
 
         if (custom != null && custom.size() > 0) {
