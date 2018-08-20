@@ -2,18 +2,13 @@ package com.visenze.productcat.android.http;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Base64;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -121,23 +116,10 @@ public class HttpInstance {
             uri.appendQueryParameter(s, params.get(s));
         }
 
-        JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(Request.Method.GET, url + uri.toString(),
+        JsonWithUUIDRequest jsonObjectRequest = new JsonWithUUIDRequest(Request.Method.GET, url + uri.toString(),
                 null,
                 null,
-                null)
-        {
-            //set auth information in header
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> header = new HashMap<>();
-                String uid = ProductCatUIDManager.getUid();
-                if (uid != null) {
-                    header.put("Cookie", "uid=" + uid);
-                }
-
-                return header;
-            }
-        };
+                null);
 
         jsonObjectRequest.setShouldCache(shouldCache);
         jsonObjectRequest.setTag(mContext);
@@ -178,14 +160,7 @@ public class HttpInstance {
         JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
                 Request.Method.GET, url + uri.toString(), null,
                 responseListener,
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        volleyError.printStackTrace();
-                        if (null != resultListener)
-                            resultListener.onSearchError("Network Error");
-                    }
-                }) {
+                new ResponseErrorListener(resultListener)) {
 
         };
 
@@ -228,14 +203,7 @@ public class HttpInstance {
                 params, bytes,
                 appKey, userAgent,
                 responseListener,
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        volleyError.printStackTrace();
-                        if (null != resultListener)
-                            resultListener.onSearchError("Network Error");
-                    }
-                });
+                new ResponseErrorListener(resultListener));
 
         if (retryPolicy!=null) {
             multipartRequest.setRetryPolicy(retryPolicy);
@@ -254,9 +222,17 @@ public class HttpInstance {
     public void cancelRequest(ProductCat.ResultListener resultListener) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(mContext);
+
+            // clear all requests
+            mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+
             if (null != resultListener)
                 resultListener.onSearchCanceled();
         }
     }
-
 }
