@@ -6,15 +6,11 @@
  1. [Setup](#1-setup)
  2. [Initialization](#2-initialization)
  3. [Solution APIs](#3-solution-apis)
-	  - 3.1 [Image Search](#31-image-search)
+	  - 3.1 [Search by Image](#31-search-by-image)
 	    - 3.1.1 [Selection Box](#311-selection-box)
 	    - 3.1.2 [Resizing Settings](#312-resizing-settings)
 	  - 3.2 [Text Search ](#32-text-search)
- 4. [Search Results](#4-search-results)
- 5. [Event Tracking](#5-event-tracking)
-      - 5.1 [Setup Tracking](#51-setup-tracking)
-      - 5.2 [Send Action for Tracking](#52--send-action-for-tracking)
-      
+ 4. [Search Results](#4-search-results)     
 ---
 
 ## 1. Setup
