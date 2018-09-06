@@ -22,7 +22,7 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile 'com.visenze.productcat:productcat:1.0.10'
+compile 'com.visenze.productcat:productcat:1.1.0'
 ```
 
 In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
@@ -39,22 +39,45 @@ android {
 }
 ```
 
+## 1.2 Set User Permissions
+
+ProductCat Android SDK needs these user permissions to work. Add the following declarations to the AndroidManifest.xml file. Network permission allows the app to connect to network services. Write/read to external storage permissions allow the app to load and save images on the device as well as storing search request information (uid).
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.visenze.android.visenze_demo_test">
+
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+	<application>
+	...
+	</application>
+</manifest>
+```
+
 ## 2. Initialization
-`ProductCat` must be initialized with an app key before it can be used, default endpoint (https://productcat.visenze.com)
+`ProductCat` client must be initialized with an app key before it can be used, default endpoint (https://productcat.visenze.com). In order for it to be notified of the search results, ProductCat.ResultListener must be implemented. Call productCat.setListener to set the listener.
 
 ```java
 ProductCat productCat = new ProductCat.Builder(appKey)
+							// for setting a different endpoint than https://productcat.visenze.com
                         .setApiEndPoint(new URL(endpoint))
+                        .setTimeout(30000)
                         .build(context);
+productCat.setListener(this);
+
 ```                
 
 ## 3. Solution APIs
 
-### 3.1 Image Search
+### 3.1 Search by Image
 
 POST /summary/products
 
-**Image Search** solution is to search for visually similar products in the global products database giving an image.
+**Search by Image** solution is to search for visually similar products in the global products database given a product image.
 
 * Using an image from a local file path:
 ```java
@@ -111,7 +134,6 @@ ImageSearchParams searchParams = new ImageSearchParams(url);
 uploadSearchParams.setImId(imId);
 productCat.imageSearch(searchParams);
 ```
-
 
 #### 3.1.1 Selection Box
 If the object you wish to search for takes up only a small portion of your image, or other irrelevant objects exists in the same image, chances are the search result could become inaccurate. Use the Box parameter to refine the search area of the image to improve accuracy. The box coordinated is set with respect to the original size of the uploading image:
@@ -204,13 +226,13 @@ productCat.imageSearch(searchParams);
 ```
 
 ## 4. Search Results
-The search results are returned as a list of image names with required additional information. Use `getImageList()` to get the list of images. The basic information returned about the image are image name. Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method. 
+The search results are returned as a list of products with required additional information. Use `getProductSummaryList()` to get the list of products. Please Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method. 
 
 ```java
 @Override
 public void onSearchResult(ResultList resultList) {
-	for (ImageResult imageResult : resultList.getImageList()) {
-		//Do something with each result image
+	for (ProductSummary summary : resultList.getProductSummaryList()) {
+		//Do something with each product
 		...
 	}
 }
@@ -219,7 +241,6 @@ public void onSearchResult(ResultList resultList) {
 public void onSearchError(String error) {
     resultView.displayError(error);
 }
-
 
 @Override
 public void onSearchCanceled() {
@@ -243,41 +264,4 @@ searchParams.setBaseSearchParams(baseSearchParams);
 productCat.textSearch(searchParams);
 ```
 
-## 5. Event Tracking
 
-Productcat Android SDK provides methods to understand how your customer interact with the search results. 
-
-In addition, to improve subsequent search quality, it is recommended to send user actions when they interact with the results. 
-
-### 5.1 Setup Tracking
-
-It is important that a unique device ID is provided for user action tracking. ProductCat Android SDK uses [Google Adervertising ID](https://support.google.com/googleplay/android-developer/answer/6048248?hl=en) as the default unique id. Add this tag to your `<application>` in the `AndroidManifest.xml` to use Google Play Service:
-
-```xml
-<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version">
-```
-
-In the case where Google Adervertising ID is not available, a server-generated UID will be returned. This UID is automatically stored with your app that integates with ProductCat Android SDK and will be refreshed only when the user uninstall your app.  
-
-### 5.2  Send Action for Tracking
-
-User action can be sent in this way:
-
-```java
-productCat.track(new TrackParams().setAction(action).setPid(pid).setReqid(reqid));
-```
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|`action`|String| The action type of this event, please follow the action name from table below.|
-|`pid`|String| The pid of the product which the user has clicked on. pid is return from search result.|
-|`reqid`|String| The request id of the search request. This reqid can be obtained from all the search result:```resultList.getTransId();```|
-
-Actions to track:  
-
-| Action name | Description |
-| ---- | ----------- |
-|`productcat_visual_search`| Trigger every time productCat.imageSearch() is being called.|
-|`productcat_text_search`| Trigger every time productCat.textSearch() is being called.|
-|`productcat_click`| Measure by user clicking on search result.|
-|`productcat_buy`| Measure by user go to product detail page.|
