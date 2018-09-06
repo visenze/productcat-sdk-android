@@ -16,6 +16,11 @@ import java.util.Map;
  */
 public class UploadSearchParams extends SearchParams {
 
+    public static final String BOX = "box";
+    public static final String COMMA = ",";
+    public static final String IM_URL = "im_url";
+    public static final String IM_ID = "im_id";
+
     private Image image;
 
     private String imageUrl;
@@ -127,37 +132,36 @@ public class UploadSearchParams extends SearchParams {
         Map<String, List<String> > map = super.toMap();
 
         if (image != null && image.getBox() != null) {
-            if (image.getBox().getX1() != null && image.getBox().getX2() != null &&
-                    image.getBox().getY1() != null && image.getBox().getY2() != null) {
-                putStringInMap(map, "box", image.getBox().getX1() + "," + image.getBox().getY1() + "," + image.getBox().getX2() + "," + image.getBox().getY2());
-                Log.d("Upload params", "box size: " + image.getBox().getX1() + ", " + image.getBox().getY1() + ", " + image.getBox().getX2() + ", " + image.getBox().getY2());
-            }
+            putBox(map, image.getBox());
         }
 
         if (imageUrl != null) {
-            putStringInMap(map, "im_url", imageUrl);
-            if (uploadBox != null) {
-                if (uploadBox.getX1() != null && uploadBox.getX2() != null &&
-                        uploadBox.getY1() != null && uploadBox.getY2() != null) {
-                    putStringInMap(map, "box", uploadBox.getX1() + "," + uploadBox.getY1()
-                            + "," + uploadBox.getX2() + "," + uploadBox.getY2());
-
-                }
-            }
+            putStringInMap(map, IM_URL, imageUrl);
+            putBox(map);
         }
 
         if (imId != null) {
-            putStringInMap(map, "im_id", imId);
-            if (uploadBox != null) {
-                if (uploadBox.getX1() != null && uploadBox.getX2() != null &&
-                        uploadBox.getY1() != null && uploadBox.getY2() != null) {
-                    putStringInMap(map, "box", uploadBox.getX1() + "," + uploadBox.getY1()
-                            + "," + uploadBox.getX2() + "," + uploadBox.getY2());
-                }
-            }
+            putStringInMap(map, IM_ID, imId);
+            putBox(map);
         }
 
         return map;
+    }
+
+    private void putBox(Map<String, List<String>> map) {
+        putBox(map, uploadBox);
+    }
+
+    private void putBox(Map<String, List<String>> map, Box box) {
+        if (box == null) {
+            return;
+        }
+
+        if (box.getX1() != null && box.getX2() != null &&
+                box.getY1() != null && box.getY2() != null) {
+            putStringInMap(map, BOX, box.getX1() + COMMA + box.getY1() + COMMA + box.getX2() + COMMA + box.getY2());
+        }
+
     }
 
     private void putStringInMap(Map<String, List<String> > map, String key, String value) {

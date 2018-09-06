@@ -11,7 +11,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
-import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -153,8 +152,7 @@ public class HttpInstance {
             RetryPolicy retryPolicy
             ) {
 
-        ResponseListener responseListener = new ResponseListener(resultListener,
-                new TrackOperationsImpl(mContext.getApplicationContext(), appKey), type);
+        ResponseListener responseListener = new ResponseListener(resultListener, type);
 
         if (null == params)
             params = new HashMap<String, List<String> >();
@@ -207,9 +205,7 @@ public class HttpInstance {
             RetryPolicy retryPolicy
             ) {
 
-        ResponseListener responseListener = new ResponseListener(resultListener,
-                new TrackOperationsImpl(mContext.getApplicationContext(), appKey),
-                PRODUCTCAT_VISUAL_SEARCH);
+        ResponseListener responseListener = new ResponseListener(resultListener, PRODUCTCAT_VISUAL_SEARCH);
 
         if (null == params)
             params = new HashMap<String, List<String> >();
