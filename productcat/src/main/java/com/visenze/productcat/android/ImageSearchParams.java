@@ -15,6 +15,8 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String SEARCH_MIN_SCORE = "search_min_score";
     public static final String PRE_FILTER = "pre_filter";
     public static final String DETECTION_ONLY = "detection_only";
+    public static final String RECOGNIZE_MIN_SCORE = "recognize_min_score";
+    public static final String SHOW_VISUAL_SCORE = "show_visual_score";
 
     public ImageSearchParams() {
         super();
@@ -44,6 +46,10 @@ public class ImageSearchParams extends UploadSearchParams {
 
     private Boolean detectionOnly;
 
+    private Float recognizeMinScore;
+
+    private Boolean showVisualScore;
+
     public Float getSearchMinScore() {
         return searchMinScore;
     }
@@ -68,6 +74,22 @@ public class ImageSearchParams extends UploadSearchParams {
         this.detectionOnly = detectionOnly;
     }
 
+    public Float getRecognizeMinScore() {
+        return recognizeMinScore;
+    }
+
+    public void setRecognizeMinScore(Float recognizeMinScore) {
+        this.recognizeMinScore = recognizeMinScore;
+    }
+
+    public Boolean getShowVisualScore() {
+        return showVisualScore;
+    }
+
+    public void setShowVisualScore(Boolean showVisualScore) {
+        this.showVisualScore = showVisualScore;
+    }
+
     @Override
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = super.toMap();
@@ -82,6 +104,14 @@ public class ImageSearchParams extends UploadSearchParams {
 
         if (detectionOnly!=null) {
             this.putStringInMap(map, DETECTION_ONLY, String.valueOf(detectionOnly));
+        }
+
+        if (recognizeMinScore!=null) {
+            this.putStringInMap(map, RECOGNIZE_MIN_SCORE, String.valueOf(recognizeMinScore));
+        }
+
+        if (showVisualScore!=null) {
+            this.putStringInMap(map, SHOW_VISUAL_SCORE, String.valueOf(showVisualScore));
         }
 
         return map;

@@ -29,8 +29,8 @@ public class BaseSearchParams {
     public static final String SORT_BY = "sort_by";
     public static final String CLIENT_REQID = "client_reqid";
     public static final String MAX_RESULTS_PER_STORE = "max_results_per_store";
-    public static final String CP_1 = "cp1";
-    public static final String CP_2 = "cp2";
+    public static final String CLIENT_PARAM1 = "cp1";
+    public static final String CLIENT_PARAM2 = "cp2";
 
     private Integer page;
 
@@ -345,11 +345,11 @@ public class BaseSearchParams {
         }
 
         if (cp1 != null){
-            putStringInMap(map , CP_1, cp1.trim());
+            putStringInMap(map , CLIENT_PARAM1, cp1.trim());
         }
 
         if (cp2 != null){
-            putStringInMap(map , CP_2, cp2.trim());
+            putStringInMap(map , CLIENT_PARAM2, cp2.trim());
         }
 
         if (custom != null && custom.size() > 0) {

@@ -16,12 +16,12 @@ import com.visenze.productcat.android.http.HttpInstance;
  */
 public class SearchOperationsImpl implements SearchOperations {
     public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
+    private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
+
     /**
      * URL
      */
     private static String apiBase;
-
-    private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
 
     /**
      * volley http instance
