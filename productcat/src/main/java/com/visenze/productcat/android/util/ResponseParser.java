@@ -30,6 +30,7 @@ public class ResponseParser {
     public static final String IM_ID = "im_id";
     public static final String FACETS = "facets";
     public static final String CLIENT_REQID = "client_reqid";
+    public static final String COUNTRY_FILTER = "country_filter";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -71,6 +72,10 @@ public class ResponseParser {
             if (resultObj.has(FACETS)){
                 JSONArray facetArray = resultObj.optJSONArray(FACETS);
                 resultList.setFacets(parseFacets(facetArray));
+            }
+
+            if (resultObj.has(COUNTRY_FILTER)) {
+                resultList.setCountryFilter(resultObj.getString(COUNTRY_FILTER));
             }
 
             return resultList;

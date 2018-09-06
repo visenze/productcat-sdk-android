@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.visenze.productcat.BuildConfig;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
-import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
 import com.visenze.productcat.android.model.ResultList;
 
 import java.net.URL;
@@ -25,8 +24,6 @@ public class ProductCat {
     private static final String API_END_POINT = "https://productcat.visenze.com";
 
     private SearchOperationsImpl searchOperations;
-
-    private TrackOperationsImpl trackOperations;
 
     private ResultListener mListener;
 
@@ -55,7 +52,6 @@ public class ProductCat {
                 searchApiEndPoint,
                 context,
                 appKey, userAgent, shouldCache);
-        trackOperations = new TrackOperationsImpl(context, appKey);
         timeout = DEFAULT_TIMEOUT_MS;
         retryCount = DEFAULT_RETRY_COUNT;
 
@@ -89,14 +85,6 @@ public class ProductCat {
     public void textSearch(final TextSearchParams params) {
         try {
             searchOperations.textSearch(params, mListener);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
-        }
-    }
-
-    public void track(final TrackParams trackParams) {
-        try {
-            trackOperations.track(trackParams);
         } catch (ProductCatException e) {
             Log.e("ProductCat SDK", e.getMessage());
         }
