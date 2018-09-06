@@ -24,7 +24,6 @@ public class BaseSearchParams {
     public static final String THUMBNAIL_SIZE = "thumbnail_size";
     public static final String SHOW_PRODUCT_URL = "show_product_url";
     public static final String COUNTRY = "country";
-    public static final String UID = "uid";
     public static final String SOURCE = "source";
     public static final String SORT_BY = "sort_by";
     public static final String CLIENT_REQID = "client_reqid";
@@ -55,8 +54,6 @@ public class BaseSearchParams {
     private String thumbnailSize;
 
     private Boolean showProductUrl;
-
-    private String uid;
 
     private String source;
 
@@ -201,14 +198,6 @@ public class BaseSearchParams {
         this.country = country;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public void setPage(Integer page) {
         this.page = page;
     }
@@ -322,10 +311,6 @@ public class BaseSearchParams {
 
         if (country != null){
             putStringInMap(map , COUNTRY, country.trim());
-        }
-
-        if (uid != null ) {
-            putStringInMap(map, UID, uid);
         }
 
         if (source != null ) {

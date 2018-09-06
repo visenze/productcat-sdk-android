@@ -1,12 +1,10 @@
 package com.visenze.productcat.android;
 
 import android.content.Context;
-import android.content.SyncAdapterType;
 import android.util.Log;
 
 import com.visenze.productcat.BuildConfig;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
-import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
 
@@ -27,11 +25,7 @@ public class ProductCat {
 
     private SearchOperationsImpl searchOperations;
 
-    private TrackOperationsImpl trackOperations;
-
     private ResultListener mListener;
-
-    private String uid;
 
     // timeout in ms
     private int timeout;
@@ -44,6 +38,9 @@ public class ProductCat {
      *
      * @param context Activity context
      * @param appKey the App Key or the Access Key
+     * @param searchApiEndPoint custom ProductCat endpoint
+     * @param userAgent custom user agent for ProductCat
+     * @param shouldCache whether to cache API response based on URL
      */
     private ProductCat(Context context,
                        String appKey,
@@ -56,7 +53,6 @@ public class ProductCat {
                 searchApiEndPoint,
                 context,
                 appKey, userAgent, shouldCache);
-        trackOperations = new TrackOperationsImpl(context, appKey);
 
         timeout = DEFAULT_TIMEOUT_MS;
         retryCount = DEFAULT_RETRY_COUNT;
@@ -96,16 +92,8 @@ public class ProductCat {
         }
     }
 
-    public void track(final TrackParams trackParams) {
-        try {
-            trackOperations.track(trackParams);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
-        }
-    }
-
     private void initTracking(final Context context) {
-        ProductCatUIDManager.generateUniqueDeviceId(context);
+        ProductCatUIDManager.initPref(context);
     }
 
     public int getTimeout() {
@@ -146,6 +134,7 @@ public class ProductCat {
 
         private Integer timeout;
         private Integer retryCount;
+        private String uid;
 
         public Builder(String appKey) {
             mAppKey = appKey;
@@ -188,6 +177,11 @@ public class ProductCat {
             return this;
         }
 
+        public Builder setUid(String uid) {
+            this.uid = uid;
+            return this;
+        }
+
         public ProductCat build(Context context) {
 
             ProductCat productCat = new ProductCat(context,
@@ -202,6 +196,10 @@ public class ProductCat {
 
             if (timeout!=null) {
                 productCat.setTimeout(timeout);
+            }
+
+            if (uid!=null) {
+                ProductCatUIDManager.setUid(uid);
             }
 
             return productCat;

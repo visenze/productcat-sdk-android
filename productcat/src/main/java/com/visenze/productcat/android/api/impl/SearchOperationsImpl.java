@@ -37,7 +37,8 @@ public class SearchOperationsImpl implements SearchOperations {
      *
      * @param apiUrl api url
      * @param context activity context
-     * @param appKey app key
+     * @param appKey app_key
+     * @param userAgent custom user agent
      */
     public SearchOperationsImpl(String apiUrl, Context context, String appKey, String userAgent) {
         apiBase = apiUrl;

@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -94,6 +95,9 @@ public class MultiPartRequest extends Request<JSONObject> {
         try {
             String utf8String =
                     new String(response.data, HTTP.UTF_8);
+
+            ProductCatUIDManager.storeUidIfNeeded(response);
+
             JSONObject result = new JSONObject(utf8String);
 
             return Response.success(result,
