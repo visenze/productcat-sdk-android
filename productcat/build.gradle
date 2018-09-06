@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 
 def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 11
-version = '1.0.11'
+def versionMinor = 1
+def versionPatch = 0
+version = '1.1.0'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -42,20 +42,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    compile ('org.apache.httpcomponents:httpmime:4.3.5') {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api('org.apache.httpcomponents:httpmime:4.3.5') {
         exclude module: 'httpclient'
     }
-
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
-    compile 'com.mcxiaoke.volley:library:1.0.19@aar'
-
-    testCompile 'junit:junit:4.12'
+    api 'org.apache.httpcomponents:httpclient-android:4.3.5'
+    api 'com.mcxiaoke.volley:library:1.0.19'
+    testImplementation 'junit:junit:4.12'
 
 }
 
@@ -80,3 +73,6 @@ ext {
 }
 
 apply from: '../tools/bintray.gradle'
+repositories {
+    jcenter()
+}

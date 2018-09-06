@@ -8,10 +8,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
-import com.visenze.productcat.android.api.impl.TrackOperationsImpl;
+import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class HttpInstance {
     public static final int TIME_OUT_FOR_ID = 20000;
     public static final String APP_KEY = "app_key";
     public static final String PRODUCTCAT_VISUAL_SEARCH = "productcat_visual_search";
+    public static final String UID = "uid";
 
     /**
      * http instance
@@ -104,29 +106,6 @@ public class HttpInstance {
         return mRequestQueue;
     }
 
-    public void addGetRequestToQueueWithoutResponse(
-            final String url,
-            Map<String, String> params) {
-        if (null == params) {
-            params = new HashMap<>();
-        }
-
-        Uri.Builder uri = new Uri.Builder();
-        for (String s : params.keySet()) {
-            uri.appendQueryParameter(s, params.get(s));
-        }
-
-        JsonWithUUIDRequest jsonObjectRequest = new JsonWithUUIDRequest(Request.Method.GET, url + uri.toString(),
-                null,
-                null,
-                null);
-
-        jsonObjectRequest.setShouldCache(shouldCache);
-        jsonObjectRequest.setTag(mContext);
-        getRequestQueue().add(jsonObjectRequest);
-
-    }
-
     /**
      * start a new request by passing the url, params and result listener
      *
@@ -142,11 +121,13 @@ public class HttpInstance {
             final ProductCat.ResultListener resultListener,
             RetryPolicy retryPolicy) {
 
-        ResponseListener responseListener = new ResponseListener(resultListener,
-                new TrackOperationsImpl(mContext.getApplicationContext(), appKey), type);
+        ResponseListener responseListener = new ResponseListener(resultListener, type);
 
-        if (null == params)
-            params = new HashMap<String, List<String> >();
+        if (null == params) {
+            params = new HashMap<String, List<String>>();
+        }
+
+        addUidParam(params);
 
         Uri.Builder uri = new Uri.Builder();
         for (Map.Entry<String, List<String> > entry : params.entrySet()) {
@@ -189,12 +170,13 @@ public class HttpInstance {
             final ProductCat.ResultListener resultListener,
             RetryPolicy retryPolicy) {
 
-        ResponseListener responseListener = new ResponseListener(resultListener,
-                new TrackOperationsImpl(mContext.getApplicationContext(), appKey),
-                PRODUCTCAT_VISUAL_SEARCH);
+        ResponseListener responseListener = new ResponseListener(resultListener, PRODUCTCAT_VISUAL_SEARCH);
 
-        if (null == params)
-            params = new HashMap<String, List<String> >();
+        if (null == params) {
+            params = new HashMap<String, List<String>>();
+        }
+
+        addUidParam(params);
 
         Uri.Builder uri = new Uri.Builder();
         uri.appendQueryParameter(APP_KEY, appKey);
@@ -212,6 +194,15 @@ public class HttpInstance {
         multipartRequest.setTag(mContext);
         multipartRequest.setShouldCache(shouldCache);
         getRequestQueue().add(multipartRequest);
+    }
+
+    private void addUidParam(Map<String, List<String>> params) {
+        String storeUid = ProductCatUIDManager.getUid();
+        if (storeUid!=null) {
+            List<String> uidList = new ArrayList<>();
+            uidList.add(storeUid);
+            params.put(UID, uidList);
+        }
     }
 
     /**

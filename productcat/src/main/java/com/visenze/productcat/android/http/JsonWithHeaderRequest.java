@@ -35,33 +35,18 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
-            String utf8String =
-                    new String(response.data, HTTP.UTF_8);
+            String utf8String = new String(response.data, HTTP.UTF_8);
 
-            Map headers = response.headers;
-            if (headers.containsKey("Set-Cookie")) {
-                String value = (String)headers.get("Set-Cookie");
-                String[] cv = value.split(";");
-                String[] uid = new String[0];
-                for (String v : cv) {
-                    if (v.startsWith("uid")) {
-                        uid = v.split("=");
-                        break;
-                    }
-                }
-                if (uid.length > 0) {
-                    ProductCatUIDManager.updateUidFromCookie(uid[1]);
-                }
-            }
+            ProductCatUIDManager.storeUidIfNeeded(response);
 
             JSONObject result = new JSONObject(utf8String);
 
-            return Response.success(result,
-                    HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
             return Response.error(new ParseError(je));
         }
     }
+
 }

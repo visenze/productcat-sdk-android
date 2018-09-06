@@ -32,6 +32,8 @@ public class ResultList {
 
     private String clientReqId;
 
+    private String countryFilter;
+
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
     }
@@ -122,5 +124,13 @@ public class ResultList {
 
     public void setClientReqId(String clientReqId) {
         this.clientReqId = clientReqId;
+    }
+
+    public String getCountryFilter() {
+        return countryFilter;
+    }
+
+    public void setCountryFilter(String countryFilter) {
+        this.countryFilter = countryFilter;
     }
 }
