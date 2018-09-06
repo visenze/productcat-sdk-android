@@ -243,6 +243,15 @@ public class HttpInstance {
     public void cancelRequest(ProductCat.ResultListener resultListener) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(mContext);
+
+            // clear all requests to prevent memory leak
+            mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+
             if (null != resultListener)
                 resultListener.onSearchCanceled();
         }
