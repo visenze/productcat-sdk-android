@@ -124,7 +124,7 @@ String imId;
 @Override
 public void onSearchResult(ResultList resultList) {
     imId = resultList.getImId();
-	for (ImageResult imageResult : resultList.getImageList()) {
+	for (ProductSummary summary : resultList.getProductSummaryList()) {
 		//Do something with the result
 		...
 	}
