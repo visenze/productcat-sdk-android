@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class TextSearchParams extends BaseSearchParams {
 
+    public static final String QUERY_PARAM = "q";
+
     private String q;
 
     public TextSearchParams(String q) {
@@ -29,7 +31,7 @@ public class TextSearchParams extends BaseSearchParams {
         Map<String, List<String> > map = super.toMap();
 
         if (q != null) {
-            putStringInMap(map, "q", q);
+            putStringInMap(map, QUERY_PARAM, q);
         }
         return map;
     }

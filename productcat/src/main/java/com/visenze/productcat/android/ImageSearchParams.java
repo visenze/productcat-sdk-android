@@ -12,6 +12,10 @@ import java.util.Map;
 
 public class ImageSearchParams extends UploadSearchParams {
 
+    public static final String SEARCH_MIN_SCORE = "search_min_score";
+    public static final String PRE_FILTER = "pre_filter";
+    public static final String DETECTION_ONLY = "detection_only";
+
     public ImageSearchParams() {
         super();
     }
@@ -69,15 +73,15 @@ public class ImageSearchParams extends UploadSearchParams {
         Map<String, List<String> > map = super.toMap();
 
         if (searchMinScore!=null) {
-            this.putStringInMap(map, "search_min_score", String.valueOf(searchMinScore));
+            this.putStringInMap(map, SEARCH_MIN_SCORE, String.valueOf(searchMinScore));
         }
 
         if (preFilter != null ) {
-            this.putStringInMap(map, "pre_filter", String.valueOf(preFilter));
+            this.putStringInMap(map, PRE_FILTER, String.valueOf(preFilter));
         }
 
         if (detectionOnly!=null) {
-            this.putStringInMap(map, "detection_only", String.valueOf(detectionOnly));
+            this.putStringInMap(map, DETECTION_ONLY, String.valueOf(detectionOnly));
         }
 
         return map;

@@ -11,6 +11,27 @@ import java.util.Map;
  * Sets the basic search parameters
  */
 public class BaseSearchParams {
+    public static final String LIMIT = "limit";
+    public static final String PAGE = "page";
+    public static final String STORE_IDS = "store_ids";
+    public static final String COMMA = ",";
+    public static final String BRAND_IDS = "brand_ids";
+    public static final String PRICE_UNIT = "price_unit";
+    public static final String PRICE = "price";
+    public static final String FACETS = "facets";
+    public static final String FACETS_LIMIT = "facets_limit";
+    public static final String FACETS_SHOW_COUNT = "facets_show_count";
+    public static final String THUMBNAIL_SIZE = "thumbnail_size";
+    public static final String SHOW_PRODUCT_URL = "show_product_url";
+    public static final String COUNTRY = "country";
+    public static final String UID = "uid";
+    public static final String SOURCE = "source";
+    public static final String SORT_BY = "sort_by";
+    public static final String CLIENT_REQID = "client_reqid";
+    public static final String MAX_RESULTS_PER_STORE = "max_results_per_store";
+    public static final String CP_1 = "cp1";
+    public static final String CP_2 = "cp2";
+
     private Integer page;
 
     private Integer limit;
@@ -256,79 +277,79 @@ public class BaseSearchParams {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
         if (limit != null && limit > 0) {
-            putStringInMap(map, "limit", limit.toString());
+            putStringInMap(map, LIMIT, limit.toString());
         }
 
         if (page != null && page > 0) {
-            putStringInMap(map, "page", page.toString());
+            putStringInMap(map, PAGE, page.toString());
         }
 
         if (storeIds != null && storeIds.size() > 0 ) {
-            putStringInMap(map, "store_ids", TextUtils.join(",", storeIds));
+            putStringInMap(map, STORE_IDS, TextUtils.join(COMMA, storeIds));
         }
 
         if (brandIds != null && brandIds.size() > 0) {
-            putStringInMap(map, "brand_ids", TextUtils.join(",", brandIds));
+            putStringInMap(map, BRAND_IDS, TextUtils.join(COMMA, brandIds));
         }
 
         if (price != null){
-            putStringInMap(map , "price", price.trim());
+            putStringInMap(map , PRICE, price.trim());
         }
 
         if (priceUnit != null){
-            putStringInMap(map , "price_unit", priceUnit.trim());
+            putStringInMap(map , PRICE_UNIT, priceUnit.trim());
         }
 
         if (facets != null && facets.size() > 0 ) {
-            putStringInMap(map, "facets", TextUtils.join(",", facets));
+            putStringInMap(map, FACETS, TextUtils.join(COMMA, facets));
         }
 
         if (facetLimit != null ) {
-            putStringInMap(map, "facets_limit" , facetLimit.toString());
+            putStringInMap(map, FACETS_LIMIT, facetLimit.toString());
         }
 
         if (facetShowCount != null) {
-            putStringInMap(map, "facets_show_count" , String.valueOf(facetShowCount));
+            putStringInMap(map, FACETS_SHOW_COUNT, String.valueOf(facetShowCount));
         }
 
         if (thumbnailSize!= null) {
-            putStringInMap(map , "thumbnail_size" , thumbnailSize.trim());
+            putStringInMap(map , THUMBNAIL_SIZE, thumbnailSize.trim());
         }
 
         if (showProductUrl != null ) {
-            putStringInMap(map , "show_product_url" , String.valueOf(showProductUrl));
+            putStringInMap(map , SHOW_PRODUCT_URL, String.valueOf(showProductUrl));
         }
 
         if (country != null){
-            putStringInMap(map , "country", country.trim());
+            putStringInMap(map , COUNTRY, country.trim());
         }
 
         if (uid != null ) {
-            putStringInMap(map, "uid", uid);
+            putStringInMap(map, UID, uid);
         }
 
         if (source != null ) {
-            putStringInMap(map, "source", source);
+            putStringInMap(map, SOURCE, source);
         }
 
         if (sortBy!=null) {
-            putStringInMap(map, "sort_by", sortBy);
+            putStringInMap(map, SORT_BY, sortBy);
         }
 
         if (clientReqId!=null) {
-            putStringInMap(map, "client_reqid", clientReqId);
+            putStringInMap(map, CLIENT_REQID, clientReqId);
         }
 
         if (maxResultsPerStore!=null) {
-            putStringInMap(map, "max_results_per_store", String.valueOf(maxResultsPerStore) );
+            putStringInMap(map, MAX_RESULTS_PER_STORE, String.valueOf(maxResultsPerStore) );
         }
 
         if (cp1 != null){
-            putStringInMap(map , "cp1", cp1.trim());
+            putStringInMap(map , CP_1, cp1.trim());
         }
 
         if (cp2 != null){
-            putStringInMap(map , "cp2", cp2.trim());
+            putStringInMap(map , CP_2, cp2.trim());
         }
 
         if (custom != null && custom.size() > 0) {
