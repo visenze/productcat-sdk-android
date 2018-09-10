@@ -23,6 +23,7 @@ public class ProductSummary {
 
     private String priceString;
     private String sellerName;
+    private Double visualScore;
 
     public ProductSummary() {
 
@@ -146,5 +147,13 @@ public class ProductSummary {
 
     public void setSellerName(String sellerName) {
         this.sellerName = sellerName;
+    }
+
+    public Double getVisualScore() {
+        return visualScore;
+    }
+
+    public void setVisualScore(Double visualScore) {
+        this.visualScore = visualScore;
     }
 }
