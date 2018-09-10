@@ -235,6 +235,7 @@ public class ResponseParser {
 
                 productSummary.setPriceString(summary.optString("price"));
                 productSummary.setSellerName(summary.optString("seller_name"));
+                productSummary.setVisualScore(summary.optDouble("visual_score"));
 
                 if (summary.has("stores")) {
                     JSONArray storesJson = summary.getJSONArray("stores");
