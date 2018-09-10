@@ -18,7 +18,7 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile 'com.visenze.productcat:productcat:1.1.0'
+compile 'com.visenze.productcat:productcat:1.1.1'
 ```
 
 In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
@@ -68,6 +68,13 @@ productCat.setListener(this);
 ```                
 
 ## 3. Solution APIs
+
+ProductCat database is partitioned globally based on *country* and geographical regions. It is highly recommended that you call the Product Search APIs with **country** parameter to ensure only products that ship to the country will be returned.
+
+```
+// example: set search to Singapore
+searchParams.getBaseSearchParams().setCountry("SG");
+```
 
 ### 3.1 Search by Image
 
@@ -260,4 +267,9 @@ searchParams.setBaseSearchParams(baseSearchParams);
 productCat.textSearch(searchParams);
 ```
 
+## 5. Search Analytics
 
+To analyze search performance and usage statistics (such as Click Through Rate, Active Users, Conversion Tracking, Retention Rate, etc), it is recommended that the uid paramater is sent on all requests. The UID can be generated in 2 ways:
+
+- On client side e.g. device serial number in Android app or encrypted random string token.
+- From server side on first request. Our first reqid will be used as the UID. This is implemented automatically in the SDK.
