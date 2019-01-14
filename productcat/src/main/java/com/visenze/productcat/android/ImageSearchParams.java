@@ -17,6 +17,7 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String DETECTION_ONLY = "detection_only";
     public static final String RECOGNIZE_MIN_SCORE = "recognize_min_score";
     public static final String SHOW_VISUAL_SCORE = "show_visual_score";
+    public static final String AUTO_ROI = "auto_roi";
 
     public ImageSearchParams() {
         super();
@@ -49,6 +50,8 @@ public class ImageSearchParams extends UploadSearchParams {
     private Float recognizeMinScore;
 
     private Boolean showVisualScore;
+
+    private Boolean autoRoi;
 
     public Float getSearchMinScore() {
         return searchMinScore;
@@ -90,6 +93,14 @@ public class ImageSearchParams extends UploadSearchParams {
         this.showVisualScore = showVisualScore;
     }
 
+    public Boolean getAutoRoi() {
+        return autoRoi;
+    }
+
+    public void setAutoRoi(Boolean autoRoi) {
+        this.autoRoi = autoRoi;
+    }
+
     @Override
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = super.toMap();
@@ -112,6 +123,10 @@ public class ImageSearchParams extends UploadSearchParams {
 
         if (showVisualScore!=null) {
             this.putStringInMap(map, SHOW_VISUAL_SCORE, String.valueOf(showVisualScore));
+        }
+
+        if (autoRoi!=null) {
+            this.putStringInMap(map, AUTO_ROI, String.valueOf(autoRoi));
         }
 
         return map;
