@@ -30,6 +30,7 @@ public class BaseSearchParams {
     public static final String MAX_RESULTS_PER_STORE = "max_results_per_store";
     public static final String CLIENT_PARAM1 = "cp1";
     public static final String CLIENT_PARAM2 = "cp2";
+    public static final String UID = "uid";
 
     private Integer page;
 
@@ -66,6 +67,9 @@ public class BaseSearchParams {
     // custom parameters
     private String cp1;
     private String cp2;
+
+    // allow uid override from client
+    private String uid;
 
     private Map<String, String> custom;
 
@@ -262,8 +266,20 @@ public class BaseSearchParams {
         this.custom = custom;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
+
+        if (uid != null && uid.length() > 0) {
+            putStringInMap(map, UID, uid);
+        }
 
         if (limit != null && limit > 0) {
             putStringInMap(map, LIMIT, limit.toString());
