@@ -8,6 +8,8 @@ import com.visenze.productcat.android.ProductCatException;
 import com.visenze.productcat.android.model.Box;
 import com.visenze.productcat.android.model.ProductSummary;
 import com.visenze.productcat.android.model.ProductType;
+import com.visenze.productcat.android.model.SponsorContent;
+import com.visenze.productcat.android.model.SponsorContentImg;
 import com.visenze.productcat.android.model.Store;
 import com.visenze.productcat.android.model.Tag;
 import com.visenze.productcat.android.model.TagGroup;
@@ -31,6 +33,57 @@ public class ResponseParser {
     public static final String FACETS = "facets";
     public static final String CLIENT_REQID = "client_reqid";
     public static final String COUNTRY_FILTER = "country_filter";
+    public static final String KEY = "key";
+    public static final String ITEMS = "items";
+    public static final String RANGE = "range";
+    public static final String MIN = "min";
+    public static final String MAX = "max";
+    public static final String ID = "id";
+    public static final String COUNT = "count";
+    public static final String NAME = "name";
+    public static final String VALUE = "value";
+    public static final String TAG_GROUP = "tag_group";
+    public static final String TAGS = "tags";
+    public static final String BLANK = "";
+    public static final String TAG_ID = "tag_id";
+    public static final String TAG = "tag";
+    public static final String SCORE = "score";
+    public static final String PGID = "pgid";
+    public static final String PID = "pid";
+    public static final String MAIN_IMAGE = "main_image";
+    public static final String IMAGES = "images";
+    public static final String TITLE = "title";
+    public static final String DESC = "desc";
+    public static final String COUNTRY = "country";
+    public static final String MIN_PRICE = "min_price";
+    public static final String MAX_PRICE = "max_price";
+    public static final String PRICE_UNIT = "price_unit";
+    public static final String ORIGINAL_PRICE_UNIT = "original_price_unit";
+    public static final String ORIGINAL_MIN_PRICE = "original_min_price";
+    public static final String ORIGINAL_MAX_PRICE = "original_max_price";
+    public static final String AVAILABILITY = "availability";
+    public static final String PRODUCT_URL = "product_url";
+    public static final String PRICE = "price";
+    public static final String SELLER_NAME = "seller_name";
+    public static final String VISUAL_SCORE = "visual_score";
+    public static final String STORES = "stores";
+    public static final String STORE_ID = "store_id";
+    public static final String TYPE = "type";
+    public static final String BOX = "box";
+    public static final String ATTRIBUTES = "attributes";
+    public static final String STATUS = "status";
+    public static final String OK = "OK";
+    public static final String ERROR = "error";
+    public static final String SPONSORED_CONTENT = "sponsored_content";
+    public static final String CONTENT_TYPE = "content_type";
+    public static final String TRACKER_URL = "tracker_url";
+    public static final String LINK = "link";
+    public static final String PLACEMENT = "placement";
+    public static final String PLACEMENT_POSITION = "placement_position";
+    public static final String ORG_SEARCH_RESULT_POSITION = "org_search_result_position";
+    public static final String URL = "url";
+    public static final String H = "h";
+    public static final String W = "w";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -50,14 +103,17 @@ public class ResponseParser {
 
             if (resultObj.has(RECOGNIZE_RESULT)) {
                 JSONArray tagGroupArray = resultObj.getJSONArray(RECOGNIZE_RESULT) ;
-
                 resultList.setTagGroups(parseTagGroups(tagGroupArray));
-
             }
 
             if (resultObj.has(RESULT)) {
                 JSONArray resultArray = resultObj.getJSONArray(RESULT);
                 resultList.setProductSummaryList(parseProductSummaryList(resultArray));
+            }
+
+            if(resultObj.has(SPONSORED_CONTENT)) {
+                JSONArray contentArray = resultObj.getJSONArray(SPONSORED_CONTENT);
+                resultList.setSponsorContents(parseSponsorContentList(contentArray));
             }
 
             if (resultObj.has(PRODUCT_TYPES)) {
@@ -96,30 +152,30 @@ public class ResponseParser {
 
             Facet facet = new Facet();
 
-            facet.setKey(o.optString("key"));
+            facet.setKey(o.optString(KEY));
 
             // parse facet items
-            JSONArray items = o.optJSONArray("items");
+            JSONArray items = o.optJSONArray(ITEMS);
             if (items != null) {
                 List<FacetItem> facetItems = getFacetItems(items);
                 facet.setItems(facetItems);
             }
 
             // parse range
-            JSONObject rangeObj = o.optJSONObject("range");
+            JSONObject rangeObj = o.optJSONObject(RANGE);
 
             // set min and max
             if (rangeObj!=null) {
 
                 FacetRange range = new FacetRange();
 
-                Object min = rangeObj.opt("min");
+                Object min = rangeObj.opt(MIN);
 
                 if (min!=null && min instanceof Number) {
                     range.setMin((Number) min);
                 }
 
-                Object max = rangeObj.opt("max");
+                Object max = rangeObj.opt(MAX);
                 if (max!=null && max instanceof Number) {
                     range.setMax((Number) max);
                 }
@@ -144,10 +200,10 @@ public class ResponseParser {
             }
 
             FacetItem facetItem = new FacetItem();
-            facetItem.setId(itemObj.optLong("id"));
-            facetItem.setCount(itemObj.optInt("count"));
-            facetItem.setName(itemObj.optString("name"));
-            facetItem.setValue(itemObj.optString("value"));
+            facetItem.setId(itemObj.optLong(ID));
+            facetItem.setCount(itemObj.optInt(COUNT));
+            facetItem.setName(itemObj.optString(NAME));
+            facetItem.setValue(itemObj.optString(VALUE));
             facetItems.add(facetItem);
         }
         return facetItems;
@@ -161,16 +217,16 @@ public class ResponseParser {
 
             if(o!=null){
                 TagGroup group = new TagGroup();
-                group.tagGroup = o.optString("tag_group" , "");
-                JSONArray tagsArr = o.optJSONArray("tags");
+                group.tagGroup = o.optString(TAG_GROUP, BLANK);
+                JSONArray tagsArr = o.optJSONArray(TAGS);
                 if(group.tagGroup != null && tagsArr!=null){
                     for(int j = 0 , taglength = tagsArr.length(); j < taglength ; j++ ){
                         JSONObject tagObject = tagsArr.optJSONObject(j);
                         if(tagObject!=null){
                             Tag tag = new Tag();
-                            tag.tagId = tagObject.optString("tag_id");
-                            tag.tag = tagObject.optString("tag");
-                            tag.score = tagObject.optDouble("score", 0);
+                            tag.tagId = tagObject.optString(TAG_ID);
+                            tag.tag = tagObject.optString(TAG);
+                            tag.score = tagObject.optDouble(SCORE, 0);
                             tag.tagGroup = group.tagGroup;
                             group.tags.add(tag);
 
@@ -187,20 +243,62 @@ public class ResponseParser {
         return  groups;
     }
 
-    private static Map<String, String> parseQueryInfo(JSONObject qinfoObj) {
-        Map<String, String> queryInfo = new HashMap<String, String>();
+    private static List<SponsorContent> parseSponsorContentList(JSONArray contentArray) throws ProductCatException{
+        List<SponsorContent> result = new ArrayList<SponsorContent>();
+        int size = contentArray.length();
         try {
-            Iterator<String> nameItr = qinfoObj.keys();
-            while (nameItr.hasNext()) {
-                String name = nameItr.next();
-                queryInfo.put(name, qinfoObj.getString(name));
+            for (int i = 0; i < size; i++) {
+                JSONObject jsonItem = contentArray.getJSONObject(i);
+                SponsorContent sponsorContent = new SponsorContent();
+                sponsorContent.setId(jsonItem.optInt(ID,0));
+                sponsorContent.setTitle(jsonItem.optString(TITLE));
+                sponsorContent.setDesc(jsonItem.optString(DESC));
+                sponsorContent.setContentType(jsonItem.optString(CONTENT_TYPE));
+                sponsorContent.setTrackerUrl(jsonItem.optString(TRACKER_URL));
+                sponsorContent.setLink(jsonItem.optString(LINK));
+                sponsorContent.setPlacement(jsonItem.optString(PLACEMENT));
+
+                if(jsonItem.has(PLACEMENT_POSITION)) {
+                    sponsorContent.setPlacementPosition(jsonItem.getInt(PLACEMENT_POSITION));
+                }
+
+                if(jsonItem.has(ORG_SEARCH_RESULT_POSITION)){
+                    sponsorContent.setOrgSearchResultPosition(jsonItem.getInt(ORG_SEARCH_RESULT_POSITION));
+                }
+
+                // images
+                if ( jsonItem.has(IMAGES) ) {
+                    JSONArray imgArr = jsonItem.getJSONArray(IMAGES);
+                    List<SponsorContentImg> images = new ArrayList<SponsorContentImg>();
+
+                    for (int imgIndex = 0, length = imgArr.length() ; imgIndex < length ; imgIndex++) {
+                        JSONObject imgItem = imgArr.getJSONObject(imgIndex);
+                        SponsorContentImg img = new SponsorContentImg();
+                        img.url = imgItem.optString(URL);
+
+                        if(imgItem.has(H)) {
+                            img.h = imgItem.getInt(H);
+                        }
+
+                        if(imgItem.has(W)) {
+                            img.w = imgItem.getInt(W);
+                        }
+
+                        images.add(img);
+                    }
+
+                    sponsorContent.setImages(images);
+                }
+
+
+                result.add(sponsorContent);
             }
         } catch (JSONException e) {
-            throw new ProductCatException("JsonParse Error: " + e.toString());
+            throw new ProductCatException("Error parsing response result " + e.getMessage(), e);
         }
-
-        return queryInfo;
+        return result;
     }
+
 
     private static List<ProductSummary> parseProductSummaryList(JSONArray resultArray) throws ProductCatException {
         List<ProductSummary> resultList = new ArrayList<ProductSummary>();
@@ -210,46 +308,50 @@ public class ResponseParser {
             for (int i = 0; i < size; i++) {
                 JSONObject summary = resultArray.getJSONObject(i);
                 ProductSummary productSummary = new ProductSummary();
-                productSummary.setPgid(summary.getString("pgid"));
-                if (summary.has("pid")) {
-                    productSummary.setPid(summary.getString("pid"));
-                }
-                productSummary.setMainImage(summary.optString("main_image"));
+                productSummary.setPgid(summary.optString(PGID));
+                productSummary.setPid(summary.optString(PID));
+                productSummary.setMainImage(summary.optString(MAIN_IMAGE));
 
                 // images
-                if ( summary.has("images") ) {
-                    JSONArray imgArr = summary.getJSONArray("images");
+                if ( summary.has(IMAGES) ) {
+                    JSONArray imgArr = summary.getJSONArray(IMAGES);
                     for (int imgIndex = 0, length = imgArr.length() ; imgIndex < length ; imgIndex++) {
                         productSummary.getImages().add(imgArr.getString(imgIndex) );
                     }
                 }
 
-                productSummary.setTitle(summary.optString("title"));
-                productSummary.setDesc(summary.optString("desc"));
-                productSummary.setCountry(summary.optString("country"));
-                productSummary.setMinPrice(summary.optDouble("min_price" , 0));
-                productSummary.setMaxPrice(summary.optDouble("max_price", 0));
-                productSummary.setPriceUnit(summary.optString("price_unit"));
+                productSummary.setTitle(summary.optString(TITLE));
+                productSummary.setDesc(summary.optString(DESC));
+                productSummary.setCountry(summary.optString(COUNTRY));
+                productSummary.setMinPrice(summary.optDouble(MIN_PRICE, 0));
+                productSummary.setMaxPrice(summary.optDouble(MAX_PRICE, 0));
+                productSummary.setPriceUnit(summary.optString(PRICE_UNIT));
 
-                productSummary.setOrgPriceUnit(summary.optString("original_price_unit"));
-                productSummary.setOrgMinPrice(summary.optDouble("original_min_price"));
-                productSummary.setOrgMaxPrice(summary.optDouble("original_max_price"));
+                if(summary.has(ORIGINAL_PRICE_UNIT)) {
+                    productSummary.setOrgPriceUnit(summary.optString(ORIGINAL_PRICE_UNIT));
+                }
 
-                productSummary.setAvailability(summary.optInt("availability", 1));
-                productSummary.setProductUrl(summary.optString("product_url"));
+                if(summary.has(ORIGINAL_MIN_PRICE)) {
+                    productSummary.setOrgMinPrice(summary.optDouble(ORIGINAL_MIN_PRICE));
+                }
+                if(summary.has(ORIGINAL_MAX_PRICE)) {
+                    productSummary.setOrgMaxPrice(summary.optDouble(ORIGINAL_MAX_PRICE));
+                }
+                productSummary.setAvailability(summary.optInt(AVAILABILITY, 1));
+                productSummary.setProductUrl(summary.optString(PRODUCT_URL));
 
-                productSummary.setPriceString(summary.optString("price"));
-                productSummary.setSellerName(summary.optString("seller_name"));
-                productSummary.setVisualScore(summary.optDouble("visual_score"));
+                productSummary.setPriceString(summary.optString(PRICE));
+                productSummary.setSellerName(summary.optString(SELLER_NAME));
+                productSummary.setVisualScore(summary.optDouble(VISUAL_SCORE));
 
-                if (summary.has("stores")) {
-                    JSONArray storesJson = summary.getJSONArray("stores");
+                if (summary.has(STORES)) {
+                    JSONArray storesJson = summary.getJSONArray(STORES);
                     for (int si = 0, length = storesJson.length() ; si < length ; si++) {
                         JSONObject storeObj = storesJson.getJSONObject(si);
                         Store store = new Store();
-                        store.setStoreId(storeObj.optInt("store_id", 0));
-                        store.setName(storeObj.optString("name", ""));
-                        store.setAvailability(storeObj.optInt("availability", 1));
+                        store.setStoreId(storeObj.optInt(STORE_ID, 0));
+                        store.setName(storeObj.optString(NAME, BLANK));
+                        store.setAvailability(storeObj.optInt(AVAILABILITY, 1));
 
                         productSummary.getStores().add(store);
                     }
@@ -272,17 +374,17 @@ public class ResponseParser {
             for (int i = 0; i < size; i++) {
                 JSONObject typeObj = resultArray.getJSONObject(i);
                 ProductType productType = new ProductType();
-                productType.setType(typeObj.getString("type"));
-                productType.setScore(typeObj.getDouble("score"));
-                JSONArray boxCoordinate = typeObj.getJSONArray("box");
+                productType.setType(typeObj.getString(TYPE));
+                productType.setScore(typeObj.getDouble(SCORE));
+                JSONArray boxCoordinate = typeObj.getJSONArray(BOX);
                 Box box = new Box(boxCoordinate.getInt(0),
                         boxCoordinate.getInt(1),
                         boxCoordinate.getInt(2),
                         boxCoordinate.getInt(3));
                 productType.setBox(box);
 
-                if (typeObj.has("attributes")) {
-                    JSONObject attrsArray = typeObj.getJSONObject("attributes");
+                if (typeObj.has(ATTRIBUTES)) {
+                    JSONObject attrsArray = typeObj.getJSONObject(ATTRIBUTES);
                     JSONArray attrsNames = attrsArray.names();
                     Map attrsMapList = new HashMap<>();
                     for (int j = 0; attrsNames != null && j < attrsNames.length(); j++) {
@@ -307,17 +409,17 @@ public class ResponseParser {
 
     private static String parseResponseError(JSONObject jsonObj) {
         try {
-            String status = jsonObj.getString("status");
+            String status = jsonObj.getString(STATUS);
             if (status == null) {
                 throw new ProductCatException("Error parsing response: status is null");
             } else {
-                if (status.equals("OK")) {
+                if (status.equals(OK)) {
                     return null;
                 } else {
-                    if (!jsonObj.has("error") || jsonObj.getJSONArray("error").length() == 0) {
+                    if (!jsonObj.has(ERROR) || jsonObj.getJSONArray(ERROR).length() == 0) {
                         return "Error parsing response: missing error";
                     } else {
-                        return jsonObj.getJSONArray("error").get(0).toString();
+                        return jsonObj.getJSONArray(ERROR).get(0).toString();
                     }
                 }
             }

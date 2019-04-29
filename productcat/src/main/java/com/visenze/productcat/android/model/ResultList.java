@@ -30,6 +30,8 @@ public class ResultList {
 
     private String countryFilter;
 
+    private List<SponsorContent> sponsorContents = new ArrayList<SponsorContent>();
+
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
     }
@@ -128,5 +130,13 @@ public class ResultList {
 
     public void setCountryFilter(String countryFilter) {
         this.countryFilter = countryFilter;
+    }
+
+    public List<SponsorContent> getSponsorContents() {
+        return sponsorContents;
+    }
+
+    public void setSponsorContents(List<SponsorContent> sponsorContents) {
+        this.sponsorContents = sponsorContents;
     }
 }

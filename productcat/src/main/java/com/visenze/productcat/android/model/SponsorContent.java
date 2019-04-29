@@ -1,19 +1,20 @@
 package com.visenze.productcat.android.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SponsorContent {
 
     private int id;
-    private AdContentType contentType;
+    private String contentType;
     private String title;
     private String desc;
     private String trackerUrl;
     private String link;
-    private AdPlacement placement;
+    private String placement;
     private Integer placementPosition;
     private Integer orgSearchResultPosition;
-    private List<SponsorContentImg> images;
+    private List<SponsorContentImg> images = new ArrayList<SponsorContentImg>();
 
     public int getId() {
         return id;
@@ -23,11 +24,11 @@ public class SponsorContent {
         this.id = id;
     }
 
-    public AdContentType getContentType() {
+    public String getContentType() {
         return contentType;
     }
 
-    public void setContentType(AdContentType contentType) {
+    public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
@@ -63,11 +64,11 @@ public class SponsorContent {
         this.link = link;
     }
 
-    public AdPlacement getPlacement() {
+    public String getPlacement() {
         return placement;
     }
 
-    public void setPlacement(AdPlacement placement) {
+    public void setPlacement(String placement) {
         this.placement = placement;
     }
 
