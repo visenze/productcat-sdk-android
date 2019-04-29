@@ -49,6 +49,7 @@ dependencies {
     api 'org.apache.httpcomponents:httpclient-android:4.3.5'
     api 'com.mcxiaoke.volley:library:1.0.19'
     testImplementation 'junit:junit:4.12'
+    testCompile 'org.json:json:20140107'
 
 }
 

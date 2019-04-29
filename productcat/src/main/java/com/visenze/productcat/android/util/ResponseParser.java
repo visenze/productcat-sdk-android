@@ -230,6 +230,11 @@ public class ResponseParser {
                 productSummary.setMinPrice(summary.optDouble("min_price" , 0));
                 productSummary.setMaxPrice(summary.optDouble("max_price", 0));
                 productSummary.setPriceUnit(summary.optString("price_unit"));
+
+                productSummary.setOrgPriceUnit(summary.optString("original_price_unit"));
+                productSummary.setOrgMinPrice(summary.optDouble("original_min_price"));
+                productSummary.setOrgMaxPrice(summary.optDouble("original_max_price"));
+
                 productSummary.setAvailability(summary.optInt("availability", 1));
                 productSummary.setProductUrl(summary.optString("product_url"));
 
