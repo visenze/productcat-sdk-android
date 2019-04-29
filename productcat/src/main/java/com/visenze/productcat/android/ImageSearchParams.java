@@ -1,5 +1,8 @@
 package com.visenze.productcat.android;
 
+import com.visenze.productcat.android.model.AdImgParam;
+import com.visenze.productcat.android.model.AdParam;
+import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.model.Image;
 
 import java.util.ArrayList;
@@ -18,6 +21,30 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String RECOGNIZE_MIN_SCORE = "recognize_min_score";
     public static final String SHOW_VISUAL_SCORE = "show_visual_score";
     public static final String AUTO_ROI = "auto_roi";
+
+    //PC-642 Sponsor Content API
+    public static final String RETURN_SPONSORED_CONTENT = "return_sponsored_content";
+    public static final String S_BANNER_IMG_W = "s_banner_img_w";
+    public static final String S_BANNER_IMG_WMIN = "s_banner_img_wmin";
+    public static final String S_BANNER_IMG_H = "s_banner_img_h";
+    public static final String S_BANNER_IMG_HMIN = "s_banner_img_hmin";
+    public static final String S_BANNER_IMG_MIME = "s_banner_img_mime";
+    public static final String S_TITLE_MAX_LEN = "s_title_max_len";
+    public static final String S_DESC_MAX_LEN = "s_desc_max_len";
+    public static final String S_IMG_W = "s_img_w";
+    public static final String S_IMG_WMIN = "s_img_wmin";
+    public static final String S_IMG_H = "s_img_h";
+    public static final String S_IMG_HMIN = "s_img_hmin";
+    public static final String S_IMG_MIME = "s_img_mime";
+    public static final String UIP = "uip";
+    public static final String DEVICE_MODEL = "device_model";
+    public static final String OS = "os";
+    public static final String OSV = "osv";
+    public static final String DIDMD5 = "didmd5";
+    public static final String IFA = "ifa";
+    public static final String GEO = "geo";
+    public static final String UA = "ua";
+
 
     public ImageSearchParams() {
         super();
@@ -52,6 +79,10 @@ public class ImageSearchParams extends UploadSearchParams {
     private Boolean showVisualScore;
 
     private Boolean autoRoi;
+
+    private Boolean returnSponsoredContent;
+
+    private AdParam adParam;
 
     public Float getSearchMinScore() {
         return searchMinScore;
@@ -101,6 +132,22 @@ public class ImageSearchParams extends UploadSearchParams {
         this.autoRoi = autoRoi;
     }
 
+    public Boolean getReturnSponsoredContent() {
+        return returnSponsoredContent;
+    }
+
+    public void setReturnSponsoredContent(Boolean returnSponsoredContent) {
+        this.returnSponsoredContent = returnSponsoredContent;
+    }
+
+    public AdParam getAdParam() {
+        return adParam;
+    }
+
+    public void setAdParam(AdParam adParam) {
+        this.adParam = adParam;
+    }
+
     @Override
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = super.toMap();
@@ -129,7 +176,131 @@ public class ImageSearchParams extends UploadSearchParams {
             this.putStringInMap(map, AUTO_ROI, String.valueOf(autoRoi));
         }
 
+        if (returnSponsoredContent!=null) {
+            this.putStringInMap(map, RETURN_SPONSORED_CONTENT, String.valueOf(returnSponsoredContent));
+
+            addSponsorContentParams(map);
+        }
+
         return map;
+    }
+
+    private void addSponsorContentParams(Map<String, List<String>> map) {
+        if(returnSponsoredContent.booleanValue() && adParam!=null) {
+            // add device info param
+            addDeviceInfoParams(map, adParam.getDeviceInfo());
+
+            // add banner param
+            addBannerParams(map, adParam.getBannerImg());
+
+            // featured image param (within search result)
+            addFeaturedImgParams(map, adParam.getImg());
+
+            // title and desc
+            if(adParam.getTitleMaxLen()!=null){
+                this.putStringInMap(map, S_TITLE_MAX_LEN, String.valueOf(adParam.getTitleMaxLen()) );
+            }
+
+            if(adParam.getDescMaxLen()!=null){
+                this.putStringInMap(map, S_DESC_MAX_LEN, String.valueOf(adParam.getDescMaxLen()) );
+            }
+
+        }
+    }
+
+    private void addFeaturedImgParams(Map<String, List<String>> map, AdImgParam img) {
+        if(img == null){
+            return;
+        }
+
+        if(img.getWidth()!=null){
+            this.putStringInMap(map, S_IMG_W, String.valueOf(img.getWidth()) );
+        }
+
+        if(img.getMinWidth()!=null){
+            this.putStringInMap(map, S_IMG_WMIN, String.valueOf(img.getMinWidth()) );
+        }
+
+        if(img.getHeight()!=null){
+            this.putStringInMap(map, S_IMG_H, String.valueOf(img.getHeight()) );
+        }
+
+        if(img.getMinHeight()!=null){
+            this.putStringInMap(map, S_IMG_HMIN, String.valueOf(img.getMinHeight()) );
+        }
+
+        if(img.getSupportedMimes()!=null){
+            this.putStringInMap(map, S_IMG_MIME, img.getSupportedMimes());
+        }
+
+    }
+
+    private void addBannerParams(Map<String, List<String>> map, AdImgParam bannerImg) {
+        if (bannerImg == null){
+            return;
+        }
+
+        if(bannerImg.getWidth()!=null){
+            this.putStringInMap(map, S_BANNER_IMG_W, String.valueOf(bannerImg.getWidth()) );
+        }
+
+        if(bannerImg.getMinWidth()!=null){
+            this.putStringInMap(map, S_BANNER_IMG_WMIN, String.valueOf(bannerImg.getMinWidth()) );
+        }
+
+        if(bannerImg.getHeight()!=null){
+            this.putStringInMap(map, S_BANNER_IMG_H, String.valueOf(bannerImg.getHeight()) );
+        }
+
+        if(bannerImg.getMinHeight()!=null){
+            this.putStringInMap(map, S_BANNER_IMG_HMIN, String.valueOf(bannerImg.getMinHeight()) );
+        }
+
+        if(bannerImg.getSupportedMimes()!=null){
+            this.putStringInMap(map, S_BANNER_IMG_MIME, bannerImg.getSupportedMimes());
+        }
+
+    }
+
+    private void addDeviceInfoParams(Map<String, List<String>> map,
+                                     DeviceInfo deviceInfo) {
+
+        if (deviceInfo == null) {
+            return;
+        }
+
+        if(deviceInfo.getUip() != null){
+            this.putStringInMap(map, UIP, deviceInfo.getUip());
+        }
+
+        if(deviceInfo.getUa() != null){
+            this.putStringInMap(map, UA, deviceInfo.getUa());
+        }
+
+        if(deviceInfo.getDeviceModel()!=null){
+            this.putStringInMap(map, DEVICE_MODEL, deviceInfo.getDeviceModel());
+        }
+
+        if(deviceInfo.getOs()!=null){
+            this.putStringInMap(map, OS, deviceInfo.getOs());
+        }
+
+        if(deviceInfo.getOsv()!=null){
+            this.putStringInMap(map, OSV, deviceInfo.getOsv());
+        }
+
+        if(deviceInfo.getDidmd5()!=null){
+            this.putStringInMap(map, DIDMD5, deviceInfo.getDidmd5());
+        }
+
+        if(deviceInfo.getIfa()!=null){
+            this.putStringInMap(map, IFA, deviceInfo.getIfa());
+        }
+
+        if(deviceInfo.getLatLng()!=null){
+            this.putStringInMap(map, GEO, deviceInfo.getLatLng());
+        }
+
     }
 
     private void putStringInMap(Map<String, List<String> > map, String key, String value) {

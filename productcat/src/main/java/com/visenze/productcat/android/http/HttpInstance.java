@@ -197,6 +197,11 @@ public class HttpInstance {
     }
 
     private void addUidParam(Map<String, List<String>> params) {
+        // already have uid, no action needed
+        if (params.containsKey(UID)){
+            return;
+        }
+
         String storeUid = ProductCatUIDManager.getUid();
         if (storeUid!=null) {
             List<String> uidList = new ArrayList<>();

@@ -15,6 +15,9 @@ public class ProductCatUIDManager {
     public final static String PREF_KEY = "visearchudid";
     public final static String PREFS_NAME = "visearchuid_prefs";
     public static final String SET_COOKIE = "Set-Cookie";
+    public static final String UID = "uid";
+    public static final String SEMI_COLON = ";";
+    public static final String EQUAL = "=";
 
     private static SharedPreferences preference;
 
@@ -31,11 +34,11 @@ public class ProductCatUIDManager {
         Map headers = response.headers;
         if (headers.containsKey(SET_COOKIE)) {
             String value = (String)headers.get(SET_COOKIE);
-            String[] cv = value.split(";");
+            String[] cv = value.split(SEMI_COLON);
             String[] uid = new String[0];
             for (String v : cv) {
-                if (v.startsWith("uid")) {
-                    uid = v.split("=");
+                if (v.startsWith(UID)) {
+                    uid = v.split(EQUAL);
                     break;
                 }
             }

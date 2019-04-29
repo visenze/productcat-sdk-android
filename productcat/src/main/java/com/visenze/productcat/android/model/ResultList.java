@@ -1,13 +1,9 @@
 package com.visenze.productcat.android.model;
 
 import com.visenze.productcat.android.ProductCat;
-import com.visenze.productcat.android.model.ProductSummary;
-import com.visenze.productcat.android.model.ProductType;
-import com.visenze.productcat.android.model.TagGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The ResultList class represents a successful search result
@@ -33,6 +29,8 @@ public class ResultList {
     private String clientReqId;
 
     private String countryFilter;
+
+    private List<SponsorContent> sponsorContents = new ArrayList<SponsorContent>();
 
     public ResultList() {
         productSummaryList = new ArrayList<ProductSummary>();
@@ -132,5 +130,13 @@ public class ResultList {
 
     public void setCountryFilter(String countryFilter) {
         this.countryFilter = countryFilter;
+    }
+
+    public List<SponsorContent> getSponsorContents() {
+        return sponsorContents;
+    }
+
+    public void setSponsorContents(List<SponsorContent> sponsorContents) {
+        this.sponsorContents = sponsorContents;
     }
 }

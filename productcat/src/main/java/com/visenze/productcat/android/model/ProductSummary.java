@@ -25,6 +25,11 @@ public class ProductSummary {
     private String sellerName;
     private Double visualScore;
 
+    private Double orgMinPrice;
+    private Double orgMaxPrice;
+    private String orgPriceUnit;
+
+
     public ProductSummary() {
 
     }
@@ -155,5 +160,29 @@ public class ProductSummary {
 
     public void setVisualScore(Double visualScore) {
         this.visualScore = visualScore;
+    }
+
+    public Double getOrgMinPrice() {
+        return orgMinPrice;
+    }
+
+    public void setOrgMinPrice(Double orgMinPrice) {
+        this.orgMinPrice = orgMinPrice;
+    }
+
+    public Double getOrgMaxPrice() {
+        return orgMaxPrice;
+    }
+
+    public void setOrgMaxPrice(Double orgMaxPrice) {
+        this.orgMaxPrice = orgMaxPrice;
+    }
+
+    public String getOrgPriceUnit() {
+        return orgPriceUnit;
+    }
+
+    public void setOrgPriceUnit(String orgPriceUnit) {
+        this.orgPriceUnit = orgPriceUnit;
     }
 }
