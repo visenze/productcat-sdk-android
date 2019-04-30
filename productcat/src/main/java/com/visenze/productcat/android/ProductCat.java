@@ -6,6 +6,7 @@ import android.util.Log;
 import com.visenze.productcat.BuildConfig;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.model.ResultList;
+import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.URL;
@@ -231,5 +232,14 @@ public class ProductCat {
         public abstract void onSearchCanceled();
 
     }
+
+    public static interface StoreResultListener {
+        // call back for getting list of stores
+        public abstract void onResult(final StoreResultList storeResultList);
+
+        // call upon any error
+        public abstract void onError(String errorMessage);
+    }
+
 
 }

@@ -11,6 +11,7 @@ import com.visenze.productcat.android.model.ProductType;
 import com.visenze.productcat.android.model.SponsorContent;
 import com.visenze.productcat.android.model.SponsorContentImg;
 import com.visenze.productcat.android.model.Store;
+import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.model.Tag;
 import com.visenze.productcat.android.model.TagGroup;
 
@@ -426,5 +427,9 @@ public class ResponseParser {
         } catch (JSONException e) {
             throw new ProductCatException("Error parsing response " + e.getMessage(), e);
         }
+    }
+
+    public static StoreResultList parseStoresResult(String jsonResponse) {
+        return null;
     }
 }

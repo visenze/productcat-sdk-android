@@ -5,7 +5,9 @@ import android.net.Uri;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
@@ -106,6 +108,29 @@ public class HttpInstance {
         return mRequestQueue;
     }
 
+    // for adding admin request
+    public void addAdminGetRequestToQueue(String url,
+                                          Map<String, List<String>> params,
+                                          ProductCat.StoreResultListener storeResultListener) {
+
+
+        StoreResponseListener responseListener = new StoreResponseListener(storeResultListener);
+        addUidParam(params);
+        Uri.Builder uri = buildQueryString(params);
+
+        JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
+                Request.Method.GET, url + uri.toString(), null,
+                responseListener,
+                new StoreResponseErrorListener(storeResultListener)) {
+
+        };
+
+        jsonObjectRequest.setTag(mContext);
+        jsonObjectRequest.setShouldCache(shouldCache);
+
+        getRequestQueue().add(jsonObjectRequest);
+    }
+
     /**
      * start a new request by passing the url, params and result listener
      *
@@ -129,14 +154,7 @@ public class HttpInstance {
 
         addUidParam(params);
 
-        Uri.Builder uri = new Uri.Builder();
-        for (Map.Entry<String, List<String> > entry : params.entrySet()) {
-            for (String s: entry.getValue())
-                uri.appendQueryParameter(entry.getKey(), s);
-        }
-
-        // add key
-        uri.appendQueryParameter(APP_KEY, appKey);
+        Uri.Builder uri = buildQueryString(params);
 
         JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
                 Request.Method.GET, url + uri.toString(), null,
@@ -153,6 +171,18 @@ public class HttpInstance {
         jsonObjectRequest.setShouldCache(shouldCache);
 
         getRequestQueue().add(jsonObjectRequest);
+    }
+
+    private Uri.Builder buildQueryString(Map<String, List<String>> params) {
+        Uri.Builder uri = new Uri.Builder();
+        for (Map.Entry<String, List<String> > entry : params.entrySet()) {
+            for (String s: entry.getValue())
+                uri.appendQueryParameter(entry.getKey(), s);
+        }
+
+        // add key
+        uri.appendQueryParameter(APP_KEY, appKey);
+        return uri;
     }
 
     /**
@@ -231,4 +261,6 @@ public class HttpInstance {
                 resultListener.onSearchCanceled();
         }
     }
+
+
 }
