@@ -4,8 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.visenze.productcat.BuildConfig;
+import com.visenze.productcat.android.api.AdminOperations;
+import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.model.ResultList;
+import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.URL;
@@ -24,14 +27,29 @@ public class ProductCat {
     private static final String API_END_POINT = "https://productcat.visenze.com";
 
     private SearchOperationsImpl searchOperations;
+    private AdminOperations adminOperations;
 
     private ResultListener mListener;
+    private StoreResultListener mStoreResultListener;
 
     // timeout in ms
     private int timeout;
 
     // customize number of retries
     private int retryCount;
+
+    private ProductCat(Context context,
+                       String appKey,
+                       String searchApiEndPoint,
+                       String userAgent,
+                       boolean shouldCache,
+                       String adminEndpoint,
+                       String adminGetStorePath) {
+
+        this(context, appKey, searchApiEndPoint, userAgent, shouldCache);
+        adminOperations = new AdminOperationsImpl(adminEndpoint, adminGetStorePath, context, appKey, userAgent);
+
+    }
 
     /**
      * Initialise the ViSearcher with a valid access/secret key pair
@@ -57,7 +75,9 @@ public class ProductCat {
         timeout = DEFAULT_TIMEOUT_MS;
         retryCount = DEFAULT_RETRY_COUNT;
         searchOperations.setRetryPolicy(timeout, retryCount);
+
     }
+
 
     /**
      * Sets the {@link ProductCat ResultListener} to be notified of the search result
@@ -68,6 +88,17 @@ public class ProductCat {
         mListener = listener;
     }
 
+    public void setStoreResultListener(StoreResultListener mStoreResultListener) {
+        this.mStoreResultListener = mStoreResultListener;
+    }
+
+    public void getStores(final StoreParams storeParams) {
+        try {
+            adminOperations.getStores(storeParams, mStoreResultListener);
+        } catch (ProductCatException e) {
+            Log.e("ProductCat SDK", e.getMessage());
+        }
+    }
 
     /**
      * Cancel the search
@@ -136,6 +167,9 @@ public class ProductCat {
         private Integer retryCount;
         private String uid;
 
+        private String adminEndpoint;
+        private String adminGetStoresPath;
+
         public Builder(String appKey) {
             mAppKey = appKey;
             searchApiEndPoint = API_END_POINT;
@@ -154,6 +188,16 @@ public class ProductCat {
 
         public Builder setApiEndPoint(URL endPoint) {
             searchApiEndPoint = endPoint.toString();
+            return this;
+        }
+
+        public Builder setAdminEndpoint(String adminEndpoint) {
+            this.adminEndpoint = adminEndpoint;
+            return this;
+        }
+
+        public Builder setAdminGetStoresPath(String adminGetStoresPath) {
+            this.adminGetStoresPath = adminGetStoresPath;
             return this;
         }
 
@@ -184,11 +228,18 @@ public class ProductCat {
 
         public ProductCat build(Context context) {
 
-            ProductCat productCat = new ProductCat(context,
-                    mAppKey,
-                    searchApiEndPoint,
-                    userAgent,
-                    shouldCache);
+            ProductCat productCat = adminEndpoint == null ?
+                    new ProductCat(context,
+                        mAppKey,
+                        searchApiEndPoint,
+                        userAgent,
+                        shouldCache) :
+                    new ProductCat(context,
+                        mAppKey,
+                        searchApiEndPoint,
+                        userAgent,
+                        shouldCache,
+                        adminEndpoint, adminGetStoresPath);
 
             if(retryCount!=null) {
                 productCat.setRetryCount(retryCount);
@@ -231,5 +282,14 @@ public class ProductCat {
         public abstract void onSearchCanceled();
 
     }
+
+    public static interface StoreResultListener {
+        // call back for getting list of stores
+        public abstract void onResult(final StoreResultList storeResultList);
+
+        // call upon any error
+        public abstract void onError(String errorMessage);
+    }
+
 
 }

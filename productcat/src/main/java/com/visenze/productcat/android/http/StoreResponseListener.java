@@ -2,23 +2,18 @@ package com.visenze.productcat.android.http;
 
 import com.android.volley.Response;
 import com.visenze.productcat.android.ProductCat;
-import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.ProductCatException;
+import com.visenze.productcat.android.model.ResultList;
+import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.util.ResponseParser;
 
 import org.json.JSONObject;
 
-/**
- * Response listener
- */
-public class ResponseListener implements Response.Listener<JSONObject> {
-    private ProductCat.ResultListener resultListener;
-    private String type;
+public class StoreResponseListener implements Response.Listener<JSONObject> {
+    private ProductCat.StoreResultListener resultListener;
 
-    public ResponseListener(ProductCat.ResultListener resultListener,
-                            String type) {
+    public StoreResponseListener(ProductCat.StoreResultListener resultListener) {
         this.resultListener = resultListener;
-        this.type = type;
     }
 
     @Override
@@ -28,11 +23,11 @@ public class ResponseListener implements Response.Listener<JSONObject> {
         }
 
         try {
-            ResultList resultList = getResult(jsonObject.toString());
+            StoreResultList resultList = getResult(jsonObject.toString());
             if (resultList.getErrorMessage() != null)
-                resultListener.onSearchError(resultList.getErrorMessage());
+                resultListener.onError(resultList.getErrorMessage());
             else {
-                resultListener.onSearchResult(resultList);
+                resultListener.onResult(resultList);
             }
         } catch (ProductCatException e) {
             e.printStackTrace();
@@ -45,7 +40,7 @@ public class ResponseListener implements Response.Listener<JSONObject> {
      * @param jsonResponse json response
      * @return result list
      */
-    private ResultList getResult(String jsonResponse) {
-        return ResponseParser.parseResult(jsonResponse);
+    private StoreResultList getResult(String jsonResponse) {
+        return ResponseParser.parseStoresResult(jsonResponse);
     }
 }

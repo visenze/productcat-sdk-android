@@ -11,6 +11,7 @@ import com.visenze.productcat.android.model.ProductType;
 import com.visenze.productcat.android.model.SponsorContent;
 import com.visenze.productcat.android.model.SponsorContentImg;
 import com.visenze.productcat.android.model.Store;
+import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.model.Tag;
 import com.visenze.productcat.android.model.TagGroup;
 
@@ -426,5 +427,43 @@ public class ResponseParser {
         } catch (JSONException e) {
             throw new ProductCatException("Error parsing response " + e.getMessage(), e);
         }
+    }
+
+    public static StoreResultList parseStoresResult(String jsonResponse) {
+        try {
+            StoreResultList storeResultList = new StoreResultList();
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            storeResultList.setErrorMessage(parseResponseError(jsonObject));
+
+            if (jsonObject.has(RESULT)) {
+                JSONArray resultArray = jsonObject.getJSONArray(RESULT);
+                storeResultList.setStore(parseStores(resultArray));
+            }
+
+            if (jsonObject.has("limit")) {
+                storeResultList.setLimit(jsonObject.getInt("limit"));
+            }
+
+            if (jsonObject.has("page")) {
+                storeResultList.setLimit(jsonObject.getInt("page"));
+            }
+
+            return storeResultList;
+        } catch (JSONException e) {
+            throw new ProductCatException("Error parsing response " + e.getMessage(), e);
+        }
+    }
+
+    private static List<Store> parseStores(JSONArray storeArray) throws JSONException {
+        List<Store> stores = new ArrayList<>();
+        for (int i = 0, length = storeArray.length(); i < length; i++) {
+            JSONObject o = storeArray.optJSONObject(i);
+            Store store = new Store();
+            store.setName(o.getString(NAME));
+            store.setStoreId(o.optInt(STORE_ID));
+            store.setAvailability(1);
+            stores.add(store);
+        }
+        return stores;
     }
 }
