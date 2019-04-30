@@ -88,6 +88,17 @@ public class ProductCat {
         mListener = listener;
     }
 
+    public void setStoreResultListener(StoreResultListener mStoreResultListener) {
+        this.mStoreResultListener = mStoreResultListener;
+    }
+
+    public void getStores(final StoreParams storeParams) {
+        try {
+            adminOperations.getStores(storeParams, mStoreResultListener);
+        } catch (ProductCatException e) {
+            Log.e("ProductCat SDK", e.getMessage());
+        }
+    }
 
     /**
      * Cancel the search
