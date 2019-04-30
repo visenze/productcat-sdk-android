@@ -33,7 +33,7 @@ public class AdminOperationsImpl implements AdminOperations {
      * @param appKey app key
      */
     public AdminOperationsImpl(String endpoint,
-                               String getStorePath,
+                               String getStoresPath,
                                Context context,
                                String appKey,
                                String userAgent) {
