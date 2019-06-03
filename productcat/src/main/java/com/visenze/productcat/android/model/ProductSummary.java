@@ -29,6 +29,8 @@ public class ProductSummary {
     private Double orgMaxPrice;
     private String orgPriceUnit;
 
+    private boolean boosted = false;
+
 
     public ProductSummary() {
 
@@ -184,5 +186,13 @@ public class ProductSummary {
 
     public void setOrgPriceUnit(String orgPriceUnit) {
         this.orgPriceUnit = orgPriceUnit;
+    }
+
+    public boolean isBoosted() {
+        return boosted;
+    }
+
+    public void setBoosted(boolean boosted) {
+        this.boosted = boosted;
     }
 }
