@@ -85,6 +85,8 @@ public class ResponseParser {
     public static final String URL = "url";
     public static final String H = "h";
     public static final String W = "w";
+    public static final String BOOSTED = "boosted";
+    public static final String TRUE = "true";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -312,6 +314,9 @@ public class ResponseParser {
                 productSummary.setPgid(summary.optString(PGID));
                 productSummary.setPid(summary.optString(PID));
                 productSummary.setMainImage(summary.optString(MAIN_IMAGE));
+
+                String boostedString = summary.optString(BOOSTED);
+                productSummary.setBoosted(TRUE.equals(boostedString));
 
                 // images
                 if ( summary.has(IMAGES) ) {
