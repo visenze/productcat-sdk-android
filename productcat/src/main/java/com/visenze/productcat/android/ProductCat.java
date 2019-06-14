@@ -115,6 +115,14 @@ public class ProductCat {
         }
     }
 
+    public void imageSearch(final ImageSearchParams params, String customSearchPoint) {
+        try {
+            searchOperations.imageSearch(params, mListener, customSearchPoint);
+        } catch (ProductCatException e) {
+            Log.e("ProductCat SDK", e.getMessage());
+        }
+    }
+
     public void textSearch(final TextSearchParams params) {
         try {
             searchOperations.textSearch(params, mListener);

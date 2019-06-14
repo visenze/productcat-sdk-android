@@ -57,6 +57,11 @@ public class SearchOperationsImpl implements SearchOperations {
 
     @Override
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener) {
+        imageSearch(params, resultListener, PRODUCT_SUMMARY_SEARCH);
+    }
+
+    @Override
+    public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener, String customSearchPath) {
         byte[] imageBytes = null;
         if (params.getImage() != null) {
             imageBytes = params.getImage().getByteArray();
@@ -69,10 +74,10 @@ public class SearchOperationsImpl implements SearchOperations {
 
         } else if (imageBytes != null) {
             httpInstance.addMultipartRequestToQueue(
-                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), imageBytes, resultListener, retryPolicy);
+                    apiBase + customSearchPath, params.toMap(), imageBytes, resultListener, retryPolicy);
         } else {
             httpInstance.addMultipartRequestToQueue(
-                    apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(), null, resultListener, retryPolicy);
+                    apiBase + customSearchPath, params.toMap(), null, resultListener, retryPolicy);
         }
     }
 
