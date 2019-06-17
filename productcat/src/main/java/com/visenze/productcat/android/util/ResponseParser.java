@@ -87,6 +87,8 @@ public class ResponseParser {
     public static final String W = "w";
     public static final String BOOSTED = "boosted";
     public static final String TRUE = "true";
+    public static final String BRAND = "brand";
+    public static final String BRAND_ID = "brand_id";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -332,6 +334,9 @@ public class ResponseParser {
                 productSummary.setMinPrice(summary.optDouble(MIN_PRICE, 0));
                 productSummary.setMaxPrice(summary.optDouble(MAX_PRICE, 0));
                 productSummary.setPriceUnit(summary.optString(PRICE_UNIT));
+                productSummary.setBrand(summary.optString(BRAND));
+                productSummary.setBrandId(summary.optString(BRAND_ID));
+
 
                 if(summary.has(ORIGINAL_PRICE_UNIT)) {
                     productSummary.setOrgPriceUnit(summary.optString(ORIGINAL_PRICE_UNIT));

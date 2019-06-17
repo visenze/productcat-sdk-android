@@ -31,6 +31,8 @@ public class ProductSummary {
 
     private boolean boosted = false;
 
+    private String brand;
+    private String brandId;
 
     public ProductSummary() {
 
@@ -194,5 +196,21 @@ public class ProductSummary {
 
     public void setBoosted(boolean boosted) {
         this.boosted = boosted;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(String brandId) {
+        this.brandId = brandId;
     }
 }
