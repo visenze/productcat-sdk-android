@@ -628,6 +628,113 @@ public class ResponseParserTest {
         assertNull(item.getOrgPriceUnit());
     }
 
+    @Test
+    public void testParseEvalResponse() {
+        String resString = "{\n" +
+                "    \"im_id\": \"201906173654d637a048cbb5106e7c28d05dacf41d9720acf38.jpg\",\n" +
+                "    \"reqid\": \"05LM799LEHPMK3715DUI9EE9\",\n" +
+                "    \"status\": \"OK\",\n" +
+                "    \"error\": [],\n" +
+                "    \"product_types\": [\n" +
+                "        {\n" +
+                "            \"type\": \"bag\",\n" +
+                "            \"score\": 0.981,\n" +
+                "            \"box\": [\n" +
+                "                29,\n" +
+                "                1,\n" +
+                "                185,\n" +
+                "                219\n" +
+                "            ],\n" +
+                "            \"attributes\": {}\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"result\": [\n" +
+                "        {\n" +
+                "            \"pgid\": \"\",\n" +
+                "            \"main_image\": \"https://imgtio.visenze.com.cn/weardex-insert-production/512x512/1360/7487/00001d3f5cc3f0f6003100658c7cec90.jpg\",\n" +
+                "            \"images\": [\n" +
+                "                \"http://g.search2.alicdn.com/img/bao/uploaded/i4/i2/1993730769/O1CN01RGmhtt1HYF49pzEbi_!!0-item_pic.jpg\"\n" +
+                "            ],\n" +
+                "            \"title\": \"阿迪达斯男包女包2019夏季新款三叶草书包电脑包运动双肩包D98923\",\n" +
+                "            \"brand\": \"幸运叶子官方旗舰店\",\n" +
+                "            \"brand_id\": \"108837944\",\n" +
+                "            \"country\": \"CN\",\n" +
+                "            \"min_price\": 230,\n" +
+                "            \"max_price\": 239,\n" +
+                "            \"price_unit\": \"CNY\",\n" +
+                "            \"attrs\": {\n" +
+                "                \"source\": \"XXX-CN\"\n" +
+                "            },\n" +
+                "            \"stores\": [\n" +
+                "                {\n" +
+                "                    \"name\": \"XXX-CN\"\n" +
+                "                }\n" +
+                "            ],\n" +
+                "            \"availability\": 1,\n" +
+                "            \"product_url\": \"https://detail.xxx.com/item.htm?id=585691895673\",\n" +
+                "            \"pid\": \"XXX-CN_585691895673\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"recognize_result\": [\n" +
+                "        {\n" +
+                "            \"tag_group\": \"category\",\n" +
+                "            \"tags\": [\n" +
+                "                {\n" +
+                "                    \"tag_id\": \"root|bag\",\n" +
+                "                    \"tag\": \"bag\",\n" +
+                "                    \"score\": 0.9836792349815369\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    \"tag_id\": \"root|bag|backpack\",\n" +
+                "                    \"tag\": \"backpack\",\n" +
+                "                    \"score\": 0.9464564323425293\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        ResultList resultList = ResponseParser.parseResult(resString);
+        assertEquals("05LM799LEHPMK3715DUI9EE9", resultList.getReqid());
+        assertEquals("201906173654d637a048cbb5106e7c28d05dacf41d9720acf38.jpg", resultList.getImId());
+        assertNull(resultList.getErrorMessage());
+        List<ProductType> productTypes = resultList.getProductTypes();
+        assertEquals("bag", productTypes.get(0).getType());
+        assertTrue(0.981 == productTypes.get(0).getScore());
+        assertTrue(29 == productTypes.get(0).getBox().getX1());
+        assertTrue(219 == productTypes.get(0).getBox().getY2());
+        List<ProductSummary> summaries = resultList.getProductSummaryList();
+        assertTrue(1 == summaries.size());
+
+        ProductSummary product = summaries.get(0);
+        assertEquals("", product.getPgid());
+        assertEquals("XXX-CN_585691895673" , product.getPid());
+        assertEquals("https://imgtio.visenze.com.cn/weardex-insert-production/512x512/1360/7487/00001d3f5cc3f0f6003100658c7cec90.jpg", product.getMainImage());
+        assertEquals("http://g.search2.alicdn.com/img/bao/uploaded/i4/i2/1993730769/O1CN01RGmhtt1HYF49pzEbi_!!0-item_pic.jpg", product.getImages().get(0));
+        assertEquals("阿迪达斯男包女包2019夏季新款三叶草书包电脑包运动双肩包D98923", product.getTitle());
+        assertEquals("", product.getDesc());
+        assertEquals("CN", product.getCountry());
+
+        assertTrue(230 == product.getMinPrice());
+        assertTrue(239 == product.getMaxPrice());
+        assertEquals("CNY", product.getPriceUnit());
+
+        assertEquals(1, product.getAvailability());
+        assertEquals(1, product.getStores().size());
+        Store store = product.getStores().get(0);
+        assertEquals(0, store.getStoreId());
+        assertEquals("XXX-CN", store.getName());
+        assertEquals(1, store.getAvailability());
+
+        assertEquals("https://detail.xxx.com/item.htm?id=585691895673",
+                product.getProductUrl());
+
+        assertEquals("108837944", product.getBrandId());
+        assertEquals("幸运叶子官方旗舰店", product.getBrand());
+
+
+    }
+
     private ProductSummary assertCommon(ResultList resultList) {
         assertEquals("05L6GNU6ODRRP6S6UTCJQGSS" , resultList.getReqid());
         assertEquals("2019042936585ce3972035654a11430c10c09be536012146d6d.png" , resultList.getImId());
