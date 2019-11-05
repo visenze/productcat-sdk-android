@@ -42,7 +42,7 @@ public class ProductCatUIDManager {
                     break;
                 }
             }
-            if (uid.length > 0) {
+            if (uid.length > 1) {
                 ProductCatUIDManager.setUid(uid[1]);
             }
         }
