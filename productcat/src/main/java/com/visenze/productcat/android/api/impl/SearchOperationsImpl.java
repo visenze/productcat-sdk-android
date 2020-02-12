@@ -63,23 +63,7 @@ public class SearchOperationsImpl implements SearchOperations {
 
     @Override
     public void imageSearchResultPage(ImageSearchParams params, final ProductCat.ResultListener resultListener) {
-        byte[] imageBytes = null;
-        if (params.getImage() != null) {
-            imageBytes = params.getImage().getByteArray();
-        }
-        String imageUrl = params.getImageUrl();
-        String imId = params.getImId();
-
-        if (imageBytes == null && (imageUrl == null || imageUrl.isEmpty()) && (imId == null || imId.isEmpty())) {
-            throw new ProductCatException("Missing parameter, image empty");
-
-        } else if (imageBytes != null) {
-            httpInstance.addMultipartRequestToQueue(
-                    apiBase + PRODUCT_SUMMARY_SEARCH_RESULT_PAGE, params.toMap(), imageBytes, resultListener, retryPolicy);
-        } else {
-            httpInstance.addMultipartRequestToQueue(
-                    apiBase + PRODUCT_SUMMARY_SEARCH_RESULT_PAGE, params.toMap(), null, resultListener, retryPolicy);
-        }
+        imageSearch(params, resultListener, PRODUCT_SUMMARY_SEARCH_RESULT_PAGE);
     }
 
     @Override
@@ -102,6 +86,7 @@ public class SearchOperationsImpl implements SearchOperations {
                     apiBase + customSearchPath, params.toMap(), null, resultListener, retryPolicy);
         }
     }
+
 
     @Override
     public void textSearch(TextSearchParams params, ProductCat.ResultListener mListener) {
