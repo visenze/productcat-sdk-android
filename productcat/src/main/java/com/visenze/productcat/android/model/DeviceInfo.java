@@ -9,6 +9,7 @@ public class DeviceInfo {
     private String didmd5;
     private String ifa;
     private String latLng;
+    private String uc;
 
     public DeviceInfo() {
     }
@@ -77,4 +78,13 @@ public class DeviceInfo {
     public void setLatLng(String latLng) {
         this.latLng = latLng;
     }
+
+    public String getUc() {
+        return uc;
+    }
+
+    public void setUc(String uc) {
+        this.uc = uc;
+    }
+
 }

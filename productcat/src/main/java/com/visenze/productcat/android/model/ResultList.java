@@ -30,6 +30,8 @@ public class ResultList {
 
     private String countryFilter;
 
+    private String srpUrl;
+
     private List<SponsorContent> sponsorContents = new ArrayList<SponsorContent>();
 
     public ResultList() {
@@ -138,5 +140,13 @@ public class ResultList {
 
     public void setSponsorContents(List<SponsorContent> sponsorContents) {
         this.sponsorContents = sponsorContents;
+    }
+
+    public String getSrpUrl() {
+        return srpUrl;
+    }
+
+    public void setSrpUrl(String srpUrl) {
+        this.srpUrl = srpUrl;
     }
 }

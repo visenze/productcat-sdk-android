@@ -17,6 +17,7 @@ import com.visenze.productcat.android.http.HttpInstance;
 public class SearchOperationsImpl implements SearchOperations {
     public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
     private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
+    private final static String PRODUCT_SUMMARY_SEARCH_RESULT_PAGE = "/summary/products/srp";
 
     /**
      * URL
@@ -61,6 +62,11 @@ public class SearchOperationsImpl implements SearchOperations {
     }
 
     @Override
+    public void imageSearchResultPage(ImageSearchParams params, final ProductCat.ResultListener resultListener) {
+        imageSearch(params, resultListener, PRODUCT_SUMMARY_SEARCH_RESULT_PAGE);
+    }
+
+    @Override
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener, String customSearchPath) {
         byte[] imageBytes = null;
         if (params.getImage() != null) {
@@ -80,6 +86,7 @@ public class SearchOperationsImpl implements SearchOperations {
                     apiBase + customSearchPath, params.toMap(), null, resultListener, retryPolicy);
         }
     }
+
 
     @Override
     public void textSearch(TextSearchParams params, ProductCat.ResultListener mListener) {
