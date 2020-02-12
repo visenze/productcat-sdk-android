@@ -36,6 +36,8 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String S_IMG_H = "s_img_h";
     public static final String S_IMG_HMIN = "s_img_hmin";
     public static final String S_IMG_MIME = "s_img_mime";
+
+    // device info
     public static final String UIP = "uip";
     public static final String DEVICE_MODEL = "device_model";
     public static final String OS = "os";
@@ -44,7 +46,7 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String IFA = "ifa";
     public static final String GEO = "geo";
     public static final String UA = "ua";
-
+    public static final String UC = "uc";
 
     public ImageSearchParams() {
         super();
@@ -83,6 +85,9 @@ public class ImageSearchParams extends UploadSearchParams {
     private Boolean returnSponsoredContent;
 
     private AdParam adParam;
+
+    private DeviceInfo deviceInfo;
+
 
     public Float getSearchMinScore() {
         return searchMinScore;
@@ -148,6 +153,16 @@ public class ImageSearchParams extends UploadSearchParams {
         this.adParam = adParam;
     }
 
+    public DeviceInfo getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
+
+
     @Override
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = super.toMap();
@@ -176,6 +191,10 @@ public class ImageSearchParams extends UploadSearchParams {
             this.putStringInMap(map, AUTO_ROI, String.valueOf(autoRoi));
         }
 
+        if (deviceInfo != null) {
+            addDeviceInfoParams(map, deviceInfo);
+        }
+
         if (returnSponsoredContent!=null) {
             this.putStringInMap(map, RETURN_SPONSORED_CONTENT, String.valueOf(returnSponsoredContent));
 
@@ -187,8 +206,6 @@ public class ImageSearchParams extends UploadSearchParams {
 
     private void addSponsorContentParams(Map<String, List<String>> map) {
         if(returnSponsoredContent.booleanValue() && adParam!=null) {
-            // add device info param
-            addDeviceInfoParams(map, adParam.getDeviceInfo());
 
             // add banner param
             addBannerParams(map, adParam.getBannerImg());
@@ -299,6 +316,10 @@ public class ImageSearchParams extends UploadSearchParams {
 
         if(deviceInfo.getLatLng()!=null){
             this.putStringInMap(map, GEO, deviceInfo.getLatLng());
+        }
+
+        if(deviceInfo.getUc() != null) {
+            this.putStringInMap(map, UC, deviceInfo.getUc());
         }
 
     }

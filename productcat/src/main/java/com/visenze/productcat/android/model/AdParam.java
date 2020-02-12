@@ -11,8 +11,6 @@ public class AdParam {
 
     private Integer descMaxLen;
 
-    private DeviceInfo deviceInfo;
-
     public AdParam() {
     }
 
@@ -48,11 +46,4 @@ public class AdParam {
         this.descMaxLen = descMaxLen;
     }
 
-    public DeviceInfo getDeviceInfo() {
-        return deviceInfo;
-    }
-
-    public void setDeviceInfo(DeviceInfo deviceInfo) {
-        this.deviceInfo = deviceInfo;
-    }
 }
