@@ -89,6 +89,7 @@ public class ResponseParser {
     public static final String TRUE = "true";
     public static final String BRAND = "brand";
     public static final String BRAND_ID = "brand_id";
+    public static final String SRP_URL = "srp_url";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -137,6 +138,10 @@ public class ResponseParser {
 
             if (resultObj.has(COUNTRY_FILTER)) {
                 resultList.setCountryFilter(resultObj.getString(COUNTRY_FILTER));
+            }
+
+            if (resultObj.has(SRP_URL)) {
+                resultList.setSrpUrl(resultObj.getString(SRP_URL));
             }
 
             return resultList;

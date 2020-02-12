@@ -17,6 +17,23 @@ import static org.junit.Assert.*;
 
 public class ResponseParserTest {
 
+
+    @Test
+    public void parseSRPResult() {
+        String responseString = "{\"im_id\":\"202002063654d637a048cbb5106e7c28d05dacf41d9720acf38.jpg\",\"reqid\":\"05O1IQO3OSUHB8VCQ0Q536PG\",\"status\":\"OK\",\"error\":[],\"product_types\":[{\"type\":\"bag\",\"score\":0.862,\"box\":[32,2,185,218],\"attributes\":{}}],\"srp_url\":\"https://shopping.visenze.com/search/05O1IQO3OSUHB8VCQ0Q536PG?country=SG&amp;uid=4444\",\"recognize_result\":[{\"tag_group\":\"category\",\"tags\":[{\"tag_id\":\"root|bag\",\"tag\":\"bag\",\"score\":0.9836792349815369},{\"tag_id\":\"root|bag|backpack\",\"tag\":\"backpack\",\"score\":0.9464564323425293}]}]}";
+        ResultList resultList = ResponseParser.parseResult(responseString);
+
+        assertEquals("https://shopping.visenze.com/search/05O1IQO3OSUHB8VCQ0Q536PG?country=SG&amp;uid=4444", resultList.getSrpUrl());
+        assertEquals("05O1IQO3OSUHB8VCQ0Q536PG", resultList.getReqid());
+
+        List<ProductType> productTypes = resultList.getProductTypes();
+        assertEquals("bag", productTypes.get(0).getType());
+        assertTrue(0.862 == productTypes.get(0).getScore());
+        assertTrue(32 == productTypes.get(0).getBox().getX1());
+        assertTrue(218 == productTypes.get(0).getBox().getY2());
+
+    }
+
     @Test
     public void parseSponsorContentResult() {
         String responseString = "{\n" +

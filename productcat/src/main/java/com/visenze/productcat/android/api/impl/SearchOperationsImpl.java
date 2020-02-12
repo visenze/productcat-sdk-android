@@ -17,6 +17,7 @@ import com.visenze.productcat.android.http.HttpInstance;
 public class SearchOperationsImpl implements SearchOperations {
     public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
     private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
+    private final static String PRODUCT_SUMMARY_SEARCH_RESULT_PAGE = "/summary/products/srp";
 
     /**
      * URL
@@ -58,6 +59,27 @@ public class SearchOperationsImpl implements SearchOperations {
     @Override
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener) {
         imageSearch(params, resultListener, PRODUCT_SUMMARY_SEARCH);
+    }
+
+    @Override
+    public void imageSearchResultPage(ImageSearchParams params, final ProductCat.ResultListener resultListener) {
+        byte[] imageBytes = null;
+        if (params.getImage() != null) {
+            imageBytes = params.getImage().getByteArray();
+        }
+        String imageUrl = params.getImageUrl();
+        String imId = params.getImId();
+
+        if (imageBytes == null && (imageUrl == null || imageUrl.isEmpty()) && (imId == null || imId.isEmpty())) {
+            throw new ProductCatException("Missing parameter, image empty");
+
+        } else if (imageBytes != null) {
+            httpInstance.addMultipartRequestToQueue(
+                    apiBase + PRODUCT_SUMMARY_SEARCH_RESULT_PAGE, params.toMap(), imageBytes, resultListener, retryPolicy);
+        } else {
+            httpInstance.addMultipartRequestToQueue(
+                    apiBase + PRODUCT_SUMMARY_SEARCH_RESULT_PAGE, params.toMap(), null, resultListener, retryPolicy);
+        }
     }
 
     @Override
