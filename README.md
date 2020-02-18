@@ -18,21 +18,7 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile 'com.visenze.productcat:productcat:1.2.8'
-```
-
-In the `build.gradle` file under your app module, add the packaging options to ensure a successful compilation:
-
-```
-android {
-	...
-	
-    packagingOptions {
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-    }
-    ...
-}
+compile 'com.visenze.productcat:productcat:1.2.9'
 ```
 
 ## 1.2 Set User Permissions
@@ -105,7 +91,7 @@ productCat.imageSearch(searchParams);
 public void onPictureTaken(byte[] bytes, Camera camera) {
     Image image = new Image(bytes);
     ImageSearchParams searchParams = new ImageSearchParams(image);
-    
+
     productCat.imageSearch(searchParams);
 }
 ```
@@ -195,7 +181,7 @@ ProductCat Android SDK provides an interface to handle byte array returned from 
 public void onPictureTaken(byte[] bytes, Camera camera) {
     Image image = new Image(bytes, ResizeSettings.CAMERA_HIGH, 90);
     ImageSearchParams searchParams = new ImageSearchParams(image);
-    
+
     productCat.imageSearch(searchParams);
 }
 ```
@@ -211,10 +197,25 @@ TextSearchParams textParams = new TextSearchParams(queryText) ;
 productCat.textSearch(textParams);
 ```
 
+### 3.3 Search Result Page
+POST /summary/products/srp
 
-### 3.3 Custom Parameters
+**Search Result Page** solution is to get a web url to display the searched product results in browser. All parameters used in /summary/products are also valid in this api.
 
-If you have additional customized parameters, please use custom to set these parameters. 
+```java
+@Override
+public void onPictureTaken(byte[] bytes, Camera camera) {
+    Image image = new Image(bytes, ResizeSettings.CAMERA_HIGH, 90);
+    ImageSearchParams searchParams = new ImageSearchParams(image);
+
+    productCat.imageSearchResultPage(searchParams);
+}
+```
+
+
+### 3.4 Custom Parameters
+
+If you have additional customized parameters, please use custom to set these parameters.
 
 ```java
 Image image = new Image("/local/path/to/image.jpg");
@@ -229,7 +230,8 @@ productCat.imageSearch(searchParams);
 ```
 
 ## 4. Search Results
-The search results are returned as a list of products with required additional information. Use `getProductSummaryList()` to get the list of products. Please Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method. 
+### 4.1 Image Search and Text Seach result
+The image search and text search results are returned as a list of products with required additional information. Use `getProductSummaryList()` to get the list of products. Please Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method.
 
 ```java
 @Override
@@ -266,6 +268,22 @@ ImageSearchParams searchParams = new ImageSearchParams(image);
 searchParams.setBaseSearchParams(baseSearchParams);
 productCat.textSearch(searchParams);
 ```
+### 4.2 Search Result Page
+The Search Result Page API returns a web url to display the content of the searched result in a browser. ProductSummaryList of this API result is empty
+
+```java
+@Override
+public void onSearchResult(ResultList resultList) {
+      String srpUrl = resultList.getSrpUrl();
+
+      // show url content in browser.       
+      Intent intent = new Intent(Intent.ACTION_VIEW);
+      intent.setData(Uri.parse(srpUrl));
+      intent.setPackage(browserPackageName);
+      startActivity(intent);
+}
+```
+
 
 ## 5. Search Analytics
 
