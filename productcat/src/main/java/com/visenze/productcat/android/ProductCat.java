@@ -18,7 +18,7 @@ import java.net.URL;
  *
  * ProductCat should be initialised by Builder with a valid API access/secret key pair before it can be used.
  */
-public class ProductCat {
+public class ProductCat implements GetGAIDTask.OnTaskSuccess{
 
     public static final int DEFAULT_TIMEOUT_MS = 60000;
     public static final int DEFAULT_RETRY_COUNT = 1;
@@ -38,6 +38,10 @@ public class ProductCat {
     // customize number of retries
     private int retryCount;
 
+    private GetGAIDTask gaidTask;
+
+    private String gaid;
+
     private ProductCat(Context context,
                        String appKey,
                        String searchApiEndPoint,
@@ -48,6 +52,8 @@ public class ProductCat {
 
         this(context, appKey, searchApiEndPoint, userAgent, shouldCache);
         adminOperations = new AdminOperationsImpl(adminEndpoint, adminGetStorePath, context, appKey, userAgent);
+        gaidTask = new GetGAIDTask(context, this);
+        gaidTask.execute();
 
     }
 
@@ -75,6 +81,8 @@ public class ProductCat {
         timeout = DEFAULT_TIMEOUT_MS;
         retryCount = DEFAULT_RETRY_COUNT;
         searchOperations.setRetryPolicy(timeout, retryCount);
+        gaidTask = new GetGAIDTask(context, this);
+        gaidTask.execute();
 
     }
 
@@ -167,6 +175,11 @@ public class ProductCat {
         }
         this.retryCount = retryCount;
         searchOperations.setRetryPolicy(timeout, retryCount);
+    }
+
+    @Override
+    public void onSuccess(String gaid) {
+        this.gaid = gaid;
     }
 
     /**
@@ -268,6 +281,8 @@ public class ProductCat {
             if (uid!=null) {
                 ProductCatUIDManager.setUid(uid);
             }
+
+
 
             return productCat;
         }
