@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/container_margin_horizontal"
+
+    android:paddingRight="@dimen/container_margin_horizontal"
+    android:paddingTop="@dimen/container_margin_vertical"
+    android:paddingBottom="@dimen/container_margin_vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/policy_title"
+        android:layout_marginBottom="@dimen/item_margin_vertical"
+        android:textSize="@dimen/text_title_size"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/item_margin_vertical"
+        android:textSize="@dimen/text_content_size"
+        android:textColor="@android:color/black"
+        android:text="@string/policy_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/agree_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:checked="true"
+            android:buttonTint="@android:color/holo_red_dark" />
+        <TextView
+            android:id="@+id/terms_and_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/agree_terms"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_content_size"
+            android:autoLink="web"
+            android:linksClickable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/item_margin_vertical">
+
+        <CheckBox
+            android:id="@+id/agree_ad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/agree_to_ads"
+            android:textSize="@dimen/text_content_size"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_accept"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/accept_button_height"
+        android:background="@drawable/round_corner_button"
+        android:text="@string/accept"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/btn_deny"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deny"/>
+</LinearLayout>
