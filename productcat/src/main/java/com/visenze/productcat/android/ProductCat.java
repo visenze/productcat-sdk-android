@@ -1,9 +1,20 @@
 package com.visenze.productcat.android;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.visenze.productcat.BuildConfig;
+import com.visenze.productcat.R;
 import com.visenze.productcat.android.api.AdminOperations;
 import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
@@ -23,6 +34,9 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
     public static final int DEFAULT_TIMEOUT_MS = 60000;
     public static final int DEFAULT_RETRY_COUNT = 1;
 
+    private static final String IS_PRIVACY_SHOWN="is_privacy_shown";
+    private static final String IS_TERMS_ACCEPTED="is_terms_accepted";
+    private static final String IS_ADS_ACCEPTED="is_ads_accepted";
     private static final String USER_AGENT = "productcat-android-sdk";
     private static final String API_END_POINT = "https://productcat.visenze.com";
 
@@ -38,9 +52,13 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
     // customize number of retries
     private int retryCount;
 
+
     private GetGAIDTask gaidTask;
 
     private String gaid;
+
+    private SharedPreferences pref;
+
 
     private ProductCat(Context context,
                        String appKey,
@@ -56,6 +74,7 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
         gaidTask.execute();
 
     }
+
 
     /**
      * Initialise the ViSearcher with a valid access/secret key pair
@@ -84,8 +103,80 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
         gaidTask = new GetGAIDTask(context, this);
         gaidTask.execute();
 
+        String pref_file = context.getString(R.string.preference_file);
+        pref = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
+
+        createPrivacyPolicyDialog(context);
     }
 
+
+    private void createPrivacyPolicyDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.dialog_privacy_policy, null);
+
+        final TextView termsAndPolicy = view.findViewById(R.id.terms_and_policy);
+        final CheckBox terms = view.findViewById(R.id.agree_service);
+        final CheckBox ads = view.findViewById(R.id.agree_ad);
+        Button acceptBtn = view.findViewById(R.id.btn_accept);
+
+        final String policyUrl = context.getString(R.string.weblink_policy);
+        termsAndPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(policyUrl));
+                context.startActivity(intent);
+
+            }
+        });
+
+        acceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean termsChecked = terms.isChecked();
+                boolean adsChecked = ads.isChecked();
+                setPrefValues(termsChecked, adsChecked);
+            }
+        });
+        TextView denyBtn = view.findViewById(R.id.btn_deny);
+        denyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean termsChecked = terms.isChecked();
+                boolean adsChecked = ads.isChecked();
+                setPrefValues(termsChecked, adsChecked);
+            }
+        });
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void setPrivacyShown(boolean result) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(IS_PRIVACY_SHOWN, result);
+        editor.apply();
+    }
+
+    private void setPrefValues(boolean termsAccepted, boolean adAccepted) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(IS_TERMS_ACCEPTED, termsAccepted);
+        editor.putBoolean(IS_ADS_ACCEPTED, adAccepted);
+        editor.apply();
+    }
+
+    private boolean isPrivacyShown() {
+        return pref.getBoolean(IS_PRIVACY_SHOWN, false);
+    }
+
+    private boolean isTermsAccepted() {
+        return pref.getBoolean(IS_TERMS_ACCEPTED, false);
+    }
+
+    private boolean isAdAccepted() {
+        return pref.getBoolean(IS_ADS_ACCEPTED, false);
+    }
 
     /**
      * Sets the {@link ProductCat ResultListener} to be notified of the search result
