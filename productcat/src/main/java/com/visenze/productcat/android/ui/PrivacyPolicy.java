@@ -91,8 +91,11 @@ public class PrivacyPolicy {
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 isTermsAccepted = terms.isChecked();
                 isAdsAccepted = ads.isChecked();
+
+                isPrivacyShown = true;
                 setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
             }
@@ -107,14 +110,10 @@ public class PrivacyPolicy {
         return dialog;
     }
 
-    private void setPrivacyShown(boolean result) {
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(IS_PRIVACY_SHOWN, result);
-        editor.apply();
-    }
 
     private void setPrefValues(boolean termsAccepted, boolean adAccepted) {
         SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(IS_PRIVACY_SHOWN, true);
         editor.putBoolean(IS_TERMS_ACCEPTED, termsAccepted);
         editor.putBoolean(IS_ADS_ACCEPTED, adAccepted);
         editor.apply();

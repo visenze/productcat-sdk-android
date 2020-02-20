@@ -71,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/accept_button_height"
         android:background="@drawable/round_corner_button"
+        android:layout_marginBottom="@dimen/item_margin_vertical"
         android:text="@string/accept"
         android:textColor="@android:color/white"/>
 

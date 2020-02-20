@@ -139,25 +139,19 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
     }
 
     public void imageSearchResultPage(final ImageSearchParams params) {
-        if(showConsentForm()) {
+        if(mPrivacyPolicy.isPrivacyShown()) {
             try {
                 searchOperations.imageSearchResultPage(params, mListener);
             } catch (ProductCatException e) {
                 Log.e("ProductCat SDK", e.getMessage());
             }
+        } else {
+            mListener.onSearchError("Please accept Visenze's Privacy Policy and Terms of Use before proceed");
         }
     }
-    /**
-     * return false is the consent form have not been agreed by user yet.
-     * return true if do not need to show the content form.
-    **/
-    public boolean showConsentForm() {
-        if(mPrivacyPolicy.isPrivacyShown()) {
-            return true;
-        } else {
-            mPrivacyPolicy.showConsentDialog();
-            return false;
-        }
+
+    public void showConsentForm() {
+        mPrivacyPolicy.showConsentDialog();
     }
 
     public void imageSearch(final ImageSearchParams params) {
