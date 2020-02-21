@@ -91,7 +91,7 @@ public class ProductCat {
         mDataCollection = new DataCollection(context);
         mPrivacyPolicy = new PrivacyPolicy(context);
 
-        showConsentForm();
+        // showConsentForm();
     }
 
 

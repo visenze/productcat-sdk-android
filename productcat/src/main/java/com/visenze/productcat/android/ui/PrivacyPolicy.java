@@ -103,6 +103,11 @@ public class PrivacyPolicy {
         denyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isPrivacyShown = true;
+                isTermsAccepted = false;
+                isAdsAccepted = false;
+
+                setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
             }
         });
