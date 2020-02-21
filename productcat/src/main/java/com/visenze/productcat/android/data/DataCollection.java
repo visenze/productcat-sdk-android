@@ -70,8 +70,10 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
         this.gaid = gaid;
     }
 
-    public DeviceInfo getDeviceInfo() {
+    public DeviceInfo getDeviceInfo(boolean track) {
        DeviceInfo info = new DeviceInfo();
+       info.setDoNotTrack(track);
+
        if(gaid != null) {
            info.setIfa(gaid);
        }

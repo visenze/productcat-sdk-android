@@ -127,11 +127,8 @@ public class ProductCat {
     public void imageSearchResultPage(final ImageSearchParams params) {
         if(mPrivacyPolicy.isPrivacyShown()) {
             if(mPrivacyPolicy.isTermsAccepted()) {
-
-                if(mPrivacyPolicy.isAdsAccepted()) {
-                    DeviceInfo info = mDataCollection.getDeviceInfo();
-                    params.setDeviceInfo(info);
-                }
+                DeviceInfo info = mDataCollection.getDeviceInfo(mPrivacyPolicy.isAdsAccepted());
+                params.setDeviceInfo(info);
                 try {
                     searchOperations.imageSearchResultPage(params, mListener);
                 } catch (ProductCatException e) {

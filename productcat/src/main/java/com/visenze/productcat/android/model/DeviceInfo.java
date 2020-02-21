@@ -10,6 +10,7 @@ public class DeviceInfo {
     private String ifa;
     private String latLng;
     private String uc;
+    private String doNotTrack;
 
     public DeviceInfo() {
     }
@@ -87,4 +88,15 @@ public class DeviceInfo {
         this.uc = uc;
     }
 
+    public void setDoNotTrack(boolean track) {
+        if(track) {
+            doNotTrack = "yes";
+        } else {
+            doNotTrack = "no";
+        }
+    }
+
+    public String getDoNotTrack() {
+        return doNotTrack;
+    }
 }

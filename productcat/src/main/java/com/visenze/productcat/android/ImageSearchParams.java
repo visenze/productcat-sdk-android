@@ -47,6 +47,7 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String GEO = "geo";
     public static final String UA = "ua";
     public static final String UC = "uc";
+    public static final String DO_NOT_TRACK="do_not_track";
 
     public ImageSearchParams() {
         super();
@@ -320,6 +321,10 @@ public class ImageSearchParams extends UploadSearchParams {
 
         if(deviceInfo.getUc() != null) {
             this.putStringInMap(map, UC, deviceInfo.getUc());
+        }
+
+        if(deviceInfo.getDoNotTrack() != null) {
+            this.putStringInMap(map, DO_NOT_TRACK, deviceInfo.getDoNotTrack());
         }
 
     }
