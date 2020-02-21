@@ -90,9 +90,9 @@ public class DeviceInfo {
 
     public void setDoNotTrack(boolean track) {
         if(track) {
-            doNotTrack = "yes";
-        } else {
             doNotTrack = "no";
+        } else {
+            doNotTrack = "yes";
         }
     }
 
