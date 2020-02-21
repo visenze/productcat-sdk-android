@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 import androidx.core.app.ActivityCompat;
 
 import com.visenze.productcat.android.model.DeviceInfo;
+import com.visenze.productcat.android.util.SecurityHelper;
 
 import java.io.UnsupportedEncodingException;
 
@@ -30,8 +31,7 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
 
     private void generateDoubleHashIMEI(Context context) {
         String imei = getIMEI(context);
-        didmd5 = MD5(imei);
-        didmd5 = MD5(didmd5);
+        didmd5 = SecurityHelper.MD5(imei);
     }
 
     private String getIMEI(Context context) {
@@ -45,25 +45,7 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
         return deviceUniqueIdentifier;
     }
 
-    private String MD5(String md5) {
-        if(md5 == null) {
-            return null;
-        }
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(md5.getBytes("UTF-8"));
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-            }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch(UnsupportedEncodingException ex){
-            ex.printStackTrace();
-        }
-        return null;
-    }
+
 
     @Override
     public void onSuccess(String gaid) {
@@ -72,7 +54,7 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
 
     public DeviceInfo getDeviceInfo(boolean track) {
        DeviceInfo info = new DeviceInfo();
-       info.setDoNotTrack(track);
+       info.setTrack(track);
 
        if(gaid != null) {
            info.setIfa(gaid);

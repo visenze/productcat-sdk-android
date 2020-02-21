@@ -88,12 +88,8 @@ public class DeviceInfo {
         this.uc = uc;
     }
 
-    public void setDoNotTrack(boolean track) {
-        if(track) {
-            doNotTrack = "no";
-        } else {
-            doNotTrack = "yes";
-        }
+    public void setTrack(boolean track) {
+        doNotTrack = track ? "no" : "yes";
     }
 
     public String getDoNotTrack() {

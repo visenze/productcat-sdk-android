@@ -54,10 +54,17 @@ public class PrivacyPolicy {
 
         final TextView termsAndPolicy = view.findViewById(R.id.terms_and_policy);
         final CheckBox terms = view.findViewById(R.id.agree_service);
-        terms.setChecked(true);
-
         final CheckBox ads = view.findViewById(R.id.agree_ad);
-        ads.setChecked(false);
+
+        if(isPrivacyShown) {
+            terms.setChecked(isTermsAccepted);
+            ads.setChecked(isAdsAccepted);
+        } else {
+            // first time show default value
+            terms.setChecked(true);
+            ads.setChecked(false);
+        }
+        
         final Button acceptBtn = view.findViewById(R.id.btn_accept);
 
         terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

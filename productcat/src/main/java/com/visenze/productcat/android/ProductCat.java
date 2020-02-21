@@ -91,7 +91,7 @@ public class ProductCat {
         mDataCollection = new DataCollection(context);
         mPrivacyPolicy = new PrivacyPolicy(context);
 
-        // showConsentForm();
+        showConsentForm();
     }
 
 
@@ -124,41 +124,54 @@ public class ProductCat {
         searchOperations.cancelSearch(mListener);
     }
 
-    public void imageSearchResultPage(final ImageSearchParams params) {
+    public void showConsentForm() {
+        mPrivacyPolicy.showConsentDialog();
+    }
+
+    private boolean checkPrivacyPolicy(final ImageSearchParams params) {
         if(mPrivacyPolicy.isPrivacyShown()) {
             if(mPrivacyPolicy.isTermsAccepted()) {
                 DeviceInfo info = mDataCollection.getDeviceInfo(mPrivacyPolicy.isAdsAccepted());
                 params.setDeviceInfo(info);
-                try {
-                    searchOperations.imageSearchResultPage(params, mListener);
-                } catch (ProductCatException e) {
-                    Log.e("ProductCat SDK", e.getMessage());
-                }
+                return true;
             } else {
                 mListener.onSearchError("Please accept Visenze's Privacy Policy and Terms of Use before proceed");
             }
         } else {
             showConsentForm();
         }
+        return false;
+
     }
 
-    public void showConsentForm() {
-        mPrivacyPolicy.showConsentDialog();
+    public void imageSearchResultPage(final ImageSearchParams params) {
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.imageSearchResultPage(params, mListener);
+            } catch (ProductCatException e){
+                Log.e("ProductCat SDK", e.getMessage());
+            }
+        }
     }
+
 
     public void imageSearch(final ImageSearchParams params) {
-        try {
-            searchOperations.imageSearch(params, mListener);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.imageSearch(params, mListener);
+            } catch (ProductCatException e) {
+                Log.e("ProductCat SDK", e.getMessage());
+            }
         }
     }
 
     public void imageSearch(final ImageSearchParams params, String customSearchPoint) {
-        try {
-            searchOperations.imageSearch(params, mListener, customSearchPoint);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.imageSearch(params, mListener, customSearchPoint);
+            } catch (ProductCatException e) {
+                Log.e("ProductCat SDK", e.getMessage());
+            }
         }
     }
 

@@ -35,11 +35,8 @@ public class GetGAIDTask extends AsyncTask<Void, Void, String> {
         }
 
         String gaid = null;
-
-        try {
+        if(idInfo != null) {
             gaid = idInfo.getId();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
 
         return gaid;
