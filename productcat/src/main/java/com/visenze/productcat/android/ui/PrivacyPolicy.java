@@ -36,7 +36,7 @@ public class PrivacyPolicy {
         pref = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
 
         isPrivacyShown = pref.getBoolean(IS_PRIVACY_SHOWN, false);
-        isTermsAccepted = pref.getBoolean(IS_TERMS_ACCEPTED, true);
+        isTermsAccepted = pref.getBoolean(IS_TERMS_ACCEPTED, false);
         isAdsAccepted = pref.getBoolean(IS_ADS_ACCEPTED, false);
 
         consentDialog = createConsentDialog(context);
@@ -54,10 +54,10 @@ public class PrivacyPolicy {
 
         final TextView termsAndPolicy = view.findViewById(R.id.terms_and_policy);
         final CheckBox terms = view.findViewById(R.id.agree_service);
-        terms.setChecked(isTermsAccepted);
+        terms.setChecked(true);
 
         final CheckBox ads = view.findViewById(R.id.agree_ad);
-        ads.setChecked(isAdsAccepted);
+        ads.setChecked(false);
         final Button acceptBtn = view.findViewById(R.id.btn_accept);
 
         terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -91,11 +91,10 @@ public class PrivacyPolicy {
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                isPrivacyShown = true;
                 isTermsAccepted = terms.isChecked();
                 isAdsAccepted = ads.isChecked();
 
-                isPrivacyShown = true;
                 setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
             }

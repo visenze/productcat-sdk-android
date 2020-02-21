@@ -126,15 +126,22 @@ public class ProductCat {
 
     public void imageSearchResultPage(final ImageSearchParams params) {
         if(mPrivacyPolicy.isPrivacyShown()) {
-            DeviceInfo info = mDataCollection.getDeviceInfo();
-            params.setDeviceInfo(info);
-            try {
-                searchOperations.imageSearchResultPage(params, mListener);
-            } catch (ProductCatException e) {
-                Log.e("ProductCat SDK", e.getMessage());
+            if(mPrivacyPolicy.isTermsAccepted()) {
+
+                if(mPrivacyPolicy.isAdsAccepted()) {
+                    DeviceInfo info = mDataCollection.getDeviceInfo();
+                    params.setDeviceInfo(info);
+                }
+                try {
+                    searchOperations.imageSearchResultPage(params, mListener);
+                } catch (ProductCatException e) {
+                    Log.e("ProductCat SDK", e.getMessage());
+                }
+            } else {
+                mListener.onSearchError("Please accept Visenze's Privacy Policy and Terms of Use before proceed");
             }
         } else {
-            mListener.onSearchError("Please accept Visenze's Privacy Policy and Terms of Use before proceed");
+            showConsentForm();
         }
     }
 
