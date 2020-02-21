@@ -27,30 +27,8 @@ public class ProductCatUIDManager {
         preference = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
         // PS-303. add uid by default.
         String uniqueID = UUID.randomUUID().toString();
+        uniqueID = uniqueID.replace("-", "");
         setUid(uniqueID);
-    }
-
-    // store uid from server cookie
-    public static void storeUidIfNeeded(NetworkResponse response) {
-        if (ProductCatUIDManager.hasUid()) {
-            return;
-        }
-
-        Map headers = response.headers;
-        if (headers.containsKey(SET_COOKIE)) {
-            String value = (String)headers.get(SET_COOKIE);
-            String[] cv = value.split(SEMI_COLON);
-            String[] uid = new String[0];
-            for (String v : cv) {
-                if (v.startsWith(UID)) {
-                    uid = v.split(EQUAL);
-                    break;
-                }
-            }
-            if (uid.length > 1) {
-                ProductCatUIDManager.setUid(uid[1]);
-            }
-        }
     }
 
     public static boolean hasUid() {
