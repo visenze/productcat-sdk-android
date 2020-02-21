@@ -1,4 +1,4 @@
-package com.visenze.productcat.android;
+package com.visenze.productcat.android.data;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -15,7 +15,7 @@ public class GetGAIDTask extends AsyncTask<Void, Void, String> {
     private final OnTaskSuccess mListener;
     private Context mContext;
 
-    GetGAIDTask(Context context, OnTaskSuccess listener) {
+    public GetGAIDTask(Context context, OnTaskSuccess listener) {
         mContext = context;
         mListener = listener;
     }

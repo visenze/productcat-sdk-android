@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.android.volley.NetworkResponse;
+import com.visenze.productcat.R;
 
 import java.util.Map;
 import java.util.UUID;
@@ -13,7 +14,6 @@ import java.util.UUID;
  */
 public class ProductCatUIDManager {
     public final static String PREF_KEY = "visearchudid";
-    public final static String PREFS_NAME = "visearchuid_prefs";
     public static final String SET_COOKIE = "Set-Cookie";
     public static final String UID = "uid";
     public static final String SEMI_COLON = ";";
@@ -22,7 +22,12 @@ public class ProductCatUIDManager {
     private static SharedPreferences preference;
 
     public static void initPref(final Context context) {
-        preference =  context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        String pref_file = context.getString(R.string.preference_file);
+        preference = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
+        // PS-303. add uid by default.
+        String uniqueID = UUID.randomUUID().toString();
+        setUid(uniqueID);
     }
 
     // store uid from server cookie

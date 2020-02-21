@@ -1,23 +1,15 @@
 package com.visenze.productcat.android;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.visenze.productcat.BuildConfig;
-import com.visenze.productcat.R;
 import com.visenze.productcat.android.api.AdminOperations;
 import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
+import com.visenze.productcat.android.data.DataCollection;
+import com.visenze.productcat.android.data.GetGAIDTask;
+import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.ui.PrivacyPolicy;
@@ -30,7 +22,7 @@ import java.net.URL;
  *
  * ProductCat should be initialised by Builder with a valid API access/secret key pair before it can be used.
  */
-public class ProductCat implements GetGAIDTask.OnTaskSuccess{
+public class ProductCat {
 
     public static final int DEFAULT_TIMEOUT_MS = 60000;
     public static final int DEFAULT_RETRY_COUNT = 1;
@@ -52,11 +44,9 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
     private int retryCount;
 
 
-    private GetGAIDTask gaidTask;
-
-    private String gaid;
-
     private PrivacyPolicy mPrivacyPolicy;
+
+    private DataCollection mDataCollection;
 
 
     private ProductCat(Context context,
@@ -69,9 +59,6 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
 
         this(context, appKey, searchApiEndPoint, userAgent, shouldCache);
         adminOperations = new AdminOperationsImpl(adminEndpoint, adminGetStorePath, context, appKey, userAgent);
-        gaidTask = new GetGAIDTask(context, this);
-        gaidTask.execute();
-
     }
 
 
@@ -99,13 +86,12 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
         timeout = DEFAULT_TIMEOUT_MS;
         retryCount = DEFAULT_RETRY_COUNT;
         searchOperations.setRetryPolicy(timeout, retryCount);
-        gaidTask = new GetGAIDTask(context, this);
-        gaidTask.execute();
 
+
+        mDataCollection = new DataCollection(context);
         mPrivacyPolicy = new PrivacyPolicy(context);
 
         showConsentForm();
-        // createPrivacyPolicyDialog(context);
     }
 
 
@@ -140,6 +126,8 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
 
     public void imageSearchResultPage(final ImageSearchParams params) {
         if(mPrivacyPolicy.isPrivacyShown()) {
+            DeviceInfo info = mDataCollection.getDeviceInfo();
+            params.setDeviceInfo(info);
             try {
                 searchOperations.imageSearchResultPage(params, mListener);
             } catch (ProductCatException e) {
@@ -208,10 +196,6 @@ public class ProductCat implements GetGAIDTask.OnTaskSuccess{
         searchOperations.setRetryPolicy(timeout, retryCount);
     }
 
-    @Override
-    public void onSuccess(String gaid) {
-        this.gaid = gaid;
-    }
 
     /**
      * Builder class for {@link ProductCat}
