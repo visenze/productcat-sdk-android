@@ -10,7 +10,13 @@
 	    - 3.1.1 [Selection Box](#311-selection-box)
 	    - 3.1.2 [Resizing Settings](#312-resizing-settings)
 	  - 3.2 [Text Search ](#32-text-search)
- 4. [Search Results](#4-search-results)     
+	  - 3.3 [Search Result Page](#33-search-result-page)
+	  - 3.4 [Custom Parameters](#34-custom-parameters)
+ 4. [Search Results](#4-search-results)    
+      - 4.1 [Image Search and Text Search Result](#41-image-search-and-text-search-result)
+      - 4.2 [Search Result Page](#42-search-result-page)
+ 5. [Data Privacy Workflow](#5-data-privacy-workflow)
+
 ---
 
 ## 1. Setup
@@ -18,7 +24,7 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile 'com.visenze.productcat:productcat:1.2.9'
+compile 'com.visenze.productcat:productcat:2.0.0'
 ```
 
 ## 1.2 Set User Permissions
@@ -33,6 +39,7 @@ ProductCat Android SDK needs these user permissions to work. Add the following d
 	<uses-permission android:name="android.permission.CAMERA"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
 	<application>
 	...
@@ -230,7 +237,7 @@ productCat.imageSearch(searchParams);
 ```
 
 ## 4. Search Results
-### 4.1 Image Search and Text Seach result
+### 4.1 Image Search and Text Seach Result
 The image search and text search results are returned as a list of products with required additional information. Use `getProductSummaryList()` to get the list of products. Please Use`productCat.cancelSearch()` to cancel a search, and handle the result by implementing the `onSearchCanceled()` callback. If error occurs during the search, an error message will be returned and can be handled in `productCat.onSearchError(String error)` callback method.
 
 ```java
@@ -283,11 +290,21 @@ public void onSearchResult(ResultList resultList) {
       startActivity(intent);
 }
 ```
+## 5. Data Privacy Workflow
+To analyze search performance and usage statistics (such as Click Through Rate, Active Users, Conversion Tracking, Retention Rate, etc), Productcat sdk use UID together with Google Advertising ID or IMEI to uniquely identify a user. The UID is generated when user initialize productcat sdk for the first time. Based on user's usage statistics, Visenze will push customized seach results and advertising product items according to user's preference.
+As a result, users need to:
+- Accept Visenze's terms and condition before use image search and search result page api
+- (Optionally) Accept advertisement terms to receive special offers, promotions information. ---
 
+Visenze sdk will show up user consent form for the first time initialize with Visenze's terms and condition checked by default. Users have to accept the terms and condition before using productcat api. In case user have denied the terms. Productcat sdk will throw search error in its callback, it is up to developer's decision to show up the consent forms again or quit the service.
 
-## 5. Search Analytics
-
-To analyze search performance and usage statistics (such as Click Through Rate, Active Users, Conversion Tracking, Retention Rate, etc), it is recommended that the uid paramater is sent on all requests. The UID can be generated in 2 ways:
-
-- On client side e.g. device serial number in Android app or encrypted random string token.
-- From server side on first request. Our first reqid will be used as the UID. This is implemented automatically in the SDK.
+```java
+@Override
+public void onSearchResult(ResultList resultList) {
+        if(ProductCat.TERMS_DENIED.equals(errorMessage)) {
+            // show consent form again.
+            mProductCat.showConsentForm();
+        }
+}
+```
+Note that Visenze may change the terms of condition any time in the future. If so, productcat sdk will automatically prop up the consent forms again for user to operate.

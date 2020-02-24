@@ -26,6 +26,7 @@ public class ProductCat {
 
     public static final int DEFAULT_TIMEOUT_MS = 60000;
     public static final int DEFAULT_RETRY_COUNT = 1;
+    public static final String TERMS_DENIED = "VISENZE_TERMS_DENIED";
 
 
     private static final String USER_AGENT = "productcat-android-sdk";
@@ -90,6 +91,12 @@ public class ProductCat {
 
         mDataCollection = new DataCollection(context);
         mPrivacyPolicy = new PrivacyPolicy(context);
+
+
+        // show content form for the first time initialize.
+        if(!mPrivacyPolicy.isPrivacyShown()) {
+            showConsentForm();
+        }
         
     }
 
@@ -134,7 +141,7 @@ public class ProductCat {
                 params.setDeviceInfo(info);
                 return true;
             } else {
-                mListener.onSearchError("Please accept Visenze's Privacy Policy and Terms of Use before proceed");
+                mListener.onSearchError(TERMS_DENIED);
             }
         } else {
             showConsentForm();
@@ -312,8 +319,6 @@ public class ProductCat {
             if (uid!=null) {
                 ProductCatUIDManager.setUid(uid);
             }
-
-
 
             return productCat;
         }
