@@ -37,8 +37,6 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
         try {
             String utf8String = new String(response.data, HTTP.UTF_8);
 
-            ProductCatUIDManager.storeUidIfNeeded(response);
-
             JSONObject result = new JSONObject(utf8String);
 
             return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));

@@ -7,8 +7,12 @@ import com.visenze.productcat.BuildConfig;
 import com.visenze.productcat.android.api.AdminOperations;
 import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
+import com.visenze.productcat.android.data.DataCollection;
+import com.visenze.productcat.android.data.GetGAIDTask;
+import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.model.StoreResultList;
+import com.visenze.productcat.android.ui.PrivacyPolicy;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.URL;
@@ -22,6 +26,7 @@ public class ProductCat {
 
     public static final int DEFAULT_TIMEOUT_MS = 60000;
     public static final int DEFAULT_RETRY_COUNT = 1;
+
 
     private static final String USER_AGENT = "productcat-android-sdk";
     private static final String API_END_POINT = "https://productcat.visenze.com";
@@ -38,6 +43,12 @@ public class ProductCat {
     // customize number of retries
     private int retryCount;
 
+
+    private PrivacyPolicy mPrivacyPolicy;
+
+    private DataCollection mDataCollection;
+
+
     private ProductCat(Context context,
                        String appKey,
                        String searchApiEndPoint,
@@ -48,8 +59,8 @@ public class ProductCat {
 
         this(context, appKey, searchApiEndPoint, userAgent, shouldCache);
         adminOperations = new AdminOperationsImpl(adminEndpoint, adminGetStorePath, context, appKey, userAgent);
-
     }
+
 
     /**
      * Initialise the ViSearcher with a valid access/secret key pair
@@ -76,7 +87,12 @@ public class ProductCat {
         retryCount = DEFAULT_RETRY_COUNT;
         searchOperations.setRetryPolicy(timeout, retryCount);
 
+
+        mDataCollection = new DataCollection(context);
+        mPrivacyPolicy = new PrivacyPolicy(context);
+        
     }
+
 
 
     /**
@@ -107,27 +123,54 @@ public class ProductCat {
         searchOperations.cancelSearch(mListener);
     }
 
+    public void showConsentForm() {
+        mPrivacyPolicy.showConsentDialog();
+    }
+
+    private boolean checkPrivacyPolicy(final ImageSearchParams params) {
+        if(mPrivacyPolicy.isPrivacyShown()) {
+            if(mPrivacyPolicy.isTermsAccepted()) {
+                DeviceInfo info = mDataCollection.getDeviceInfo(mPrivacyPolicy.isAdsAccepted());
+                params.setDeviceInfo(info);
+                return true;
+            } else {
+                mListener.onSearchError("Please accept Visenze's Privacy Policy and Terms of Use before proceed");
+            }
+        } else {
+            showConsentForm();
+        }
+        return false;
+
+    }
+
     public void imageSearchResultPage(final ImageSearchParams params) {
-        try {
-            searchOperations.imageSearchResultPage(params, mListener);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.imageSearchResultPage(params, mListener);
+            } catch (ProductCatException e){
+                Log.e("ProductCat SDK", e.getMessage());
+            }
         }
     }
 
+
     public void imageSearch(final ImageSearchParams params) {
-        try {
-            searchOperations.imageSearch(params, mListener);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.imageSearch(params, mListener);
+            } catch (ProductCatException e) {
+                Log.e("ProductCat SDK", e.getMessage());
+            }
         }
     }
 
     public void imageSearch(final ImageSearchParams params, String customSearchPoint) {
-        try {
-            searchOperations.imageSearch(params, mListener, customSearchPoint);
-        } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.imageSearch(params, mListener, customSearchPoint);
+            } catch (ProductCatException e) {
+                Log.e("ProductCat SDK", e.getMessage());
+            }
         }
     }
 
@@ -168,6 +211,7 @@ public class ProductCat {
         this.retryCount = retryCount;
         searchOperations.setRetryPolicy(timeout, retryCount);
     }
+
 
     /**
      * Builder class for {@link ProductCat}
@@ -268,6 +312,8 @@ public class ProductCat {
             if (uid!=null) {
                 ProductCatUIDManager.setUid(uid);
             }
+
+
 
             return productCat;
         }

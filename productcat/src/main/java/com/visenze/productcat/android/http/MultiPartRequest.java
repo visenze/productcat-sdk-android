@@ -96,8 +96,6 @@ public class MultiPartRequest extends Request<JSONObject> {
             String utf8String =
                     new String(response.data, HTTP.UTF_8);
 
-            ProductCatUIDManager.storeUidIfNeeded(response);
-
             JSONObject result = new JSONObject(utf8String);
 
             return Response.success(result,
