@@ -21,7 +21,7 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
 
     public DataCollection(Context context) {
 
-        generateDoubleHashIMEI(context);
+        generateHashedIMEI(context);
 
         gaidTask = new GetGAIDTask(context, this);
         gaidTask.execute();
@@ -29,7 +29,7 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
 
     }
 
-    private void generateDoubleHashIMEI(Context context) {
+    private void generateHashedIMEI(Context context) {
         String imei = getIMEI(context);
         didmd5 = SecurityHelper.MD5(imei);
     }
