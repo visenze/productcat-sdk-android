@@ -24,7 +24,24 @@
 You can include the dependency in your project using gradle:
 
 ```
-compile 'com.visenze.productcat:productcat:2.0.0'
+android {
+	...
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+    ...
+}
+dependencies {
+    implementation 'com.visenze.productcat:productcat:2.0.2'
+    ...
+}
 ```
 
 ## 1.2 Set User Permissions
