@@ -39,7 +39,11 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (null != tm) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                deviceUniqueIdentifier = tm.getDeviceId();
+                try {
+                    deviceUniqueIdentifier = tm.getDeviceId();
+                } catch (Exception e) {
+                    return deviceUniqueIdentifier;
+                }
             }
         }
         return deviceUniqueIdentifier;
