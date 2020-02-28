@@ -42,6 +42,7 @@ public class DataCollection implements GetGAIDTask.OnTaskSuccess {
                 try {
                     deviceUniqueIdentifier = tm.getDeviceId();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return deviceUniqueIdentifier;
                 }
             }
