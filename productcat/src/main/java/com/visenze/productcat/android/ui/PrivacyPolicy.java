@@ -52,6 +52,10 @@ public class PrivacyPolicy {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.dialog_privacy_policy, null);
 
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        /*
         final TextView termsAndPolicy = view.findViewById(R.id.terms_and_policy);
         final CheckBox terms = view.findViewById(R.id.agree_service);
         final CheckBox ads = view.findViewById(R.id.agree_ad);
@@ -80,10 +84,6 @@ public class PrivacyPolicy {
             }
         });
 
-
-        builder.setView(view);
-        final AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
 
         final String policyUrl = context.getString(R.string.weblink_policy);
         termsAndPolicy.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +118,8 @@ public class PrivacyPolicy {
                 dialog.dismiss();
             }
         });
+
+         */
         return dialog;
     }
 
