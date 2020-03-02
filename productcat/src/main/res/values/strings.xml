@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">ViSearch</string>
-    <string name="policy_title">Welcome to Visual Shopping</string>
-    <string name="policy_content">To use Visual Shopping, we will continually analyze what you see to show your results. When you stop using the feature, we will stop analyzing</string>
-    <string name="agree_terms">I agree to <a href="https://shopping.visenze.com/privacy-policy">Visenze\'s Privacy Policy and Terms of Use</a></string>
-    <string name="weblink_policy">https://shopping.visenze.com/privacy-policy</string>
-    <string name="agree_to_ads">I don\'t want to miss out on special offers, promotions and recommendations that Visenze thinks would be of interest to me</string>
-    <string name="accept">Accept</string>
-    <string name="deny">Deny</string>
     <string name="preference_file">productcat_pref_file</string>
+
+    <string name="policy_title">Welcome</string>
+    <string name="policy_content">Welcome to visual shopping! Start to snap, search and shop with us.\n\nWe value your privacy and personal data. We will only collect, use, disclose and/or process your personal data in accordance with our privacy policy.</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="weblink_policy">https://shopping.visenze.com/privacy-policy</string>
+    <string name="weblink_terms_of_use">https://shopping.visenze.com/terms-of-use</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+
+    <string name="product_recommendation_title">Product recommendation</string>
+    <string name="product_recommendation_content">We will recommend discounts and promotional products based on your search preferences. \n\nDo you agree to proceed?</string>
+    <string name="agree">Yes, I agree</string>
+    <string name="no">No</string>
+
 </resources>

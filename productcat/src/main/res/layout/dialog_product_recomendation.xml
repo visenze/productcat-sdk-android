@@ -3,7 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/container_margin_horizontal"
-
     android:paddingRight="@dimen/container_margin_horizontal"
     android:paddingTop="@dimen/container_margin_vertical"
     android:paddingBottom="@dimen/container_margin_vertical">
@@ -12,41 +11,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/policy_title"
+        android:text="@string/product_recommendation_title"
         android:layout_marginBottom="@dimen/item_margin_vertical"
         android:textSize="@dimen/text_title_size"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textBlack"
         android:textStyle="bold"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/policy_content"
+        android:text="@string/product_recommendation_content"
         android:layout_marginBottom="@dimen/item_margin_vertical"
         android:textSize="@dimen/text_content_size"
         android:textColor="@color/textBlack"/>
 
-
-    <TextView
-        android:id="@+id/privacy_policy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/privacy_policy"
-        android:layout_marginBottom="@dimen/item_margin_vertical"
-        android:textSize="@dimen/text_content_size"
-        android:textColor="@color/lightBlue"/>
-
-    <TextView
-        android:id="@+id/terms_of_use"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/terms_of_use"
-        android:layout_marginBottom="@dimen/item_margin_vertical"
-        android:textSize="@dimen/text_content_size"
-        android:textColor="@color/lightBlue"/>
-
     <Button
-        android:id="@+id/btn_agree"
+        android:id="@+id/btn_accept"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
@@ -58,10 +38,11 @@
 
 
     <TextView
-        android:id="@+id/btn_decline"
+        android:id="@+id/btn_deny"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
-        android:text="@string/decline"
+        android:text="@string/no"
         android:textSize="@dimen/text_content_size" />
+
 </LinearLayout>
