@@ -6,8 +6,8 @@
     <string name="policy_content">Welcome to visual shopping! Start to snap, search and shop with us.\n\nWe value your privacy and personal data. We will only collect, use, disclose and/or process your personal data in accordance with our privacy policy.</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="terms_of_use">Terms of use</string>
-    <string name="agree_terms">I agree to <a href="https://shopping.visenze.com/privacy-policy">Visenze\'s Privacy Policy and Terms of Use</a></string>
     <string name="weblink_policy">https://shopping.visenze.com/privacy-policy</string>
+    <string name="weblink_terms_of_use">https://shopping.visenze.com/terms-of-use</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
 

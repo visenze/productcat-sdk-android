@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.visenze.productcat.R;
@@ -21,6 +19,8 @@ public class PrivacyPolicy {
     private static final String IS_ADS_ACCEPTED="is_ads_accepted";
 
     private AlertDialog consentDialog;
+
+    private AlertDialog productRecommendDialog;
 
     private SharedPreferences pref;
 
@@ -40,11 +40,52 @@ public class PrivacyPolicy {
         isAdsAccepted = pref.getBoolean(IS_ADS_ACCEPTED, false);
 
         consentDialog = createConsentDialog(context);
+        productRecommendDialog = createProductRecommendDialog(context);
+
     }
 
     public void showConsentDialog() {
         consentDialog.show();
     }
+
+    public void showProductRecommendDialog() {
+        productRecommendDialog.show();
+    }
+
+
+    private AlertDialog createProductRecommendDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.dialog_product_recomendation, null);
+
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+
+        final Button agree = view.findViewById(R.id.btn_accept);
+        final TextView deny = view.findViewById(R.id.btn_deny);
+
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isAdsAccepted = true;
+                setPrefValues(isTermsAccepted, isAdsAccepted);
+                dialog.dismiss();
+            }
+        });
+
+        deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isAdsAccepted = false;
+                setPrefValues(isTermsAccepted, isAdsAccepted);
+                dialog.dismiss();
+            }
+        });
+        return dialog;
+    }
+
+
 
 
     private AlertDialog createConsentDialog(final Context context) {
@@ -55,38 +96,38 @@ public class PrivacyPolicy {
         builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
-        /*
-        final TextView termsAndPolicy = view.findViewById(R.id.terms_and_policy);
-        final CheckBox terms = view.findViewById(R.id.agree_service);
-        final CheckBox ads = view.findViewById(R.id.agree_ad);
 
-        if(isPrivacyShown) {
-            terms.setChecked(isTermsAccepted);
-            ads.setChecked(isAdsAccepted);
-        } else {
-            // first time show default value
-            terms.setChecked(true);
-            ads.setChecked(false);
-        }
-        
-        final Button acceptBtn = view.findViewById(R.id.btn_accept);
+        final Button agree = view.findViewById(R.id.btn_agree);
+        final TextView decline = view.findViewById(R.id.btn_decline);
+        final TextView privacyPolicy = view.findViewById(R.id.privacy_policy);
+        final TextView termsOfUse = view.findViewById(R.id.terms_of_use);
 
-        terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        decline.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
-                    ads.setEnabled(true);
-                    acceptBtn.setEnabled(true);
-                } else {
-                    ads.setEnabled(false);
-                    acceptBtn.setEnabled(false);
-                }
+            public void onClick(View view) {
+                isPrivacyShown = true;
+                isTermsAccepted = false;
+
+                setPrefValues(isTermsAccepted, isAdsAccepted);
+                dialog.dismiss();
             }
         });
 
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isPrivacyShown = true;
+                isTermsAccepted = true;
+
+                if(!isAdsAccepted) {
+                    showProductRecommendDialog();
+                }
+                dialog.dismiss();
+            }
+        });
 
         final String policyUrl = context.getString(R.string.weblink_policy);
-        termsAndPolicy.setOnClickListener(new View.OnClickListener() {
+        privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -95,31 +136,16 @@ public class PrivacyPolicy {
             }
         });
 
-        acceptBtn.setOnClickListener(new View.OnClickListener() {
+        final String termsOfUseUrl = context.getString(R.string.weblink_terms_of_use);
+        termsOfUse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isPrivacyShown = true;
-                isTermsAccepted = terms.isChecked();
-                isAdsAccepted = ads.isChecked();
-
-                setPrefValues(isTermsAccepted, isAdsAccepted);
-                dialog.dismiss();
-            }
-        });
-        TextView denyBtn = view.findViewById(R.id.btn_deny);
-        denyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isPrivacyShown = true;
-                isTermsAccepted = false;
-                isAdsAccepted = false;
-
-                setPrefValues(isTermsAccepted, isAdsAccepted);
-                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(termsOfUseUrl));
+                context.startActivity(intent);
             }
         });
 
-         */
         return dialog;
     }
 
