@@ -15,24 +15,28 @@
         android:layout_marginBottom="@dimen/item_margin_vertical"
         android:textSize="@dimen/text_title_size"
         android:textColor="@color/textBlack"
+        android:lineHeight="@dimen/line_height"
         android:textStyle="bold"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/product_recommendation_content"
-        android:layout_marginBottom="@dimen/item_margin_vertical"
         android:textSize="@dimen/text_content_size"
+        android:lineHeight="@dimen/line_height"
         android:textColor="@color/textBlack"/>
 
-    <Button
+    <TextView
         android:id="@+id/btn_accept"
-        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
+        android:gravity="center"
         android:background="@drawable/round_corner_button"
+        android:layout_marginTop="@dimen/button_margin_top"
         android:layout_marginBottom="@dimen/item_margin_vertical"
         android:text="@string/agree"
+        android:textStyle="normal"
+        android:textAllCaps="false"
         android:textSize="@dimen/text_content_size"
         android:textColor="@android:color/white"/>
 
@@ -43,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:text="@string/no"
-        android:textSize="@dimen/text_content_size" />
+        android:textSize="@dimen/text_content_size"
+        android:textColor= "@color/blue"/>
 
 </LinearLayout>

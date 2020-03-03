@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.visenze.productcat.R;
@@ -62,7 +61,7 @@ public class PrivacyPolicy {
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
 
-        final Button agree = view.findViewById(R.id.btn_accept);
+        final TextView agree = view.findViewById(R.id.btn_accept);
         final TextView deny = view.findViewById(R.id.btn_deny);
 
         agree.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +96,7 @@ public class PrivacyPolicy {
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
 
-        final Button agree = view.findViewById(R.id.btn_agree);
+        final TextView agree = view.findViewById(R.id.btn_agree);
         final TextView decline = view.findViewById(R.id.btn_decline);
         final TextView privacyPolicy = view.findViewById(R.id.privacy_policy);
         final TextView termsOfUse = view.findViewById(R.id.terms_of_use);
