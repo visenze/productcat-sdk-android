@@ -39,7 +39,7 @@ android {
     ...
 }
 dependencies {
-    implementation 'com.visenze.productcat:productcat:2.0.2'
+    implementation 'com.visenze.productcat:productcat:2.0.3'
     ...
 }
 ```
@@ -313,7 +313,7 @@ As a result, users need to:
 - Accept Visenze's terms and condition before use image search and search result page api
 - (Optionally) Accept advertisement terms to receive special offers, promotions information. ---
 
-Visenze sdk will show up user consent form for the first time initialize with Visenze's terms and condition checked by default. Users have to accept the terms and condition before using productcat api. In case user have denied the terms. Productcat sdk will throw search error in its callback, it is up to developer's decision to show up the consent forms again or quit the service.
+Visenze sdk will show up user Terms and Condition dialog for the first time initialize with Visenze's terms and condition checked by default. Users have to accept the terms and condition before using productcat api. In case user have denied the terms. Productcat sdk will throw search error in its callback, it is up to developer's decision to show up the consent forms again or quit the service.
 
 ```java
 @Override
@@ -324,4 +324,9 @@ public void onSearchResult(ResultList resultList) {
         }
 }
 ```
+
+Please note that end-users need to:
+- Accept Visenze’s Privacy Policy & Terms of Use in order to use our service
+- If users have accepted the terms and condition, product recommendation popup will show. If users accept the product recommendation setting, ViSenze will return recommended product items in the search result. Otherwise, only visual similar products will be shown in the search result.
+
 Note that Visenze may change the terms of condition any time in the future. If so, productcat sdk will automatically prop up the consent forms again for user to operate.
