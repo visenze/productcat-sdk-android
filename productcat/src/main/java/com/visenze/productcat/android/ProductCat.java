@@ -143,7 +143,7 @@ public class ProductCat {
         return mPrivacyPolicy.isTermsAccepted();
     }
 
-    private boolean checkPrivacyPolicy(final ImageSearchParams params) {
+    private boolean checkPrivacyPolicy(final SearchParams params) {
         if(mPrivacyPolicy.isPrivacyShown()) {
             if(mPrivacyPolicy.isTermsAccepted()) {
                 DeviceInfo info = mDataCollection.getDeviceInfo(mPrivacyPolicy.isAdsAccepted());
@@ -183,6 +183,16 @@ public class ProductCat {
         if(checkPrivacyPolicy(params)) {
             try {
                 searchOperations.imageSearch(params, mListener, customSearchPoint);
+            } catch (ProductCatException e) {
+                logProductCatErrorMessage(e);
+            }
+        }
+    }
+
+    public void similarImageSearch(final SimilarImageSearchParams params) {
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.similarImageSearch(params, mListener);
             } catch (ProductCatException e) {
                 logProductCatErrorMessage(e);
             }
