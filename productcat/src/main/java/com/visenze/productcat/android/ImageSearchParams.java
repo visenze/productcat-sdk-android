@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class ImageSearchParams extends UploadSearchParams {
 
-    public static final String SEARCH_MIN_SCORE = "search_min_score";
     public static final String PRE_FILTER = "pre_filter";
     public static final String DETECTION_ONLY = "detection_only";
     public static final String RECOGNIZE_MIN_SCORE = "recognize_min_score";
@@ -57,8 +56,6 @@ public class ImageSearchParams extends UploadSearchParams {
         super(image);
     }
 
-    private Float searchMinScore = null;
-
     private Boolean preFilter;
 
     private Boolean detectionOnly;
@@ -72,14 +69,6 @@ public class ImageSearchParams extends UploadSearchParams {
     private Boolean returnSponsoredContent;
 
     private AdParam adParam;
-
-    public Float getSearchMinScore() {
-        return searchMinScore;
-    }
-
-    public void setSearchMinScore(Float searchMinScore) {
-        this.searchMinScore = searchMinScore;
-    }
 
     public Boolean getPreFilter() {
         return preFilter;
@@ -140,10 +129,6 @@ public class ImageSearchParams extends UploadSearchParams {
     @Override
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = super.toMap();
-
-        if (searchMinScore!=null) {
-            this.putStringInMap(map, SEARCH_MIN_SCORE, String.valueOf(searchMinScore));
-        }
 
         if (preFilter != null ) {
             this.putStringInMap(map, PRE_FILTER, String.valueOf(preFilter));
