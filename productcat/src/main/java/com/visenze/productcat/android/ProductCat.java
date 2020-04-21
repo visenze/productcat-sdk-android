@@ -8,7 +8,6 @@ import com.visenze.productcat.android.api.AdminOperations;
 import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.data.DataCollection;
-import com.visenze.productcat.android.data.GetGAIDTask;
 import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.model.StoreResultList;
@@ -119,7 +118,7 @@ public class ProductCat {
         try {
             adminOperations.getStores(storeParams, mStoreResultListener);
         } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+            logProductCatErrorMessage(e);
         }
     }
 
@@ -155,18 +154,17 @@ public class ProductCat {
             try {
                 searchOperations.imageSearchResultPage(params, mListener);
             } catch (ProductCatException e){
-                Log.e("ProductCat SDK", e.getMessage());
+                logProductCatErrorMessage(e);
             }
         }
     }
-
 
     public void imageSearch(final ImageSearchParams params) {
         if(checkPrivacyPolicy(params)) {
             try {
                 searchOperations.imageSearch(params, mListener);
             } catch (ProductCatException e) {
-                Log.e("ProductCat SDK", e.getMessage());
+                logProductCatErrorMessage(e);
             }
         }
     }
@@ -176,7 +174,7 @@ public class ProductCat {
             try {
                 searchOperations.imageSearch(params, mListener, customSearchPoint);
             } catch (ProductCatException e) {
-                Log.e("ProductCat SDK", e.getMessage());
+                logProductCatErrorMessage(e);
             }
         }
     }
@@ -185,8 +183,12 @@ public class ProductCat {
         try {
             searchOperations.textSearch(params, mListener);
         } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+            logProductCatErrorMessage(e);
         }
+    }
+
+    private void logProductCatErrorMessage(ProductCatException e) {
+        Log.e("ProductCat SDK", e.getMessage());
     }
 
     private void initTracking(final Context context) {
