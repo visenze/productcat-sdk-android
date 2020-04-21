@@ -135,7 +135,7 @@ public class ProductCat {
 
     /**
      * In order to use ViSenze solution APIs, user is required to accept the terms and conditions
-     * If user does not accept, the terms & conditions can be shown via showConsentForm()
+     * If user does not accept, the terms conditions can be shown via showConsentForm()
      *
      * @return whether user has accepted Terms of Services
      */
