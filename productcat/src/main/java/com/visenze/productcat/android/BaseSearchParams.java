@@ -22,7 +22,6 @@ public class BaseSearchParams {
     public static final String FACETS_LIMIT = "facets_limit";
     public static final String FACETS_SHOW_COUNT = "facets_show_count";
     public static final String THUMBNAIL_SIZE = "thumbnail_size";
-    public static final String SHOW_PRODUCT_URL = "show_product_url";
     public static final String COUNTRY = "country";
     public static final String SOURCE = "source";
     public static final String SORT_BY = "sort_by";
@@ -53,8 +52,6 @@ public class BaseSearchParams {
     private Boolean facetShowCount;
 
     private String thumbnailSize;
-
-    private Boolean showProductUrl;
 
     private String source;
 
@@ -122,10 +119,6 @@ public class BaseSearchParams {
         return page;
     }
 
-    public void setShowProductUrl(Boolean showProductUrl) {
-        this.showProductUrl = showProductUrl;
-    }
-
     public void setFacets(List<String> facets) {
         this.facets = facets;
     }
@@ -188,10 +181,6 @@ public class BaseSearchParams {
 
     public String getThumbnailSize() {
         return thumbnailSize;
-    }
-
-    public Boolean getShowProductUrl() {
-        return showProductUrl;
     }
 
     public String getCountry() {
@@ -319,10 +308,6 @@ public class BaseSearchParams {
 
         if (thumbnailSize!= null) {
             putStringInMap(map , THUMBNAIL_SIZE, thumbnailSize.trim());
-        }
-
-        if (showProductUrl != null ) {
-            putStringInMap(map , SHOW_PRODUCT_URL, String.valueOf(showProductUrl));
         }
 
         if (country != null){
