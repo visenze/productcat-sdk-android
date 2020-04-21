@@ -8,7 +8,6 @@ import com.visenze.productcat.android.api.AdminOperations;
 import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.data.DataCollection;
-import com.visenze.productcat.android.data.GetGAIDTask;
 import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.model.StoreResultList;
@@ -119,7 +118,7 @@ public class ProductCat {
         try {
             adminOperations.getStores(storeParams, mStoreResultListener);
         } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+            logProductCatErrorMessage(e);
         }
     }
 
@@ -134,7 +133,17 @@ public class ProductCat {
         mPrivacyPolicy.showConsentDialog();
     }
 
-    private boolean checkPrivacyPolicy(final ImageSearchParams params) {
+    /**
+     * In order to use ViSenze solution APIs, user is required to accept the terms and conditions
+     * If user does not accept, the terms & conditions can be shown via showConsentForm()
+     *
+     * @return whether user has accepted Terms of Services
+     */
+    public boolean isTermsAccepted() {
+        return mPrivacyPolicy.isTermsAccepted();
+    }
+
+    private boolean checkPrivacyPolicy(final SearchParams params) {
         if(mPrivacyPolicy.isPrivacyShown()) {
             if(mPrivacyPolicy.isTermsAccepted()) {
                 DeviceInfo info = mDataCollection.getDeviceInfo(mPrivacyPolicy.isAdsAccepted());
@@ -155,18 +164,17 @@ public class ProductCat {
             try {
                 searchOperations.imageSearchResultPage(params, mListener);
             } catch (ProductCatException e){
-                Log.e("ProductCat SDK", e.getMessage());
+                logProductCatErrorMessage(e);
             }
         }
     }
-
 
     public void imageSearch(final ImageSearchParams params) {
         if(checkPrivacyPolicy(params)) {
             try {
                 searchOperations.imageSearch(params, mListener);
             } catch (ProductCatException e) {
-                Log.e("ProductCat SDK", e.getMessage());
+                logProductCatErrorMessage(e);
             }
         }
     }
@@ -176,7 +184,17 @@ public class ProductCat {
             try {
                 searchOperations.imageSearch(params, mListener, customSearchPoint);
             } catch (ProductCatException e) {
-                Log.e("ProductCat SDK", e.getMessage());
+                logProductCatErrorMessage(e);
+            }
+        }
+    }
+
+    public void similarImageSearch(final SimilarImageSearchParams params) {
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.similarImageSearch(params, mListener);
+            } catch (ProductCatException e) {
+                logProductCatErrorMessage(e);
             }
         }
     }
@@ -185,8 +203,12 @@ public class ProductCat {
         try {
             searchOperations.textSearch(params, mListener);
         } catch (ProductCatException e) {
-            Log.e("ProductCat SDK", e.getMessage());
+            logProductCatErrorMessage(e);
         }
+    }
+
+    private void logProductCatErrorMessage(ProductCatException e) {
+        Log.e("ProductCat SDK", e.getMessage());
     }
 
     private void initTracking(final Context context) {

@@ -2,10 +2,8 @@ package com.visenze.productcat.android;
 
 import com.visenze.productcat.android.model.AdImgParam;
 import com.visenze.productcat.android.model.AdParam;
-import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.model.Image;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import java.util.Map;
 
 public class ImageSearchParams extends UploadSearchParams {
 
-    public static final String SEARCH_MIN_SCORE = "search_min_score";
     public static final String PRE_FILTER = "pre_filter";
     public static final String DETECTION_ONLY = "detection_only";
     public static final String RECOGNIZE_MIN_SCORE = "recognize_min_score";
@@ -36,18 +33,6 @@ public class ImageSearchParams extends UploadSearchParams {
     public static final String S_IMG_H = "s_img_h";
     public static final String S_IMG_HMIN = "s_img_hmin";
     public static final String S_IMG_MIME = "s_img_mime";
-
-    // device info
-    public static final String UIP = "uip";
-    public static final String DEVICE_MODEL = "device_model";
-    public static final String OS = "os";
-    public static final String OSV = "osv";
-    public static final String DIDMD5 = "didmd5";
-    public static final String IFA = "ifa";
-    public static final String GEO = "geo";
-    public static final String UA = "ua";
-    public static final String UC = "uc";
-    public static final String DO_NOT_TRACK="do_not_track";
 
     public ImageSearchParams() {
         super();
@@ -71,8 +56,6 @@ public class ImageSearchParams extends UploadSearchParams {
         super(image);
     }
 
-    private Float searchMinScore = null;
-
     private Boolean preFilter;
 
     private Boolean detectionOnly;
@@ -86,17 +69,6 @@ public class ImageSearchParams extends UploadSearchParams {
     private Boolean returnSponsoredContent;
 
     private AdParam adParam;
-
-    private DeviceInfo deviceInfo;
-
-
-    public Float getSearchMinScore() {
-        return searchMinScore;
-    }
-
-    public void setSearchMinScore(Float searchMinScore) {
-        this.searchMinScore = searchMinScore;
-    }
 
     public Boolean getPreFilter() {
         return preFilter;
@@ -154,23 +126,9 @@ public class ImageSearchParams extends UploadSearchParams {
         this.adParam = adParam;
     }
 
-    public DeviceInfo getDeviceInfo() {
-        return deviceInfo;
-    }
-
-    public void setDeviceInfo(DeviceInfo deviceInfo) {
-        this.deviceInfo = deviceInfo;
-    }
-
-
-
     @Override
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = super.toMap();
-
-        if (searchMinScore!=null) {
-            this.putStringInMap(map, SEARCH_MIN_SCORE, String.valueOf(searchMinScore));
-        }
 
         if (preFilter != null ) {
             this.putStringInMap(map, PRE_FILTER, String.valueOf(preFilter));
@@ -190,10 +148,6 @@ public class ImageSearchParams extends UploadSearchParams {
 
         if (autoRoi!=null) {
             this.putStringInMap(map, AUTO_ROI, String.valueOf(autoRoi));
-        }
-
-        if (deviceInfo != null) {
-            addDeviceInfoParams(map, deviceInfo);
         }
 
         if (returnSponsoredContent!=null) {
@@ -279,63 +233,5 @@ public class ImageSearchParams extends UploadSearchParams {
         }
 
     }
-
-    private void addDeviceInfoParams(Map<String, List<String>> map,
-                                     DeviceInfo deviceInfo) {
-
-        if (deviceInfo == null) {
-            return;
-        }
-
-        if(deviceInfo.getUip() != null){
-            this.putStringInMap(map, UIP, deviceInfo.getUip());
-        }
-
-        if(deviceInfo.getUa() != null){
-            this.putStringInMap(map, UA, deviceInfo.getUa());
-        }
-
-        if(deviceInfo.getDeviceModel()!=null){
-            this.putStringInMap(map, DEVICE_MODEL, deviceInfo.getDeviceModel());
-        }
-
-        if(deviceInfo.getOs()!=null){
-            this.putStringInMap(map, OS, deviceInfo.getOs());
-        }
-
-        if(deviceInfo.getOsv()!=null){
-            this.putStringInMap(map, OSV, deviceInfo.getOsv());
-        }
-
-        if(deviceInfo.getDidmd5()!=null){
-            this.putStringInMap(map, DIDMD5, deviceInfo.getDidmd5());
-        }
-
-        if(deviceInfo.getIfa()!=null){
-            this.putStringInMap(map, IFA, deviceInfo.getIfa());
-        }
-
-        if(deviceInfo.getLatLng()!=null){
-            this.putStringInMap(map, GEO, deviceInfo.getLatLng());
-        }
-
-        if(deviceInfo.getUc() != null) {
-            this.putStringInMap(map, UC, deviceInfo.getUc());
-        }
-
-        if(deviceInfo.getDoNotTrack() != null) {
-            this.putStringInMap(map, DO_NOT_TRACK, deviceInfo.getDoNotTrack());
-        }
-
-    }
-
-    private void putStringInMap(Map<String, List<String> > map, String key, String value) {
-        List<String> stringList = new ArrayList<>();
-        stringList.add(value);
-
-        map.put(key, stringList);
-    }
-
-
 
 }

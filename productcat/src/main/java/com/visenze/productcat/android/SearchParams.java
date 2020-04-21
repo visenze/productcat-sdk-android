@@ -1,14 +1,20 @@
 package com.visenze.productcat.android;
 
+import com.visenze.productcat.android.model.DeviceInfo;
+
 import java.util.List;
 import java.util.Map;
 
 /**
- * Abstract class. Search parameter settings.
+ * Abstract class for image search related settings.
  * This class is extended by
  * {@link UploadSearchParams UploadSearchParams}.
  */
 public abstract class SearchParams {
+    public static final String SEARCH_MIN_SCORE = "search_min_score";
+
+    private Float searchMinScore = null;
+
     protected BaseSearchParams mBaseSearchParams;
 
     protected SearchParams() {
@@ -28,6 +34,22 @@ public abstract class SearchParams {
         this.mBaseSearchParams = baseSearchParams;
     }
 
+    public DeviceInfo getDeviceInfo() {
+        return this.mBaseSearchParams.getDeviceInfo();
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.mBaseSearchParams.setDeviceInfo(deviceInfo);
+    }
+
+    public Float getSearchMinScore() {
+        return searchMinScore;
+    }
+
+    public void setSearchMinScore(Float searchMinScore) {
+        this.searchMinScore = searchMinScore;
+    }
+
     /**
      * Get the basic search parameter settings
      *
@@ -37,10 +59,29 @@ public abstract class SearchParams {
         return mBaseSearchParams;
     }
 
-    protected Map<String, List<String>> toMap() {
-
-        return mBaseSearchParams.toMap();
-
+    public String getCountry() {
+        return mBaseSearchParams.getCountry();
     }
+
+    public void setCountry(String country) {
+        this.mBaseSearchParams.setCountry(country);
+    }
+
+
+    public Map<String, List<String>> toMap() {
+
+        Map<String, List<String> > map = mBaseSearchParams.toMap();
+
+        if (searchMinScore != null) {
+            this.putStringInMap(map, SEARCH_MIN_SCORE, String.valueOf(searchMinScore));
+        }
+
+        return map;
+    }
+
+    protected void putStringInMap(Map<String, List<String> > map, String key, String value) {
+        mBaseSearchParams.putStringInMap(map, key, value);
+    }
+
 
 }

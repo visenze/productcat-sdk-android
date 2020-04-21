@@ -2,6 +2,9 @@ package com.visenze.productcat.android;
 
 import android.text.TextUtils;
 
+import com.visenze.productcat.android.model.DeviceInfo;
+import com.visenze.productcat.android.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,13 +19,10 @@ public class BaseSearchParams {
     public static final String STORE_IDS = "store_ids";
     public static final String COMMA = ",";
     public static final String BRAND_IDS = "brand_ids";
-    public static final String PRICE_UNIT = "price_unit";
     public static final String PRICE = "price";
     public static final String FACETS = "facets";
     public static final String FACETS_LIMIT = "facets_limit";
-    public static final String FACETS_SHOW_COUNT = "facets_show_count";
     public static final String THUMBNAIL_SIZE = "thumbnail_size";
-    public static final String SHOW_PRODUCT_URL = "show_product_url";
     public static final String COUNTRY = "country";
     public static final String SOURCE = "source";
     public static final String SORT_BY = "sort_by";
@@ -31,6 +31,18 @@ public class BaseSearchParams {
     public static final String CLIENT_PARAM1 = "cp1";
     public static final String CLIENT_PARAM2 = "cp2";
     public static final String UID = "uid";
+
+    // device info
+    public static final String UIP = "uip";
+    public static final String DEVICE_MODEL = "device_model";
+    public static final String OS = "os";
+    public static final String OSV = "osv";
+    public static final String DIDMD5 = "didmd5";
+    public static final String IFA = "ifa";
+    public static final String GEO = "geo";
+    public static final String UA = "ua";
+    public static final String UC = "uc";
+    public static final String DO_NOT_TRACK = "do_not_track";
 
     private Integer page;
 
@@ -44,17 +56,11 @@ public class BaseSearchParams {
 
     private String price;
 
-    private String priceUnit;
-
     private List<String> facets;
 
     private Integer facetLimit;
 
-    private Boolean facetShowCount;
-
     private String thumbnailSize;
-
-    private Boolean showProductUrl;
 
     private String source;
 
@@ -72,6 +78,8 @@ public class BaseSearchParams {
     private String uid;
 
     private Map<String, String> custom;
+
+    private DeviceInfo deviceInfo;
 
     /**
      * The default sets limit at 10 and page at 1, other basic parameters are set as null
@@ -122,20 +130,12 @@ public class BaseSearchParams {
         return page;
     }
 
-    public void setShowProductUrl(Boolean showProductUrl) {
-        this.showProductUrl = showProductUrl;
-    }
-
     public void setFacets(List<String> facets) {
         this.facets = facets;
     }
 
     public void setFacetLimit(Integer facetLimit) {
         this.facetLimit = facetLimit;
-    }
-
-    public void setFacetShowCount(Boolean facetShowCount) {
-        this.facetShowCount = facetShowCount;
     }
 
     public void setThumbnailSize(String thumbnailSize) {
@@ -154,10 +154,6 @@ public class BaseSearchParams {
         this.price = price;
     }
 
-    public void setPriceUnit(String priceUnit) {
-        this.priceUnit = priceUnit;
-    }
-
     public List<Integer> getStoreIds() {
         return storeIds;
     }
@@ -170,10 +166,6 @@ public class BaseSearchParams {
         return price;
     }
 
-    public String getPriceUnit() {
-        return priceUnit;
-    }
-
     public List<String> getFacets() {
         return facets;
     }
@@ -182,16 +174,8 @@ public class BaseSearchParams {
         return facetLimit;
     }
 
-    public Boolean getFacetShowCount() {
-        return facetShowCount;
-    }
-
     public String getThumbnailSize() {
         return thumbnailSize;
-    }
-
-    public Boolean getShowProductUrl() {
-        return showProductUrl;
     }
 
     public String getCountry() {
@@ -274,10 +258,18 @@ public class BaseSearchParams {
         this.uid = uid;
     }
 
+    public DeviceInfo getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
-        if (uid != null && uid.length() > 0) {
+        if (StringUtils.isNotEmpty(uid) ) {
             putStringInMap(map, UID, uid);
         }
 
@@ -301,10 +293,6 @@ public class BaseSearchParams {
             putStringInMap(map , PRICE, price.trim());
         }
 
-        if (priceUnit != null){
-            putStringInMap(map , PRICE_UNIT, priceUnit.trim());
-        }
-
         if (facets != null && facets.size() > 0 ) {
             putStringInMap(map, FACETS, TextUtils.join(COMMA, facets));
         }
@@ -313,16 +301,8 @@ public class BaseSearchParams {
             putStringInMap(map, FACETS_LIMIT, facetLimit.toString());
         }
 
-        if (facetShowCount != null) {
-            putStringInMap(map, FACETS_SHOW_COUNT, String.valueOf(facetShowCount));
-        }
-
         if (thumbnailSize!= null) {
             putStringInMap(map , THUMBNAIL_SIZE, thumbnailSize.trim());
-        }
-
-        if (showProductUrl != null ) {
-            putStringInMap(map , SHOW_PRODUCT_URL, String.valueOf(showProductUrl));
         }
 
         if (country != null){
@@ -353,6 +333,10 @@ public class BaseSearchParams {
             putStringInMap(map , CLIENT_PARAM2, cp2.trim());
         }
 
+        if (deviceInfo != null) {
+            addDeviceInfoParams(map, deviceInfo);
+        }
+
         if (custom != null && custom.size() > 0) {
             for (Map.Entry<String, String> entry : getCustom().entrySet()) {
                 String value = entry.getValue();
@@ -365,7 +349,56 @@ public class BaseSearchParams {
         return map;
     }
 
-    private void putStringInMap(Map<String, List<String> > map, String key, String value) {
+    private void addDeviceInfoParams(Map<String, List<String>> map,
+                                     DeviceInfo deviceInfo) {
+
+        if (deviceInfo == null) {
+            return;
+        }
+
+        if(deviceInfo.getUip() != null){
+            this.putStringInMap(map, UIP, deviceInfo.getUip());
+        }
+
+        if(deviceInfo.getUa() != null){
+            this.putStringInMap(map, UA, deviceInfo.getUa());
+        }
+
+        if(deviceInfo.getDeviceModel()!=null){
+            this.putStringInMap(map, DEVICE_MODEL, deviceInfo.getDeviceModel());
+        }
+
+        if(deviceInfo.getOs()!=null){
+            this.putStringInMap(map, OS, deviceInfo.getOs());
+        }
+
+        if(deviceInfo.getOsv()!=null){
+            this.putStringInMap(map, OSV, deviceInfo.getOsv());
+        }
+
+        if(deviceInfo.getDidmd5()!=null){
+            this.putStringInMap(map, DIDMD5, deviceInfo.getDidmd5());
+        }
+
+        if(deviceInfo.getIfa()!=null){
+            this.putStringInMap(map, IFA, deviceInfo.getIfa());
+        }
+
+        if(deviceInfo.getLatLng()!=null){
+            this.putStringInMap(map, GEO, deviceInfo.getLatLng());
+        }
+
+        if(deviceInfo.getUc() != null) {
+            this.putStringInMap(map, UC, deviceInfo.getUc());
+        }
+
+        if(deviceInfo.getDoNotTrack() != null) {
+            this.putStringInMap(map, DO_NOT_TRACK, deviceInfo.getDoNotTrack());
+        }
+
+    }
+
+    protected void putStringInMap(Map<String, List<String> > map, String key, String value) {
         List<String> stringList = new ArrayList<>();
         stringList.add(value);
 
