@@ -12,6 +12,7 @@ import com.visenze.productcat.android.model.TagGroup;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -643,6 +644,18 @@ public class ResponseParserTest {
         assertNull(item.getOrgMinPrice());
         assertNull(item.getOrgMaxPrice());
         assertNull(item.getOrgPriceUnit());
+
+        Map<String, Object> attrs =  item.getAttrs();
+        assertEquals(1, attrs.size());
+        assertEquals("XXX-SG", attrs.get("source"));
+
+        assertNull(item.getPriceSymbol());
+        assertNull(item.getMinOPrice());
+        assertNull(item.getMaxOPrice());
+        assertNull(item.getOrgMinOPrice());
+        assertNull(item.getOrgMaxOPrice());
+
+
     }
 
     @Test
@@ -806,5 +819,89 @@ public class ResponseParserTest {
         assertEquals("root|electronics|camera|compact_camera",categoryTagGroup.tags.get(4).tagId);
         assertTrue(0.4895308017730713 == categoryTagGroup.tags.get(4).score);
         return item;
+    }
+
+    @Test
+    public void testParseNewFields(){
+        String responseString = "{\n" +
+                "    \"im_id\": \"2019042936585ce3972035654a11430c10c09be536012146d6d1.png\",\n" +
+                "    \"reqid\": \"05L6GNU6ODRRP6S6UTCJQGS1S\",\n" +
+                "    \"status\": \"OK\",\n" +
+                "    \"error\": [],\n" +
+                "    \"product_types\": [\n" +
+                "        {\n" +
+                "            \"type\": \"product_item\",\n" +
+                "            \"score\": 0.98,\n" +
+                "            \"box\": [\n" +
+                "                10,\n" +
+                "                6,\n" +
+                "                1077,\n" +
+                "                803\n" +
+                "            ],\n" +
+                "            \"attributes\": {}\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"result\": [\n" +
+                "        {\n" +
+                "            \"pgid\": \"a34e278e1f585977b0c25f3c4fe254cb1\",\n" +
+                "            \"main_image\": \"https://imgtio.visenze.com/weardex-insert-production/512x512/1360/6067/000017b35bc601e501e200cc1d1445ad.jpg\",\n" +
+                "            \"images\": [\n" +
+                "                \"https://product.image.jpg\"\n" +
+                "            ],\n" +
+                "            \"title\": \"CANON INTERCHANGEABLE LENS EOS M50 (15-45) BLACK\",\n" +
+                "            \"desc\": \"3.0 Varie Angle LCD Monitor24.1 MegapixelsAPS-C CMOS SensorDIGIC 84K Movie ShootingBuilt In Bluetooth5 Axis Stabilisation\",\n" +
+                "            \"country\": \"SG\",\n" +
+                "            \"min_price\": 199.5,\n" +
+                "            \"max_price\": 1099,\n" +
+                "            \"price_unit\": \"SGD\",\n" +
+                "            \"attrs\": {\n" +
+                "                \"source\": \"XXX-SG\"\n" +
+                "            },\n" +
+                "            \"stores\": [\n" +
+                "                {\n" +
+                "                    \"store_id\": 1302434545,\n" +
+                "                    \"name\": \"XXX store\",\n" +
+                "                    \"availability\": 1\n" +
+                "                }\n" +
+                "            ],\n" +
+                "            \"availability\": 1,\n" +
+                "            \"product_url\": \"https://productcat-api.visenze.com/redirect/XXX-SG_12665?cid=1005&reqid=05L6GNU6ODRRP6S6UTCJQGSS&pos=1&uid=05L463SHBNGK2GI8KDR2DTHJ&country=SG\",\n" +
+                "            \"pid\": \"XXX-SG_12665\",\n" +
+
+                "            \"price_symbol\": \"₱\", " +
+                "            \"min_o_price\": 349.5,\n" +
+                "            \"max_o_price\": 359.5,\n" +
+                "            \"original_min_o_price\": 111.5,\n" +
+                "            \"original_max_o_price\": 121.5,\n" +
+
+                "            \"visual_score\": 0.8873569\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"recognize_result\": [\n" +
+                "        {\n" +
+                "            \"tag_group\": \"category\",\n" +
+                "            \"tags\": [\n" +
+                "                {\n" +
+                "                    \"tag_id\": \"root|electronics\",\n" +
+                "                    \"tag\": \"electronics\",\n" +
+                "                    \"score\": 0.9986275434494019\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        ResultList resultList = ResponseParser.parseResult(responseString);
+
+        List<ProductSummary> summaries = resultList.getProductSummaryList();
+        ProductSummary item = summaries.get(0);
+
+        assertEquals("₱", item.getPriceSymbol());
+        assertTrue( 349.5 == item.getMinOPrice());
+        assertTrue(359.5 == item.getMaxOPrice());
+        assertTrue(111.5 == item.getOrgMinOPrice());
+        assertTrue(121.5 == item.getOrgMaxOPrice());
+
+
     }
 }

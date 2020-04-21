@@ -90,6 +90,12 @@ public class ResponseParser {
     public static final String BRAND = "brand";
     public static final String BRAND_ID = "brand_id";
     public static final String SRP_URL = "srp_url";
+    public static final String PRICE_SYMBOL = "price_symbol";
+    public static final String MIN_O_PRICE = "min_o_price";
+    public static final String MAX_O_PRICE = "max_o_price";
+    public static final String ORIGINAL_MIN_O_PRICE = "original_min_o_price";
+    public static final String ORIGINAL_MAX_O_PRICE = "original_max_o_price";
+    public static final String ATTRS = "attrs";
 
     public static ResultList parseResult(String jsonResponse) {
 
@@ -341,7 +347,7 @@ public class ResponseParser {
                 productSummary.setPriceUnit(summary.optString(PRICE_UNIT));
                 productSummary.setBrand(summary.optString(BRAND));
                 productSummary.setBrandId(summary.optString(BRAND_ID));
-
+                productSummary.setPriceSymbol(summary.optString(PRICE_SYMBOL, null));
 
                 if(summary.has(ORIGINAL_PRICE_UNIT)) {
                     productSummary.setOrgPriceUnit(summary.optString(ORIGINAL_PRICE_UNIT));
@@ -350,9 +356,31 @@ public class ResponseParser {
                 if(summary.has(ORIGINAL_MIN_PRICE)) {
                     productSummary.setOrgMinPrice(summary.optDouble(ORIGINAL_MIN_PRICE));
                 }
+
                 if(summary.has(ORIGINAL_MAX_PRICE)) {
                     productSummary.setOrgMaxPrice(summary.optDouble(ORIGINAL_MAX_PRICE));
                 }
+
+                if (summary.has(MIN_O_PRICE)) {
+                    productSummary.setMinOPrice(summary.optDouble(MIN_O_PRICE));
+                }
+
+                if (summary.has(MAX_O_PRICE)) {
+                    productSummary.setMaxOPrice(summary.optDouble(MAX_O_PRICE));
+                }
+
+                if (summary.has(ORIGINAL_MIN_O_PRICE)) {
+                    productSummary.setOrgMinOPrice(summary.optDouble(ORIGINAL_MIN_O_PRICE));
+                }
+
+                if (summary.has(ORIGINAL_MAX_O_PRICE)) {
+                    productSummary.setOrgMaxOPrice(summary.optDouble(ORIGINAL_MAX_O_PRICE));
+                }
+
+                if (summary.has(ATTRS)) {
+                    productSummary.setAttrs( toMap(summary.getJSONObject(ATTRS)) );
+                }
+
                 productSummary.setAvailability(summary.optInt(AVAILABILITY, 1));
                 productSummary.setProductUrl(summary.optString(PRODUCT_URL));
 
@@ -380,6 +408,37 @@ public class ResponseParser {
         }
 
         return resultList;
+    }
+
+    private static Map<String, Object> toMap(JSONObject jsonobj)  throws JSONException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Iterator<String> keys = jsonobj.keys();
+
+        while(keys.hasNext()) {
+            String key = keys.next();
+            Object value = jsonobj.get(key);
+            if (value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            map.put(key, value);
+        }   return map;
+    }
+
+    private static List<Object> toList(JSONArray array) throws JSONException {
+        List<Object> list = new ArrayList<Object>();
+        for (int i = 0; i < array.length(); i++) {
+            Object value = array.get(i);
+            if (value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            list.add(value);
+        }
+
+        return list;
     }
 
     private static List<ProductType> parseProductTypeList(JSONArray resultArray) throws ProductCatException {

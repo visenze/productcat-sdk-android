@@ -2,6 +2,7 @@ package com.visenze.productcat.android.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by visenze on 14/9/15.
@@ -33,6 +34,14 @@ public class ProductSummary {
 
     private String brand;
     private String brandId;
+
+    //PS-688
+    private String priceSymbol;
+    private Double minOPrice;
+    private Double maxOPrice;
+    private Double orgMinOPrice;
+    private Double orgMaxOPrice;
+    private Map<String, Object> attrs;
 
     public ProductSummary() {
 
@@ -212,5 +221,53 @@ public class ProductSummary {
 
     public void setBrandId(String brandId) {
         this.brandId = brandId;
+    }
+
+    public String getPriceSymbol() {
+        return priceSymbol;
+    }
+
+    public void setPriceSymbol(String priceSymbol) {
+        this.priceSymbol = priceSymbol;
+    }
+
+    public Double getMinOPrice() {
+        return minOPrice;
+    }
+
+    public void setMinOPrice(Double minOPrice) {
+        this.minOPrice = minOPrice;
+    }
+
+    public Double getMaxOPrice() {
+        return maxOPrice;
+    }
+
+    public void setMaxOPrice(Double maxOPrice) {
+        this.maxOPrice = maxOPrice;
+    }
+
+    public Double getOrgMinOPrice() {
+        return orgMinOPrice;
+    }
+
+    public void setOrgMinOPrice(Double orgMinOPrice) {
+        this.orgMinOPrice = orgMinOPrice;
+    }
+
+    public Double getOrgMaxOPrice() {
+        return orgMaxOPrice;
+    }
+
+    public void setOrgMaxOPrice(Double orgMaxOPrice) {
+        this.orgMaxOPrice = orgMaxOPrice;
+    }
+
+    public Map<String, Object> getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(Map<String, Object> attrs) {
+        this.attrs = attrs;
     }
 }
