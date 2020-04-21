@@ -10,9 +10,10 @@ import java.util.Map;
 import static com.visenze.productcat.android.BaseSearchParams.COUNTRY;
 import static com.visenze.productcat.android.BaseSearchParams.LIMIT;
 import static com.visenze.productcat.android.BaseSearchParams.PAGE;
-import static com.visenze.productcat.android.BaseSearchParams.PRICE_UNIT;
 
 public class StoreParams {
+
+    public static final String PRICE_UNIT = "price_unit";
 
     private String country;
     private String priceUnit;

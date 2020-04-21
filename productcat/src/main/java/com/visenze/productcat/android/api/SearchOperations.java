@@ -2,6 +2,7 @@ package com.visenze.productcat.android.api;
 
 import com.visenze.productcat.android.ImageSearchParams;
 import com.visenze.productcat.android.ProductCat;
+import com.visenze.productcat.android.SimilarImageSearchParams;
 import com.visenze.productcat.android.TextSearchParams;
 
 
@@ -17,6 +18,8 @@ public interface SearchOperations {
 
     public void setRetryPolicy(int timeout, int retryCount);
 
-    public void imageSearchResultPage(ImageSearchParams params, final ProductCat.ResultListener resultLIstener);
+    public void imageSearchResultPage(ImageSearchParams params, final ProductCat.ResultListener resultListener);
+
+    public void similarImageSearch(SimilarImageSearchParams params, final ProductCat.ResultListener resultListener);
 
 }

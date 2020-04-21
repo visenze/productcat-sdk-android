@@ -7,17 +7,22 @@ import com.android.volley.RetryPolicy;
 import com.visenze.productcat.android.ImageSearchParams;
 import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.ProductCatException;
+import com.visenze.productcat.android.SimilarImageSearchParams;
 import com.visenze.productcat.android.TextSearchParams;
 import com.visenze.productcat.android.api.SearchOperations;
 import com.visenze.productcat.android.http.HttpInstance;
+import com.visenze.productcat.android.util.StringUtils;
 
 /**
  * Implementation of search operations interface.
  */
 public class SearchOperationsImpl implements SearchOperations {
     public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
+
     private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
     private final static String PRODUCT_SUMMARY_SEARCH_RESULT_PAGE = "/summary/products/srp";
+    public static final String PRODUCTCAT_SIMILAR_SEARCH = "productcat_similar_search";
+    public static final String SIMILAR_PRODUCTS_PATH = "/similar/products/";
 
     /**
      * URL
@@ -87,10 +92,27 @@ public class SearchOperationsImpl implements SearchOperations {
         }
     }
 
+    @Override
+    public void similarImageSearch(SimilarImageSearchParams params, final ProductCat.ResultListener mListener) {
+        if (StringUtils.isEmpty(params.getPid()) ) {
+            throw new ProductCatException("Missing pid parameter");
+        }
+
+        if (StringUtils.isEmpty(params.getCountry()) ) {
+            throw new ProductCatException("Missing country parameter");
+        }
+
+        httpInstance.addGetRequestToQueue(
+                apiBase + SIMILAR_PRODUCTS_PATH + params.getPid(),
+                params.toMap(),
+                PRODUCTCAT_SIMILAR_SEARCH,
+                mListener, retryPolicy) ;
+    }
+
 
     @Override
     public void textSearch(TextSearchParams params, ProductCat.ResultListener mListener) {
-        if (params.getQ() == null || params.getQ().length() == 0) {
+        if (StringUtils.isEmpty(params.getQ()) ) {
             throw new ProductCatException("Missing parameter, query keyword empty");
         }
         httpInstance.addGetRequestToQueue(apiBase + PRODUCT_SUMMARY_SEARCH, params.toMap(),

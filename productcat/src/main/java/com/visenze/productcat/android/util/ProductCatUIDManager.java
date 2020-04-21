@@ -33,7 +33,7 @@ public class ProductCatUIDManager {
 
     public static boolean hasUid() {
         String storeUid = getUid();
-        return storeUid!=null && storeUid.length() > 0;
+        return StringUtils.isNotEmpty(storeUid);
     }
 
     public static String getUid() {

@@ -59,7 +59,16 @@ public abstract class SearchParams {
         return mBaseSearchParams;
     }
 
-    protected Map<String, List<String>> toMap() {
+    public String getCountry() {
+        return mBaseSearchParams.getCountry();
+    }
+
+    public void setCountry(String country) {
+        this.mBaseSearchParams.setCountry(country);
+    }
+
+
+    public Map<String, List<String>> toMap() {
 
         Map<String, List<String> > map = mBaseSearchParams.toMap();
 
@@ -73,5 +82,6 @@ public abstract class SearchParams {
     protected void putStringInMap(Map<String, List<String> > map, String key, String value) {
         mBaseSearchParams.putStringInMap(map, key, value);
     }
+
 
 }

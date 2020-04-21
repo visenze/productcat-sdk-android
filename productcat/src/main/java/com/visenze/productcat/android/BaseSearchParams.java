@@ -3,6 +3,7 @@ package com.visenze.productcat.android;
 import android.text.TextUtils;
 
 import com.visenze.productcat.android.model.DeviceInfo;
+import com.visenze.productcat.android.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,7 +269,7 @@ public class BaseSearchParams {
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
-        if (uid != null && uid.length() > 0) {
+        if (StringUtils.isNotEmpty(uid) ) {
             putStringInMap(map, UID, uid);
         }
 
