@@ -1,5 +1,7 @@
 package com.visenze.productcat.android;
 
+import com.visenze.productcat.android.model.DeviceInfo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,14 @@ public abstract class SearchParams {
      */
     public void setBaseSearchParams(BaseSearchParams baseSearchParams) {
         this.mBaseSearchParams = baseSearchParams;
+    }
+
+    public DeviceInfo getDeviceInfo() {
+        return this.mBaseSearchParams.getDeviceInfo();
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.mBaseSearchParams.setDeviceInfo(deviceInfo);
     }
 
     /**

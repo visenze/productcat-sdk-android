@@ -2,6 +2,8 @@ package com.visenze.productcat.android;
 
 import android.text.TextUtils;
 
+import com.visenze.productcat.android.model.DeviceInfo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,18 @@ public class BaseSearchParams {
     public static final String CLIENT_PARAM1 = "cp1";
     public static final String CLIENT_PARAM2 = "cp2";
     public static final String UID = "uid";
+
+    // device info
+    public static final String UIP = "uip";
+    public static final String DEVICE_MODEL = "device_model";
+    public static final String OS = "os";
+    public static final String OSV = "osv";
+    public static final String DIDMD5 = "didmd5";
+    public static final String IFA = "ifa";
+    public static final String GEO = "geo";
+    public static final String UA = "ua";
+    public static final String UC = "uc";
+    public static final String DO_NOT_TRACK = "do_not_track";
 
     private Integer page;
 
@@ -63,6 +77,8 @@ public class BaseSearchParams {
     private String uid;
 
     private Map<String, String> custom;
+
+    private DeviceInfo deviceInfo;
 
     /**
      * The default sets limit at 10 and page at 1, other basic parameters are set as null
@@ -241,6 +257,14 @@ public class BaseSearchParams {
         this.uid = uid;
     }
 
+    public DeviceInfo getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(DeviceInfo deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
     public Map<String, List<String> > toMap() {
         Map<String, List<String> > map = new HashMap<String, List<String> >();
 
@@ -308,6 +332,10 @@ public class BaseSearchParams {
             putStringInMap(map , CLIENT_PARAM2, cp2.trim());
         }
 
+        if (deviceInfo != null) {
+            addDeviceInfoParams(map, deviceInfo);
+        }
+
         if (custom != null && custom.size() > 0) {
             for (Map.Entry<String, String> entry : getCustom().entrySet()) {
                 String value = entry.getValue();
@@ -318,6 +346,55 @@ public class BaseSearchParams {
         }
 
         return map;
+    }
+
+    private void addDeviceInfoParams(Map<String, List<String>> map,
+                                     DeviceInfo deviceInfo) {
+
+        if (deviceInfo == null) {
+            return;
+        }
+
+        if(deviceInfo.getUip() != null){
+            this.putStringInMap(map, UIP, deviceInfo.getUip());
+        }
+
+        if(deviceInfo.getUa() != null){
+            this.putStringInMap(map, UA, deviceInfo.getUa());
+        }
+
+        if(deviceInfo.getDeviceModel()!=null){
+            this.putStringInMap(map, DEVICE_MODEL, deviceInfo.getDeviceModel());
+        }
+
+        if(deviceInfo.getOs()!=null){
+            this.putStringInMap(map, OS, deviceInfo.getOs());
+        }
+
+        if(deviceInfo.getOsv()!=null){
+            this.putStringInMap(map, OSV, deviceInfo.getOsv());
+        }
+
+        if(deviceInfo.getDidmd5()!=null){
+            this.putStringInMap(map, DIDMD5, deviceInfo.getDidmd5());
+        }
+
+        if(deviceInfo.getIfa()!=null){
+            this.putStringInMap(map, IFA, deviceInfo.getIfa());
+        }
+
+        if(deviceInfo.getLatLng()!=null){
+            this.putStringInMap(map, GEO, deviceInfo.getLatLng());
+        }
+
+        if(deviceInfo.getUc() != null) {
+            this.putStringInMap(map, UC, deviceInfo.getUc());
+        }
+
+        if(deviceInfo.getDoNotTrack() != null) {
+            this.putStringInMap(map, DO_NOT_TRACK, deviceInfo.getDoNotTrack());
+        }
+
     }
 
     protected void putStringInMap(Map<String, List<String> > map, String key, String value) {
