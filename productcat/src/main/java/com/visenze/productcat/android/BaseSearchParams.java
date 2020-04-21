@@ -16,11 +16,9 @@ public class BaseSearchParams {
     public static final String STORE_IDS = "store_ids";
     public static final String COMMA = ",";
     public static final String BRAND_IDS = "brand_ids";
-    public static final String PRICE_UNIT = "price_unit";
     public static final String PRICE = "price";
     public static final String FACETS = "facets";
     public static final String FACETS_LIMIT = "facets_limit";
-    public static final String FACETS_SHOW_COUNT = "facets_show_count";
     public static final String THUMBNAIL_SIZE = "thumbnail_size";
     public static final String COUNTRY = "country";
     public static final String SOURCE = "source";
@@ -43,13 +41,9 @@ public class BaseSearchParams {
 
     private String price;
 
-    private String priceUnit;
-
     private List<String> facets;
 
     private Integer facetLimit;
-
-    private Boolean facetShowCount;
 
     private String thumbnailSize;
 
@@ -127,10 +121,6 @@ public class BaseSearchParams {
         this.facetLimit = facetLimit;
     }
 
-    public void setFacetShowCount(Boolean facetShowCount) {
-        this.facetShowCount = facetShowCount;
-    }
-
     public void setThumbnailSize(String thumbnailSize) {
         this.thumbnailSize = thumbnailSize;
     }
@@ -147,10 +137,6 @@ public class BaseSearchParams {
         this.price = price;
     }
 
-    public void setPriceUnit(String priceUnit) {
-        this.priceUnit = priceUnit;
-    }
-
     public List<Integer> getStoreIds() {
         return storeIds;
     }
@@ -163,20 +149,12 @@ public class BaseSearchParams {
         return price;
     }
 
-    public String getPriceUnit() {
-        return priceUnit;
-    }
-
     public List<String> getFacets() {
         return facets;
     }
 
     public Integer getFacetLimit() {
         return facetLimit;
-    }
-
-    public Boolean getFacetShowCount() {
-        return facetShowCount;
     }
 
     public String getThumbnailSize() {
@@ -290,20 +268,12 @@ public class BaseSearchParams {
             putStringInMap(map , PRICE, price.trim());
         }
 
-        if (priceUnit != null){
-            putStringInMap(map , PRICE_UNIT, priceUnit.trim());
-        }
-
         if (facets != null && facets.size() > 0 ) {
             putStringInMap(map, FACETS, TextUtils.join(COMMA, facets));
         }
 
         if (facetLimit != null ) {
             putStringInMap(map, FACETS_LIMIT, facetLimit.toString());
-        }
-
-        if (facetShowCount != null) {
-            putStringInMap(map, FACETS_SHOW_COUNT, String.valueOf(facetShowCount));
         }
 
         if (thumbnailSize!= null) {
