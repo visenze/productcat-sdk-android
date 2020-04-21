@@ -48,9 +48,11 @@ public abstract class SearchParams {
     }
 
     protected Map<String, List<String>> toMap() {
-
         return mBaseSearchParams.toMap();
+    }
 
+    protected void putStringInMap(Map<String, List<String> > map, String key, String value) {
+        mBaseSearchParams.putStringInMap(map, key, value);
     }
 
 }
