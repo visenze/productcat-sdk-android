@@ -96,8 +96,7 @@ public class ProductCat {
         if(!mPrivacyPolicy.isPrivacyShown()) {
             showConsentForm();
         }
-
-//        getPrivacyStatus(ProductCatUIDManager.getUid());
+        
     }
 
 
