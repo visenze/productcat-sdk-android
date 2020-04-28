@@ -2,6 +2,7 @@ package com.visenze.productcat.android.http;
 
 import com.android.volley.Response;
 import com.visenze.productcat.android.ProductCat;
+import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.ProductCatException;
 import com.visenze.productcat.android.util.ResponseParser;
@@ -46,6 +47,9 @@ public class ResponseListener implements Response.Listener<JSONObject> {
      * @return result list
      */
     private ResultList getResult(String jsonResponse) {
-        return ResponseParser.parseResult(jsonResponse);
+        return ResponseParser.parseResult(jsonResponse, type);
+
     }
+
+
 }

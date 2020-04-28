@@ -11,7 +11,13 @@ import com.visenze.productcat.android.SimilarImageSearchParams;
 import com.visenze.productcat.android.TextSearchParams;
 import com.visenze.productcat.android.api.SearchOperations;
 import com.visenze.productcat.android.http.HttpInstance;
+import com.visenze.productcat.android.util.ProductCatUIDManager;
 import com.visenze.productcat.android.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of search operations interface.
@@ -23,6 +29,8 @@ public class SearchOperationsImpl implements SearchOperations {
     private final static String PRODUCT_SUMMARY_SEARCH_RESULT_PAGE = "/summary/products/srp";
     public static final String PRODUCTCAT_SIMILAR_SEARCH = "productcat_similar_search";
     public static final String SIMILAR_PRODUCTS_PATH = "/similar/products/";
+
+    public static final String PRIVACY_STATUS = "/users/privacy";
 
     /**
      * URL
@@ -107,6 +115,16 @@ public class SearchOperationsImpl implements SearchOperations {
                 params.toMap(),
                 PRODUCTCAT_SIMILAR_SEARCH,
                 mListener, retryPolicy) ;
+    }
+
+    @Override
+    public void getPrivacyPolicyStatus(String uid, final ProductCat.ResultListener mListener) {
+
+        Map<String, List<String>> params = new HashMap<String, List<String>>();
+        List<String> uidList = new ArrayList<>();
+        uidList.add(uid);
+        params.put(HttpInstance.UID, uidList);
+        httpInstance.addGetRequestToQueue(apiBase + PRIVACY_STATUS, params, PRIVACY_STATUS, mListener, retryPolicy);
     }
 
 

@@ -207,6 +207,7 @@ public class ProductCat {
         }
     }
 
+
     private void logProductCatErrorMessage(ProductCatException e) {
         Log.e("ProductCat SDK", e.getMessage());
     }
