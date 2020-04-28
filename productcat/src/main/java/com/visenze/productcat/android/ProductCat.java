@@ -96,7 +96,8 @@ public class ProductCat {
         if(!mPrivacyPolicy.isPrivacyShown()) {
             showConsentForm();
         }
-        
+
+//        getPrivacyStatus(ProductCatUIDManager.getUid());
     }
 
 
@@ -206,6 +207,7 @@ public class ProductCat {
             logProductCatErrorMessage(e);
         }
     }
+
 
     private void logProductCatErrorMessage(ProductCatException e) {
         Log.e("ProductCat SDK", e.getMessage());

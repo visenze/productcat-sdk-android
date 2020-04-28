@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.visenze.productcat.R;
+import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 public class PrivacyPolicy {
 
@@ -125,7 +126,9 @@ public class PrivacyPolicy {
             }
         });
 
-        final String policyUrl = context.getString(R.string.weblink_policy);
+        String uid = ProductCatUIDManager.getUid();
+        final String policyUrl = context.getString(R.string.weblink_policy) + "?uid=" + uid;
+
         privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +138,8 @@ public class PrivacyPolicy {
             }
         });
 
-        final String termsOfUseUrl = context.getString(R.string.weblink_terms_of_use);
+        final String termsOfUseUrl = context.getString(R.string.weblink_terms_of_use) +"?uid=" + uid;
+
         termsOfUse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

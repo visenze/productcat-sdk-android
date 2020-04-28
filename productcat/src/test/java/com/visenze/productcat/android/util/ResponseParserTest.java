@@ -1,5 +1,6 @@
 package com.visenze.productcat.android.util;
 
+import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.model.Box;
 import com.visenze.productcat.android.model.ProductSummary;
 import com.visenze.productcat.android.model.ProductType;
@@ -18,7 +19,13 @@ import static org.junit.Assert.*;
 
 public class ResponseParserTest {
 
+    @Test
+    public void parsePrivacyStatusResult() {
+        String responseString = "{\"status\":\"OK\",\"error\":[],\"result\":{\"opt_in\":false}}";
+        ResultList resultList = ResponseParser.parseResult(responseString, SearchOperationsImpl.PRIVACY_STATUS);
 
+        assertEquals(false, resultList.getOptIn());
+    }
     @Test
     public void parseSRPResult() {
         String responseString = "{\"im_id\":\"202002063654d637a048cbb5106e7c28d05dacf41d9720acf38.jpg\",\"reqid\":\"05O1IQO3OSUHB8VCQ0Q536PG\",\"status\":\"OK\",\"error\":[],\"product_types\":[{\"type\":\"bag\",\"score\":0.862,\"box\":[32,2,185,218],\"attributes\":{}}],\"srp_url\":\"https://shopping.visenze.com/search/05O1IQO3OSUHB8VCQ0Q536PG?country=SG&uid=4444\",\"recognize_result\":[{\"tag_group\":\"category\",\"tags\":[{\"tag_id\":\"root|bag\",\"tag\":\"bag\",\"score\":0.9836792349815369},{\"tag_id\":\"root|bag|backpack\",\"tag\":\"backpack\",\"score\":0.9464564323425293}]}]}";

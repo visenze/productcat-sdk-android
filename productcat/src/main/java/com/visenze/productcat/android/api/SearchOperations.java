@@ -22,4 +22,6 @@ public interface SearchOperations {
 
     public void similarImageSearch(SimilarImageSearchParams params, final ProductCat.ResultListener resultListener);
 
+    public void getPrivacyPolicyStatus(String uid, final ProductCat.ResultListener resultListener);
+
 }

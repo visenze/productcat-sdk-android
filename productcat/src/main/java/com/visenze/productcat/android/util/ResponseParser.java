@@ -1,5 +1,6 @@
 package com.visenze.productcat.android.util;
 
+import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.model.Facet;
 import com.visenze.productcat.android.model.FacetItem;
 import com.visenze.productcat.android.model.FacetRange;
@@ -96,6 +97,25 @@ public class ResponseParser {
     public static final String ORIGINAL_MIN_O_PRICE = "original_min_o_price";
     public static final String ORIGINAL_MAX_O_PRICE = "original_max_o_price";
     public static final String ATTRS = "attrs";
+    public static final String OPTIN = "opt_in";
+
+
+    public static ResultList parseResult(String jsonResponse, String type) {
+        if(SearchOperationsImpl.PRIVACY_STATUS.equals(type)) {
+            try {
+                ResultList resultList = new ResultList();
+                JSONObject resultObj = new JSONObject(jsonResponse);
+                if(resultObj.has(OPTIN)) {
+                    resultList.setOptIn(resultObj.getBoolean(OPTIN));
+                }
+                return resultList;
+            } catch (JSONException e) {
+                throw new ProductCatException("Error parsing response " + e.getMessage(), e);
+            }
+        } else {
+            return parseResult(jsonResponse);
+        }
+    }
 
     public static ResultList parseResult(String jsonResponse) {
 

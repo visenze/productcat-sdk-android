@@ -32,6 +32,8 @@ public class ResultList {
 
     private String srpUrl;
 
+    private boolean optIn;
+
     private List<SponsorContent> sponsorContents = new ArrayList<SponsorContent>();
 
     public ResultList() {
@@ -148,5 +150,13 @@ public class ResultList {
 
     public void setSrpUrl(String srpUrl) {
         this.srpUrl = srpUrl;
+    }
+
+    public boolean getOptIn() {
+        return optIn;
+    }
+
+    public void setOptIn(boolean optIn) {
+        this.optIn = optIn;
     }
 }
