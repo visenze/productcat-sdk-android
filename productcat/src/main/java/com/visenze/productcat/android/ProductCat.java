@@ -95,8 +95,13 @@ public class ProductCat {
         // show content form for the first time initialize.
         if(!mPrivacyPolicy.isPrivacyShown()) {
             showConsentForm();
+        } else {
+            // check privacy status every time sdk is reinitialized. if opt in is option is changed by user in website
+            // reset do not track parameter.
+            getPrivacyStatus(ProductCatUIDManager.getUid());
         }
-        
+
+
     }
 
 
@@ -207,6 +212,29 @@ public class ProductCat {
         }
     }
 
+    public void getPrivacyStatus(final String uid) {
+        try {
+            searchOperations.getPrivacyPolicyStatus(uid, new ResultListener() {
+                @Override
+                public void onSearchResult(ResultList resultList) {
+                    boolean optIn = resultList.getOptIn();
+                    mPrivacyPolicy.setAdsAccepted(optIn);
+                }
+
+                @Override
+                public void onSearchError(String errorMessage) {
+
+                }
+
+                @Override
+                public void onSearchCanceled() {
+
+                }
+            });
+        } catch (ProductCatException e) {
+            logProductCatErrorMessage(e);
+        }
+    }
 
     private void logProductCatErrorMessage(ProductCatException e) {
         Log.e("ProductCat SDK", e.getMessage());
