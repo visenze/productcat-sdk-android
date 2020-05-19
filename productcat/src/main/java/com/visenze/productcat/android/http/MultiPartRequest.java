@@ -8,12 +8,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
+import com.visenze.productcat.android.util.StringUtils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,13 +92,10 @@ public class MultiPartRequest extends Request<JSONObject> {
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
-            String utf8String =
-                    new String(response.data, HTTP.UTF_8);
-
+            String utf8String = StringUtils.getUtf8String(response.data);
             JSONObject result = new JSONObject(utf8String);
 
-            return Response.success(result,
-                    HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
