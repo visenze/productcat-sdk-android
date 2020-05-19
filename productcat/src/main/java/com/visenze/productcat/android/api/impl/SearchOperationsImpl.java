@@ -11,7 +11,6 @@ import com.visenze.productcat.android.SimilarImageSearchParams;
 import com.visenze.productcat.android.TextSearchParams;
 import com.visenze.productcat.android.api.SearchOperations;
 import com.visenze.productcat.android.http.HttpInstance;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
 import com.visenze.productcat.android.util.StringUtils;
 
 import java.util.ArrayList;

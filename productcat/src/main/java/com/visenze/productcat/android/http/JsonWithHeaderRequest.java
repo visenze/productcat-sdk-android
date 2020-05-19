@@ -6,14 +6,12 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.visenze.productcat.android.util.ProductCatUIDManager;
+import com.visenze.productcat.android.util.StringUtils;
 
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 /**
  * Created by visenze on 29/2/16.
@@ -35,8 +33,7 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
-            String utf8String = new String(response.data, HTTP.UTF_8);
-
+            String utf8String = StringUtils.getUtf8String(response.data);
             JSONObject result = new JSONObject(utf8String);
 
             return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
