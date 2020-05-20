@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="lightBlue">#2d67c7</color>
-    <color name="blue">#283d78</color>
-    <color name="textBlack">#4a4a4a</color>
+    <color name="productcat_sdk_lightBlue">#2d67c7</color>
+    <color name="productcat_sdk_blue">#283d78</color>
+    <color name="productcat_sdk_textBlack">#4a4a4a</color>
 </resources>

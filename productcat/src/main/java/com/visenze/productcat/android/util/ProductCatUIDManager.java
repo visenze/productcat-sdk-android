@@ -3,10 +3,8 @@ package com.visenze.productcat.android.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.android.volley.NetworkResponse;
 import com.visenze.productcat.R;
 
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,7 +21,7 @@ public class ProductCatUIDManager {
 
     public static void initPref(final Context context) {
 
-        String pref_file = context.getString(R.string.preference_file);
+        String pref_file = context.getString(R.string.productcat_sdk_preference_file);
         preference = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
         // PS-303. add uid by default.
         String uniqueID = UUID.randomUUID().toString();
