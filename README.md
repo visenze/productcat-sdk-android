@@ -39,7 +39,7 @@ android {
     ...
 }
 dependencies {
-    implementation 'com.visenze.productcat:productcat:2.1.1'
+    implementation 'com.visenze.productcat:productcat:2.1.2'
     ...
 }
 ```
