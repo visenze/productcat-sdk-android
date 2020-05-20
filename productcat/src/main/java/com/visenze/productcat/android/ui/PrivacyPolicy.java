@@ -14,7 +14,7 @@ import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 public class PrivacyPolicy {
 
-    private static final String IS_PRIVACY_SHOWN="is_privacy_shown";
+    private static final String IS_PRIVACY_SHOWED ="is_privacy_showed";
     private static final String IS_TERMS_ACCEPTED="is_terms_accepted";
     private static final String IS_ADS_ACCEPTED="is_ads_accepted";
 
@@ -24,7 +24,7 @@ public class PrivacyPolicy {
 
     private SharedPreferences pref;
 
-    private boolean isPrivacyShown;
+    private boolean isPrivacyShowed;
 
     private boolean isTermsAccepted;
 
@@ -35,7 +35,7 @@ public class PrivacyPolicy {
         String pref_file = context.getString(R.string.preference_file);
         pref = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
 
-        isPrivacyShown = pref.getBoolean(IS_PRIVACY_SHOWN, false);
+        isPrivacyShowed = pref.getBoolean(IS_PRIVACY_SHOWED, false);
         isTermsAccepted = pref.getBoolean(IS_TERMS_ACCEPTED, false);
         isAdsAccepted = pref.getBoolean(IS_ADS_ACCEPTED, false);
 
@@ -68,6 +68,7 @@ public class PrivacyPolicy {
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isPrivacyShowed = true;
                 isAdsAccepted = true;
                 setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
@@ -77,6 +78,7 @@ public class PrivacyPolicy {
         deny.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isPrivacyShowed = true;
                 isAdsAccepted = false;
                 setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
@@ -105,7 +107,6 @@ public class PrivacyPolicy {
         decline.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                isPrivacyShown = true;
                 isTermsAccepted = false;
 
                 setPrefValues(isTermsAccepted, isAdsAccepted);
@@ -116,7 +117,6 @@ public class PrivacyPolicy {
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isPrivacyShown = true;
                 isTermsAccepted = true;
 
                 if(!isAdsAccepted) {
@@ -155,14 +155,14 @@ public class PrivacyPolicy {
 
     private void setPrefValues(boolean termsAccepted, boolean adAccepted) {
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(IS_PRIVACY_SHOWN, true);
+        editor.putBoolean(IS_PRIVACY_SHOWED, true);
         editor.putBoolean(IS_TERMS_ACCEPTED, termsAccepted);
         editor.putBoolean(IS_ADS_ACCEPTED, adAccepted);
         editor.apply();
     }
 
-    public boolean isPrivacyShown() {
-        return isPrivacyShown;
+    public boolean isPrivacyShowed() {
+        return isPrivacyShowed;
     }
 
     public boolean isTermsAccepted() {

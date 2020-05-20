@@ -93,7 +93,7 @@ public class ProductCat {
 
 
         // show content form for the first time initialize.
-        if(!mPrivacyPolicy.isPrivacyShown()) {
+        if(!mPrivacyPolicy.isPrivacyShowed()) {
             showConsentForm();
         } else {
             // check privacy status every time sdk is reinitialized. if opt in is option is changed by user in website
@@ -148,8 +148,12 @@ public class ProductCat {
         return mPrivacyPolicy.isTermsAccepted();
     }
 
+    public boolean isPrivacyShowed() {
+        return mPrivacyPolicy.isPrivacyShowed();
+    }
+
     private boolean checkPrivacyPolicy(final SearchParams params) {
-        if(mPrivacyPolicy.isPrivacyShown()) {
+        if(mPrivacyPolicy.isPrivacyShowed()) {
             if(mPrivacyPolicy.isTermsAccepted()) {
                 DeviceInfo info = mDataCollection.getDeviceInfo(mPrivacyPolicy.isAdsAccepted());
                 params.setDeviceInfo(info);
