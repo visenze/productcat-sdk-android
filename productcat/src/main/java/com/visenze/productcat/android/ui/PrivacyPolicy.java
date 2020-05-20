@@ -32,7 +32,7 @@ public class PrivacyPolicy {
 
     public PrivacyPolicy(Context context) {
 
-        String pref_file = context.getString(R.string.preference_file);
+        String pref_file = context.getString(R.string.productcat_sdk_preference_file);
         pref = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
 
         isPrivacyShowed = pref.getBoolean(IS_PRIVACY_SHOWED, false);
@@ -56,7 +56,7 @@ public class PrivacyPolicy {
     private AlertDialog createProductRecommendDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.dialog_product_recomendation, null);
+        View view = inflater.inflate(R.layout.productcat_sdk_dialog_product_recomendation, null);
 
         builder.setView(view);
         final AlertDialog dialog = builder.create();
@@ -93,7 +93,7 @@ public class PrivacyPolicy {
     private AlertDialog createConsentDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.dialog_privacy_policy, null);
+        View view = inflater.inflate(R.layout.productcat_sdk_dialog_privacy_policy, null);
 
         builder.setView(view);
         final AlertDialog dialog = builder.create();
@@ -127,7 +127,7 @@ public class PrivacyPolicy {
         });
 
         String uid = ProductCatUIDManager.getUid();
-        final String policyUrl = context.getString(R.string.weblink_policy) + "?uid=" + uid;
+        final String policyUrl = context.getString(R.string.productcat_sdk_weblink_policy) + "?uid=" + uid;
 
         privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +138,7 @@ public class PrivacyPolicy {
             }
         });
 
-        final String termsOfUseUrl = context.getString(R.string.weblink_terms_of_use) +"?uid=" + uid;
+        final String termsOfUseUrl = context.getString(R.string.productcat_sdk_weblink_terms_of_use) +"?uid=" + uid;
 
         termsOfUse.setOnClickListener(new View.OnClickListener() {
             @Override

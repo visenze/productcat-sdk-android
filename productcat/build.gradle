@@ -1,13 +1,14 @@
 apply plugin: 'com.android.library'
 
 def versionMajor = 2
-def versionMinor = 0
-def versionPatch = 4
-version = '2.0.4'
+def versionMinor = 1
+def versionPatch = 2
+version = '2.1.2'
 
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.2'
+    resourcePrefix 'productcat_sdk_'
 
     defaultConfig {
         minSdkVersion 14
@@ -24,7 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    useLibrary 'org.apache.http.legacy'
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
@@ -44,10 +44,6 @@ android {
 dependencies {
 
     api fileTree(include: ['*.jar'], dir: 'libs')
-    compile('org.apache.httpcomponents:httpmime:4.3.5') {
-        exclude module: 'httpcore'
-    }
-    compile ('org.apache.httpcomponents:httpcore:4.4.10')
     compile 'com.android.volley:volley:1.1.1'
     compile 'com.google.android.gms:play-services-ads:18.3.0'
     testImplementation 'junit:junit:4.12'

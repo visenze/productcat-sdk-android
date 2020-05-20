@@ -10,8 +10,6 @@ import androidx.core.app.ActivityCompat;
 import com.visenze.productcat.android.model.DeviceInfo;
 import com.visenze.productcat.android.util.SecurityHelper;
 
-import java.io.UnsupportedEncodingException;
-
 public class DataCollection implements GetGAIDTask.OnTaskSuccess {
 
     private GetGAIDTask gaidTask;

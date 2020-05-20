@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/productcat_sdk_container_margin_horizontal"
+    android:paddingRight="@dimen/productcat_sdk_container_margin_horizontal"
+    android:paddingTop="@dimen/productcat_sdk_container_margin_vertical"
+    android:paddingBottom="@dimen/productcat_sdk_container_margin_vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/productcat_sdk_product_recommendation_title"
+        android:layout_marginBottom="@dimen/productcat_sdk_item_margin_vertical"
+        android:textSize="@dimen/productcat_sdk_text_title_size"
+        android:textColor="@color/productcat_sdk_textBlack"
+        android:lineHeight="@dimen/productcat_sdk_line_height"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/productcat_sdk_product_recommendation_content"
+        android:textSize="@dimen/productcat_sdk_text_content_size"
+        android:lineHeight="@dimen/productcat_sdk_line_height"
+        android:textColor="@color/productcat_sdk_textBlack"/>
+
+    <TextView
+        android:id="@+id/btn_accept"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/productcat_sdk_button_height"
+        android:gravity="center"
+        android:background="@drawable/productcat_sdk_round_corner_button"
+        android:layout_marginTop="@dimen/productcat_sdk_button_margin_top"
+        android:layout_marginBottom="@dimen/productcat_sdk_item_margin_vertical"
+        android:text="@string/productcat_sdk_agree"
+        android:textStyle="normal"
+        android:textAllCaps="false"
+        android:textSize="@dimen/productcat_sdk_text_content_size"
+        android:textColor="@android:color/white"/>
+
+
+    <TextView
+        android:id="@+id/btn_deny"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/productcat_sdk_button_height"
+        android:text="@string/productcat_sdk_no"
+        android:textSize="@dimen/productcat_sdk_text_content_size"
+        android:textColor= "@color/productcat_sdk_blue"/>
+
+</LinearLayout>
