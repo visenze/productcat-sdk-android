@@ -152,6 +152,14 @@ public class ProductCat {
         return mPrivacyPolicy.isPrivacyShowed();
     }
 
+    public boolean isAdsAccepted() {
+        return mPrivacyPolicy.isAdsAccepted();
+    }
+
+    public void setAdsAceepted(boolean accepted) {
+        mPrivacyPolicy.setAdsAccepted(accepted);
+    }
+
     private boolean checkPrivacyPolicy(final SearchParams params) {
         if(mPrivacyPolicy.isPrivacyShowed()) {
             if(mPrivacyPolicy.isTermsAccepted()) {
