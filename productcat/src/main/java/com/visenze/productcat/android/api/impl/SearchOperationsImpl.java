@@ -9,6 +9,7 @@ import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.ProductCatException;
 import com.visenze.productcat.android.SimilarImageSearchParams;
 import com.visenze.productcat.android.TextSearchParams;
+import com.visenze.productcat.android.UpdatePrivacyParams;
 import com.visenze.productcat.android.api.SearchOperations;
 import com.visenze.productcat.android.http.HttpInstance;
 import com.visenze.productcat.android.util.StringUtils;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 public class SearchOperationsImpl implements SearchOperations {
     public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
+    public static final String UPDATE_PRIVACY_STATUS = "update_privacy_status";
 
     private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
     private final static String PRODUCT_SUMMARY_SEARCH_RESULT_PAGE = "/summary/products/srp";
@@ -124,6 +126,12 @@ public class SearchOperationsImpl implements SearchOperations {
         uidList.add(uid);
         params.put(HttpInstance.UID, uidList);
         httpInstance.addGetRequestToQueue(apiBase + PRIVACY_STATUS, params, PRIVACY_STATUS, mListener, retryPolicy);
+    }
+
+    @Override
+    public void updatePrivacyPolicyStatus(boolean opt_in, String email, final ProductCat.ResultListener mListener) {
+        UpdatePrivacyParams params = new UpdatePrivacyParams(opt_in, email);
+        httpInstance.addPostRequestToQueue(apiBase + PRIVACY_STATUS, params.toMap(), PRIVACY_STATUS, mListener, retryPolicy);
     }
 
 

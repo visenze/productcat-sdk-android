@@ -156,9 +156,9 @@ public class ProductCat {
         return mPrivacyPolicy.isAdsAccepted();
     }
 
-    public void setAdsAceepted(boolean accepted) {
-        mPrivacyPolicy.setAdsAccepted(accepted);
-    }
+//    public void setAdsAceepted(boolean accepted) {
+//        mPrivacyPolicy.setAdsAccepted(accepted);
+//    }
 
     private boolean checkPrivacyPolicy(final SearchParams params) {
         if(mPrivacyPolicy.isPrivacyShowed()) {
@@ -219,6 +219,30 @@ public class ProductCat {
     public void textSearch(final TextSearchParams params) {
         try {
             searchOperations.textSearch(params, mListener);
+        } catch (ProductCatException e) {
+            logProductCatErrorMessage(e);
+        }
+    }
+
+    public void updatePrivacyStatus(boolean optIn, String email) {
+        try {
+            searchOperations.updatePrivacyPolicyStatus(optIn, email, new ResultListener() {
+                @Override
+                public void onSearchResult(ResultList resultList) {
+                    boolean optIn = resultList.getOptIn();
+                    mPrivacyPolicy.setAdsAccepted(optIn);
+                }
+
+                @Override
+                public void onSearchError(String errorMessage) {
+
+                }
+
+                @Override
+                public void onSearchCanceled() {
+
+                }
+            });
         } catch (ProductCatException e) {
             logProductCatErrorMessage(e);
         }

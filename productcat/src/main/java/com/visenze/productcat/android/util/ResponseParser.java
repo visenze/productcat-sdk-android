@@ -105,8 +105,10 @@ public class ResponseParser {
             try {
                 ResultList resultList = new ResultList();
                 JSONObject resultObj = new JSONObject(jsonResponse);
-                if(resultObj.has(OPTIN)) {
-                    resultList.setOptIn(resultObj.getBoolean(OPTIN));
+
+                if(resultObj.has(RESULT)) {
+                    JSONObject result = resultObj.getJSONObject(RESULT);
+                    resultList.setOptIn(result.getBoolean(OPTIN));
                 }
                 return resultList;
             } catch (JSONException e) {
