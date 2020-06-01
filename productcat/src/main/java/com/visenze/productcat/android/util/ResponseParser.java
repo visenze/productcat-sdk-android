@@ -98,6 +98,7 @@ public class ResponseParser {
     public static final String ORIGINAL_MAX_O_PRICE = "original_max_o_price";
     public static final String ATTRS = "attrs";
     public static final String OPTIN = "opt_in";
+    public static final String BAD_QUERY = "bad_query";
 
 
     public static ResultList parseResult(String jsonResponse, String type) {
@@ -170,6 +171,10 @@ public class ResponseParser {
 
             if (resultObj.has(SRP_URL)) {
                 resultList.setSrpUrl(resultObj.getString(SRP_URL));
+            }
+
+            if (resultObj.has(BAD_QUERY)) {
+                resultList.setBadQuery( TRUE.equals(resultObj.getString(BAD_QUERY).toLowerCase()) );
             }
 
             return resultList;
