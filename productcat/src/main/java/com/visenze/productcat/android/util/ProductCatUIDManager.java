@@ -24,9 +24,11 @@ public class ProductCatUIDManager {
         String pref_file = context.getString(R.string.productcat_sdk_preference_file);
         preference = context.getSharedPreferences(pref_file, Context.MODE_PRIVATE);
         // PS-303. add uid by default.
-        String uniqueID = UUID.randomUUID().toString();
-        uniqueID = uniqueID.replace("-", "");
-        setUid(uniqueID);
+        if(getUid() == null) {
+            String uniqueID = UUID.randomUUID().toString();
+            uniqueID = uniqueID.replace("-", "");
+            setUid(uniqueID);
+        }
     }
 
     public static boolean hasUid() {

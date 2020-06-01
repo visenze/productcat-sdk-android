@@ -24,4 +24,6 @@ public interface SearchOperations {
 
     public void getPrivacyPolicyStatus(String uid, final ProductCat.ResultListener resultListener);
 
+    public void updatePrivacyPolicyStatus(boolean opt_in, String email, final ProductCat.ResultListener resultListener);
+
 }

@@ -98,6 +98,7 @@ public class ProductCat {
         } else {
             // check privacy status every time sdk is reinitialized. if opt in is option is changed by user in website
             // reset do not track parameter.
+            Log.d("ProductCat", "uid: " + ProductCatUIDManager.getUid());
             getPrivacyStatus(ProductCatUIDManager.getUid());
         }
 
@@ -151,6 +152,11 @@ public class ProductCat {
     public boolean isPrivacyShowed() {
         return mPrivacyPolicy.isPrivacyShowed();
     }
+
+    public boolean isAdsAccepted() {
+        return mPrivacyPolicy.isAdsAccepted();
+    }
+
 
     private boolean checkPrivacyPolicy(final SearchParams params) {
         if(mPrivacyPolicy.isPrivacyShowed()) {
@@ -211,6 +217,30 @@ public class ProductCat {
     public void textSearch(final TextSearchParams params) {
         try {
             searchOperations.textSearch(params, mListener);
+        } catch (ProductCatException e) {
+            logProductCatErrorMessage(e);
+        }
+    }
+
+    public void updatePrivacyStatus(boolean optIn, String email) {
+        try {
+            searchOperations.updatePrivacyPolicyStatus(optIn, email, new ResultListener() {
+                @Override
+                public void onSearchResult(ResultList resultList) {
+                    boolean optIn = resultList.getOptIn();
+                    mPrivacyPolicy.setAdsAccepted(optIn);
+                }
+
+                @Override
+                public void onSearchError(String errorMessage) {
+
+                }
+
+                @Override
+                public void onSearchCanceled() {
+
+                }
+            });
         } catch (ProductCatException e) {
             logProductCatErrorMessage(e);
         }

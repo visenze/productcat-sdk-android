@@ -174,10 +174,12 @@ public class PrivacyPolicy {
     }
 
     public void setAdsAccepted(boolean isAdsAccepted) {
-        this.isAdsAccepted = isAdsAccepted;
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(IS_ADS_ACCEPTED, isAdsAccepted);
-        editor.apply();
+        if(this.isAdsAccepted != isAdsAccepted) {
+            this.isAdsAccepted = isAdsAccepted;
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(IS_ADS_ACCEPTED, isAdsAccepted);
+            editor.apply();
+        }
     }
 
 }

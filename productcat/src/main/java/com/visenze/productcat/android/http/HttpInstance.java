@@ -12,6 +12,8 @@ import com.android.volley.toolbox.Volley;
 import com.visenze.productcat.android.ProductCat;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
 
+import org.json.JSONObject;
+
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.util.ArrayList;
@@ -171,6 +173,43 @@ public class HttpInstance {
         jsonObjectRequest.setShouldCache(shouldCache);
 
         getRequestQueue().add(jsonObjectRequest);
+    }
+
+
+    public void addPostRequestToQueue(
+            final String url,
+            Map<String, List<String>> params,
+            String type,
+            final ProductCat.ResultListener resultListener,
+            RetryPolicy retryPolicy
+    ) {
+
+        ResponseListener responseListener = new ResponseListener(resultListener, type);
+
+        if (null == params) {
+            params = new HashMap<String, List<String>>();
+        }
+
+        addUidParam(params);
+
+        Uri.Builder uri = buildQueryString(params);
+
+        JsonWithHeaderRequest jsonObjectRequest = new JsonWithHeaderRequest(
+                Request.Method.POST, url + uri.toString(), null,
+                responseListener,
+                new ResponseErrorListener(resultListener)) {
+
+        };
+
+        if (retryPolicy!=null) {
+            jsonObjectRequest.setRetryPolicy(retryPolicy);
+        }
+
+        jsonObjectRequest.setTag(mContext);
+        jsonObjectRequest.setShouldCache(shouldCache);
+
+        getRequestQueue().add(jsonObjectRequest);
+
     }
 
     private Uri.Builder buildQueryString(Map<String, List<String>> params) {
