@@ -34,6 +34,8 @@ public class ResultList {
 
     private boolean optIn;
 
+    private boolean badQuery;
+
     private List<SponsorContent> sponsorContents = new ArrayList<SponsorContent>();
 
     public ResultList() {
@@ -158,5 +160,13 @@ public class ResultList {
 
     public void setOptIn(boolean optIn) {
         this.optIn = optIn;
+    }
+
+    public boolean isBadQuery() {
+        return badQuery;
+    }
+
+    public void setBadQuery(boolean badQuery) {
+        this.badQuery = badQuery;
     }
 }
