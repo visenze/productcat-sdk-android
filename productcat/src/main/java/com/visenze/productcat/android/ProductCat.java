@@ -98,6 +98,7 @@ public class ProductCat {
         } else {
             // check privacy status every time sdk is reinitialized. if opt in is option is changed by user in website
             // reset do not track parameter.
+            Log.d("ProductCat", "uid: " + ProductCatUIDManager.getUid());
             getPrivacyStatus(ProductCatUIDManager.getUid());
         }
 
@@ -156,9 +157,6 @@ public class ProductCat {
         return mPrivacyPolicy.isAdsAccepted();
     }
 
-//    public void setAdsAceepted(boolean accepted) {
-//        mPrivacyPolicy.setAdsAccepted(accepted);
-//    }
 
     private boolean checkPrivacyPolicy(final SearchParams params) {
         if(mPrivacyPolicy.isPrivacyShowed()) {
