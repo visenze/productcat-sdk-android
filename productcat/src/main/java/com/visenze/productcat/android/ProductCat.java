@@ -105,6 +105,10 @@ public class ProductCat {
 
     }
 
+    public String getUid() {
+        return ProductCatUIDManager.getUid();
+    }
+
 
 
     /**
