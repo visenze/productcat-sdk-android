@@ -109,7 +109,8 @@ public class PrivacyPolicy {
             public void onClick(View view) {
                 isTermsAccepted = false;
 
-                setPrefValues(isTermsAccepted, isAdsAccepted);
+                // setPrefValues(isTermsAccepted, isAdsAccepted);
+                isPrivacyShowed = true;
                 dialog.dismiss();
             }
         });
@@ -163,6 +164,10 @@ public class PrivacyPolicy {
 
     public boolean isPrivacyShowed() {
         return isPrivacyShowed;
+    }
+
+    public void setPrivacyShowed(boolean showed) {
+        isPrivacyShowed = showed;
     }
 
     public boolean isTermsAccepted() {

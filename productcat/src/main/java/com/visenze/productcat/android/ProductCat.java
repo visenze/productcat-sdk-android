@@ -157,6 +157,10 @@ public class ProductCat {
         return mPrivacyPolicy.isPrivacyShowed();
     }
 
+    public void setPrivacyShowed(boolean showed) {
+        mPrivacyPolicy.setPrivacyShowed(showed);
+    }
+
     public boolean isAdsAccepted() {
         return mPrivacyPolicy.isAdsAccepted();
     }
@@ -243,6 +247,31 @@ public class ProductCat {
                 @Override
                 public void onSearchCanceled() {
 
+                }
+            });
+        } catch (ProductCatException e) {
+            logProductCatErrorMessage(e);
+        }
+    }
+
+    public void getPrivacyStatus(final String uid, final PrivacyStatusResultListener listener) {
+        try {
+            searchOperations.getPrivacyPolicyStatus(uid, new ResultListener() {
+                @Override
+                public void onSearchResult(ResultList resultList) {
+                    boolean optIn = resultList.getOptIn();
+                    mPrivacyPolicy.setAdsAccepted(optIn);
+                    listener.onResult(optIn, null);
+                }
+
+                @Override
+                public void onSearchError(String errorMessage) {
+                    listener.onResult(false, errorMessage);
+                }
+
+                @Override
+                public void onSearchCanceled() {
+                    listener.onResult(false, "operation cancelled");
                 }
             });
         } catch (ProductCatException e) {
@@ -411,6 +440,10 @@ public class ProductCat {
 
             return productCat;
         }
+    }
+
+    public static interface PrivacyStatusResultListener {
+        public void onResult(boolean optIn, String errMsg);
     }
 
     /**
