@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.visenze.productcat.R;
@@ -20,7 +23,6 @@ public class PrivacyPolicy {
 
     private AlertDialog consentDialog;
 
-    private AlertDialog productRecommendDialog;
 
     private SharedPreferences pref;
 
@@ -40,51 +42,11 @@ public class PrivacyPolicy {
         isAdsAccepted = pref.getBoolean(IS_ADS_ACCEPTED, false);
 
         consentDialog = createConsentDialog(context);
-        productRecommendDialog = createProductRecommendDialog(context);
 
     }
 
     public void showConsentDialog() {
         consentDialog.show();
-    }
-
-    public void showProductRecommendDialog() {
-        productRecommendDialog.show();
-    }
-
-
-    private AlertDialog createProductRecommendDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.productcat_sdk_dialog_product_recomendation, null);
-
-        builder.setView(view);
-        final AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-
-        final TextView agree = view.findViewById(R.id.btn_accept);
-        final TextView deny = view.findViewById(R.id.btn_deny);
-
-        agree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isPrivacyShowed = true;
-                isAdsAccepted = true;
-                setPrefValues(isTermsAccepted, isAdsAccepted);
-                dialog.dismiss();
-            }
-        });
-
-        deny.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isPrivacyShowed = true;
-                isAdsAccepted = false;
-                setPrefValues(isTermsAccepted, isAdsAccepted);
-                dialog.dismiss();
-            }
-        });
-        return dialog;
     }
 
 
@@ -98,55 +60,40 @@ public class PrivacyPolicy {
         builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
+        final TextView contentView = view.findViewById(R.id.privacy_content);
+        contentView.setMovementMethod((LinkMovementMethod.getInstance()));
 
+        final CheckBox box = view.findViewById(R.id.recommend_box);
         final TextView agree = view.findViewById(R.id.btn_agree);
         final TextView decline = view.findViewById(R.id.btn_decline);
-        final TextView privacyPolicy = view.findViewById(R.id.privacy_policy);
-        final TextView termsOfUse = view.findViewById(R.id.terms_of_use);
+
+        box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                isAdsAccepted = b;
+            }
+        });
 
         decline.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                isPrivacyShowed = true;
                 isTermsAccepted = false;
 
-                // setPrefValues(isTermsAccepted, isAdsAccepted);
-                isPrivacyShowed = true;
+                setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
             }
         });
+
 
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isPrivacyShowed = true;
                 isTermsAccepted = true;
 
-                if(!isAdsAccepted) {
-                    showProductRecommendDialog();
-                }
+                setPrefValues(isTermsAccepted, isAdsAccepted);
                 dialog.dismiss();
-            }
-        });
-
-        String uid = ProductCatUIDManager.getUid();
-        final String policyUrl = context.getString(R.string.productcat_sdk_weblink_policy) + "?uid=" + uid;
-
-        privacyPolicy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(policyUrl));
-                context.startActivity(intent);
-            }
-        });
-
-        final String termsOfUseUrl = context.getString(R.string.productcat_sdk_weblink_terms_of_use) +"?uid=" + uid;
-
-        termsOfUse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(termsOfUseUrl));
-                context.startActivity(intent);
             }
         });
 

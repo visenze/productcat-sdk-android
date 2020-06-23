@@ -12,39 +12,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/productcat_sdk_policy_title"
-        android:layout_marginBottom="@dimen/productcat_sdk_item_margin_vertical"
         android:textSize="@dimen/productcat_sdk_text_title_size"
         android:textColor="@color/productcat_sdk_textBlack"
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/privacy_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/productcat_sdk_policy_content"
-        android:layout_marginBottom="@dimen/productcat_sdk_item_margin_vertical"
+        android:layout_marginTop="@dimen/productcat_sdk_item_margin_vertical"
         android:textSize="@dimen/productcat_sdk_text_content_size"
+        android:text="@string/productcat_sdk_policy"
         android:lineHeight="@dimen/productcat_sdk_line_height"
+        android:clickable="true"
+        android:textColorLink="@color/productcat_sdk_lightBlue"
         android:textColor="@color/productcat_sdk_textBlack"/>
 
-
-    <TextView
-        android:id="@+id/privacy_policy"
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/recommend_box"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/productcat_sdk_privacy_policy"
-        android:layout_marginBottom="@dimen/productcat_sdk_link_margin_vertical"
+        android:layout_marginTop="24dp"
+        android:gravity="top"
         android:textSize="@dimen/productcat_sdk_text_content_size"
         android:lineHeight="@dimen/productcat_sdk_line_height"
-        android:textColor="@color/productcat_sdk_lightBlue"/>
+        android:buttonTint="#fb8b75"
+        android:text="@string/productcat_sdk_recommend">
 
-    <TextView
-        android:id="@+id/terms_of_use"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/productcat_sdk_terms_of_use"
-        android:textSize="@dimen/productcat_sdk_text_content_size"
-        android:lineHeight="@dimen/productcat_sdk_line_height"
-        android:textColor="@color/productcat_sdk_lightBlue"/>
+    </CheckBox>
 
     <TextView
         android:id="@+id/btn_agree"

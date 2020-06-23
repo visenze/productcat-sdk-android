@@ -3,7 +3,8 @@
     <string name="productcat_sdk_preference_file">productcat_pref_file</string>
 
     <string name="productcat_sdk_policy_title">Welcome</string>
-    <string name="productcat_sdk_policy_content">Welcome to visual shopping! Start to snap, search and shop with us.\n\nWe value your privacy and personal data. We will only collect, use, disclose and/or process your personal data in accordance with our privacy policy.</string>
+    <string name="productcat_sdk_policy">Before you begin, please review and acknowledge the <a href="https://shopping.visenze.com/privacy-policy?uid=0000">Privacy policy</a> and <a href="https://shopping.visenze.com/terms-of-use?uid=0000">Terms of use</a> on how we collect and use your personal information.</string>
+    <string name="productcat_sdk_recommend">I agree to receive recommended discounts and products based on my search preferences</string>
     <string name="productcat_sdk_privacy_policy">Privacy policy</string>
     <string name="productcat_sdk_terms_of_use">Terms of use</string>
     <string name="productcat_sdk_weblink_policy">https://shopping.visenze.com/privacy-policy</string>
