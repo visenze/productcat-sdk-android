@@ -6,7 +6,7 @@
     <dimen name="productcat_sdk_text_title_size">18sp</dimen>
     <dimen name="productcat_sdk_text_content_size">16sp</dimen>
     <dimen name="productcat_sdk_button_height">44dp</dimen>
-    <dimen name="productcat_sdk_line_height">22sp</dimen>
+    <dimen name="productcat_sdk_line_height">24sp</dimen>
     <dimen name="productcat_sdk_link_margin_vertical">18dp</dimen>
     <dimen name="productcat_sdk_button_margin_top">26dp</dimen>
 

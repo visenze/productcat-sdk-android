@@ -36,8 +36,10 @@
         android:gravity="top"
         android:textSize="@dimen/productcat_sdk_text_content_size"
         android:lineHeight="@dimen/productcat_sdk_line_height"
-        android:buttonTint="#fb8b75"
-        android:text="@string/productcat_sdk_recommend">
+        android:buttonTint="@drawable/productcat_sdk_checkbox_selector"
+        android:text="@string/productcat_sdk_recommend"
+        android:paddingLeft="6dp"
+        android:textColor="@color/productcat_sdk_textBlack">
 
     </CheckBox>
 
