@@ -4,6 +4,7 @@ import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.model.Facet;
 import com.visenze.productcat.android.model.FacetItem;
 import com.visenze.productcat.android.model.FacetRange;
+import com.visenze.productcat.android.model.ObjectList;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.ProductCatException;
 import com.visenze.productcat.android.model.Box;
@@ -100,6 +101,7 @@ public class ResponseParser {
     public static final String OPTIN = "opt_in";
     public static final String BAD_QUERY = "bad_query";
 
+    public static final String OBJECTS = "objects";
 
     public static ResultList parseResult(String jsonResponse, String type) {
         if(SearchOperationsImpl.PRIVACY_STATUS.equals(type)) {
@@ -118,6 +120,73 @@ public class ResponseParser {
         } else {
             return parseResult(jsonResponse);
         }
+    }
+
+    public static List<ObjectList> parseMPSResponse(JSONObject jsonObject) {
+        List<ObjectList> objectList = new ArrayList<ObjectList>();
+        try {
+            if (jsonObject.has(OBJECTS)) {
+                JSONArray objArray = jsonObject.getJSONArray(OBJECTS);
+                int size = objArray.length();
+                for (int i = 0; i < size; i++) {
+
+                    ObjectList obj = new ObjectList();
+                    if (jsonObject.has(REQID)) {
+                        obj.setReqid(jsonObject.getString(REQID));
+                    }
+
+                    JSONObject jsonItem = objArray.getJSONObject(i);
+
+                    if (jsonItem.has(TYPE)) {
+                        obj.setType((jsonItem.getString(TYPE)));
+                    }
+
+                    if (jsonItem.has(BOX)) {
+
+                        JSONArray boxCoordinate = jsonItem.getJSONArray(BOX);
+                        Box box = new Box(boxCoordinate.getInt(0),
+                                boxCoordinate.getInt(1),
+                                boxCoordinate.getInt(2),
+                                boxCoordinate.getInt(3));
+
+                        obj.setBox(box);
+                    }
+
+                    if (jsonItem.has(SCORE)) {
+                        obj.setScore(jsonItem.getDouble(SCORE));
+                    }
+
+                    if (jsonItem.has(ATTRIBUTES)) {
+                        JSONObject attrsArray = jsonItem.getJSONObject(ATTRIBUTES);
+                        JSONArray attrsNames = attrsArray.names();
+                        Map attrsMapList = new HashMap<>();
+                        for (int j = 0; attrsNames != null && j < attrsNames.length(); j++) {
+                            JSONArray attrsItems = (JSONArray) attrsArray.get((String)attrsNames.get(j));
+                            List<String> attrs = new ArrayList<>();
+                            for (int k = 0; k < attrsItems.length(); k++) {
+                                attrs.add((String) attrsItems.get(k));
+                            }
+                            attrsMapList.put(attrsNames.get(j), attrs);
+                        }
+                        obj.setAttributeList(attrsMapList);
+                    }
+
+                    if (jsonItem.has(RESULT)) {
+                        JSONArray resultArray = jsonItem.getJSONArray(RESULT);
+                        obj.setProductSummaryList(parseProductSummaryList(resultArray));
+                    }
+
+                    objectList.add(obj);
+                }
+
+            }
+
+
+            return objectList;
+        } catch (JSONException e) {
+            throw new ProductCatException("Error parsing response " + e.getMessage(), e);
+        }
+
     }
 
     public static ResultList parseResult(String jsonResponse) {
@@ -509,7 +578,7 @@ public class ResponseParser {
         return resultList;
     }
 
-    private static String parseResponseError(JSONObject jsonObj) {
+    public static String parseResponseError(JSONObject jsonObj) {
         try {
             String status = jsonObj.getString(STATUS);
             if (status == null) {

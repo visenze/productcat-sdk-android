@@ -9,12 +9,14 @@ import com.visenze.productcat.android.api.impl.AdminOperationsImpl;
 import com.visenze.productcat.android.api.impl.SearchOperationsImpl;
 import com.visenze.productcat.android.data.DataCollection;
 import com.visenze.productcat.android.model.DeviceInfo;
+import com.visenze.productcat.android.model.ObjectList;
 import com.visenze.productcat.android.model.ResultList;
 import com.visenze.productcat.android.model.StoreResultList;
 import com.visenze.productcat.android.ui.PrivacyPolicy;
 import com.visenze.productcat.android.util.ProductCatUIDManager;
 
 import java.net.URL;
+import java.util.List;
 
 /**
  * ProductCat singleton handles all the search methods.
@@ -36,7 +38,6 @@ public class ProductCat {
 
     private ResultListener mListener;
     private StoreResultListener mStoreResultListener;
-
     // timeout in ms
     private int timeout;
 
@@ -189,6 +190,17 @@ public class ProductCat {
             } catch (ProductCatException e){
                 logProductCatErrorMessage(e);
             }
+        }
+    }
+
+    public void multipleProductSearch(final ImageSearchParams params, MPSListener listener) {
+        if(checkPrivacyPolicy(params)) {
+            try {
+                searchOperations.multipleProductSearch(params, listener);
+            } catch (ProductCatException e) {
+                logProductCatErrorMessage(e);
+            }
+
         }
     }
 
@@ -444,6 +456,23 @@ public class ProductCat {
 
     public static interface PrivacyStatusResultListener {
         public void onResult(boolean optIn, String errMsg);
+    }
+
+
+    public static interface MPSListener {
+        public abstract void onSearchResult(final List<ObjectList> objectList);
+
+        /**
+         * Called after a search session is started and an error occurs
+         *
+         * @param errorMessage the error message if error occurs.
+         */
+        public abstract void onSearchError(String errorMessage);
+
+        /**
+         * Called when cancelSearch is called
+         */
+        public abstract void onSearchCanceled();
     }
 
     /**

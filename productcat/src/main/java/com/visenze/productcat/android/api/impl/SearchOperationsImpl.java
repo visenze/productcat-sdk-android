@@ -26,6 +26,7 @@ public class SearchOperationsImpl implements SearchOperations {
     public static final String PRODUCTCAT_TEXT_SEARCH = "productcat_text_search";
     public static final String UPDATE_PRIVACY_STATUS = "update_privacy_status";
 
+    private final static String MULTIPLE_PRODUCT_SEARCH = "/mps/products";
     private final static String PRODUCT_SUMMARY_SEARCH = "/summary/products" ;
     private final static String PRODUCT_SUMMARY_SEARCH_RESULT_PAGE = "/summary/products/srp";
     public static final String PRODUCTCAT_SIMILAR_SEARCH = "productcat_similar_search";
@@ -99,6 +100,28 @@ public class SearchOperationsImpl implements SearchOperations {
             httpInstance.addMultipartRequestToQueue(
                     apiBase + customSearchPath, params.toMap(), null, resultListener, retryPolicy);
         }
+    }
+
+    @Override
+    public void multipleProductSearch(ImageSearchParams params, final ProductCat.MPSListener mpsListener) {
+        byte[] imageBytes = null;
+        if (params.getImage() != null) {
+            imageBytes = params.getImage().getByteArray();
+        }
+        String imageUrl = params.getImageUrl();
+        String imId = params.getImId();
+
+        if (imageBytes == null && (imageUrl == null || imageUrl.isEmpty()) && (imId == null || imId.isEmpty())) {
+            throw new ProductCatException("Missing parameter, image empty");
+
+        } else if (imageBytes != null) {
+            httpInstance.addMultipartRequestToQueue(
+                    apiBase + MULTIPLE_PRODUCT_SEARCH, params.toMap(), imageBytes, mpsListener, retryPolicy);
+        } else {
+            httpInstance.addMultipartRequestToQueue(
+                    apiBase + MULTIPLE_PRODUCT_SEARCH, params.toMap(), null, mpsListener, retryPolicy);
+        }
+
     }
 
     @Override
