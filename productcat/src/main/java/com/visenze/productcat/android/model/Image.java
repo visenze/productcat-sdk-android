@@ -38,7 +38,7 @@ public class Image {
      * @param filePath path to a local directory
      */
     public Image(String filePath) {
-        this(filePath, ResizeSettings.STANDARD);
+        this(filePath, ResizeSettings.HIGH);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Image {
      * @param uri Uri to link to the image
      */
     public Image(Context context, Uri uri) {
-        this(context, uri, ResizeSettings.STANDARD);
+        this(context, uri, ResizeSettings.HIGH);
     }
 
     /**
@@ -142,12 +142,12 @@ public class Image {
      * Construct with raw byte array from the camera Callback
      *
      * The image is resize to be processed and transferred efficiently.
-     * The default re-size limit is 512
+     * The default re-size limit is 1024
      *
      * @param byteArray byte array from camera callback
      */
     public Image(byte[] byteArray) {
-        this(byteArray, ResizeSettings.CAMERA_STANDARD);
+        this(byteArray, ResizeSettings.CAMERA_HIGH);
     }
 
     /**

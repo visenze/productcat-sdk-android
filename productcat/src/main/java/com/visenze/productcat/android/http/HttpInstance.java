@@ -236,6 +236,48 @@ public class HttpInstance {
             final String url,
             Map<String, List<String> > params,
             byte[] bytes,
+            final ProductCat.MPSListener resultListener,
+            RetryPolicy retryPolicy) {
+
+        MPSResponseListener responseListener = new MPSResponseListener(resultListener, PRODUCTCAT_VISUAL_SEARCH);
+
+        if (null == params) {
+            params = new HashMap<String, List<String>>();
+        }
+
+        addUidParam(params);
+
+        Uri.Builder uri = new Uri.Builder();
+        uri.appendQueryParameter(APP_KEY, appKey);
+
+        MultiPartRequest multipartRequest = new MultiPartRequest(Request.Method.POST, url + uri.toString(),
+                params, bytes,
+                appKey, userAgent,
+                responseListener,
+                new MPSResponseErrorListener(resultListener));
+
+        if (retryPolicy!=null) {
+            multipartRequest.setRetryPolicy(retryPolicy);
+        }
+
+        multipartRequest.setTag(mContext);
+        multipartRequest.setShouldCache(shouldCache);
+        getRequestQueue().add(multipartRequest);
+    }
+
+
+    /**
+     * start a request by add multipart parameters
+     *
+     * @param url url to call
+     * @param params parameters
+     * @param bytes byte array
+     * @param resultListener result listener
+     */
+    public void addMultipartRequestToQueue (
+            final String url,
+            Map<String, List<String> > params,
+            byte[] bytes,
             final ProductCat.ResultListener resultListener,
             RetryPolicy retryPolicy) {
 

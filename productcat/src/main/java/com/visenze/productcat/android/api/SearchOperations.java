@@ -10,6 +10,8 @@ import com.visenze.productcat.android.TextSearchParams;
  * Search operations interface.
  */
 public interface SearchOperations {
+    public void multipleProductSearch(ImageSearchParams params, final ProductCat.MPSListener multipleProductListener);
+
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener);
 
     public void imageSearch(ImageSearchParams params, final ProductCat.ResultListener resultListener, String customSearchPath);
