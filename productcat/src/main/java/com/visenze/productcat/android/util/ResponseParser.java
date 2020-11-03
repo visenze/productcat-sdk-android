@@ -144,12 +144,15 @@ public class ResponseParser {
                     if (jsonItem.has(BOX)) {
 
                         JSONArray boxCoordinate = jsonItem.getJSONArray(BOX);
-                        Box box = new Box(boxCoordinate.getInt(0),
-                                boxCoordinate.getInt(1),
-                                boxCoordinate.getInt(2),
-                                boxCoordinate.getInt(3));
 
-                        obj.setBox(box);
+                        if (boxCoordinate.length() >= 4) {
+                            Box box = new Box(boxCoordinate.getInt(0),
+                                    boxCoordinate.getInt(1),
+                                    boxCoordinate.getInt(2),
+                                    boxCoordinate.getInt(3));
+
+                            obj.setBox(box);
+                        }
                     }
 
                     if (jsonItem.has(SCORE)) {
@@ -548,11 +551,13 @@ public class ResponseParser {
                 productType.setType(typeObj.getString(TYPE));
                 productType.setScore(typeObj.getDouble(SCORE));
                 JSONArray boxCoordinate = typeObj.getJSONArray(BOX);
-                Box box = new Box(boxCoordinate.getInt(0),
-                        boxCoordinate.getInt(1),
-                        boxCoordinate.getInt(2),
-                        boxCoordinate.getInt(3));
-                productType.setBox(box);
+                if (boxCoordinate.length() >= 4) {
+                    Box box = new Box(boxCoordinate.getInt(0),
+                            boxCoordinate.getInt(1),
+                            boxCoordinate.getInt(2),
+                            boxCoordinate.getInt(3));
+                    productType.setBox(box);
+                }
 
                 if (typeObj.has(ATTRIBUTES)) {
                     JSONObject attrsArray = typeObj.getJSONObject(ATTRIBUTES);
